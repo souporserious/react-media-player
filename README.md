@@ -1,4 +1,4 @@
-## React Media Player 0.0.1
+## React Media Player 0.0.2
 
 React video/audio player.
 
