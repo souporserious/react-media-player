@@ -5,8 +5,9 @@ class MediaContainer extends Component {
   state = {
     player: null,
     playing: false,
-    duration: '0:00',
-    current: '0:00'
+    muted: false,
+    duration: 0,
+    current: 0
   }
 
   static formatTime(current) {
@@ -31,7 +32,7 @@ class MediaContainer extends Component {
 
   _handleLoadedMetaData(e) {
     this.setState({
-      duration: MediaContainer.formatTime(e.target.duration)
+      duration: e.target.duration
     });
   }
 
@@ -40,7 +41,8 @@ class MediaContainer extends Component {
     const { player } = this.state;
 
     this.setState({
-      current: MediaContainer.formatTime(player.currentTime)
+      current: player.currentTime,
+      muted: player.muted
     });
   }
 
@@ -56,6 +58,14 @@ class MediaContainer extends Component {
     });
 
     player.addEventListener('pause', () => {
+      this.setState({playing: false});
+    });
+
+    player.addEventListener('volumechange', () => {
+      this.setState({muted: player.muted});
+    });
+    
+    player.addEventListener('ended', () => {
       this.setState({playing: false});
     });
   }
