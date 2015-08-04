@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 
 class MuteUnmute {
 
@@ -7,14 +7,7 @@ class MuteUnmute {
   }
 
   _handleMuteUnmute() {
-
-    const { player } = this.props;
-
-    if(player.muted === false) {
-      player.muted = true;
-    } else {
-      player.muted = false;
-    }
+    this.props.onMuteUnmute();
   }
 
   render() {

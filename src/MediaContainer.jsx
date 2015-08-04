@@ -1,4 +1,4 @@
-import React, {Component, Proptypes, Children, cloneElement} from 'react';
+import React, { Component, Proptypes, Children, cloneElement } from 'react';
 
 class MediaContainer extends Component {
 
@@ -41,6 +41,17 @@ class MediaContainer extends Component {
       player.play();
     } else {
       player.pause();
+    }
+  }
+
+  muteUnmute() {
+
+    const { player } = this.state;
+
+    if(player.muted === false) {
+      player.muted = true;
+    } else {
+      player.muted = false;
     }
   }
 

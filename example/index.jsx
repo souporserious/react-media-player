@@ -7,6 +7,10 @@ class App extends Component {
     this.refs['media-player'].playPause();
   }
 
+  _handleMuteUnmute() {
+    this.refs['media-player'].muteUnmute();
+  }
+
   render() {
     return(
       <MediaContainer ref="media-player" type="video">
@@ -27,9 +31,10 @@ class App extends Component {
                 />
               </div>
               <div className="media__controls">
+
                 <PlayPause
-                  player={player}
                   playing={playing}
+                  onPlayPause={::this._handlePlayPause}
                 />
                 {MediaContainer.formatTime(current)}
                 <Progress
@@ -39,8 +44,8 @@ class App extends Component {
                 />
                 {MediaContainer.formatTime(duration)}
                 <MuteUnmute
-                  player={player}
                   muted={muted}
+                  onMuteUnmute={::this._handleMuteUnmute}
                 />
                 <Fullscreen
                   player={player}

@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 
 class PlayPause {
 
@@ -7,14 +7,7 @@ class PlayPause {
   }
 
   _handlePlayPause() {
-
-    const { player } = this.props;
-
-    if(player.paused) {
-      player.play();
-    } else {
-      player.pause();
-    }
+    this.props.onPlayPause();
   }
 
   render() {
