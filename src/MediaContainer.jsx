@@ -8,7 +8,8 @@ class MediaContainer extends Component {
     muted: false,
     duration: 0,
     current: 0,
-    progress: 0
+    progress: 0,
+    isFullscreen: false
   }
 
   static formatTime(current) {
@@ -46,7 +47,11 @@ class MediaContainer extends Component {
 
     player.addEventListener('loadedmetadata', ::this._handleLoadedMetaData);
 
-    player.addEventListener('timeupdate', ::this._handleCurrentTime);
+    player.addEventListener('timeupdate', ::this._handleTimeUpdate);
+
+    ['fullscreenchange', 'webkitfullscreenchange', 'mozfullscreenchange'].forEach(e =>
+      player.addEventListener(e, ::this._handleFullscreenChange)
+    );
 
     player.addEventListener('play', () =>
       this.setState({playing: true})
@@ -115,13 +120,24 @@ class MediaContainer extends Component {
     });
   }
 
-  _handleCurrentTime() {
+  _handleTimeUpdate() {
     
     const { player } = this.state;
 
     this.setState({
       current: player.currentTime,
       muted: player.muted
+    });
+  }
+
+  _handleFullscreenChange() {
+
+    const d = document;
+
+    this.setState({
+      isFullscreen: d.fullScreen || d.mozFullScreen || d.webkitIsFullScreen
+    }, () => {
+      console.log(this.state.isFullscreen);
     });
   }
 

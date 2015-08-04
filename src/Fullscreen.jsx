@@ -5,9 +5,8 @@ import React, {Component} from 'react';
 
 class Fullscreen {
 
-  // need to handle if in fullscreen or not in mediacontainer
   // shouldComponentUpdate(nextProps) {
-  //   return this.props.fullscreen !== nextProps.fullscreen;
+  //   return nextProps.isFullscreen;
   // }
 
   _handleFullscreen() {
