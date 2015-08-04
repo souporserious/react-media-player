@@ -7,7 +7,8 @@ class MediaContainer extends Component {
     playing: false,
     muted: false,
     duration: 0,
-    current: 0
+    current: 0,
+    progress: 0
   }
 
   static formatTime(current) {
@@ -21,6 +22,15 @@ class MediaContainer extends Component {
     return minutes + ':' + seconds;
   }
 
+  componentDidMount() {
+    this._setPlayer(this._bindEvents);
+  }
+
+  componentWillUnmount() {
+    // need to write this shiz
+    //this._unbindEvents();
+  }
+
   _setPlayer(cb) {
     
     const component = React.findDOMNode(this);
@@ -30,9 +40,78 @@ class MediaContainer extends Component {
     }, cb);
   }
 
+  _bindEvents() {
+
+    const { player } = this.state;
+
+    player.addEventListener('loadedmetadata', ::this._handleLoadedMetaData);
+
+    player.addEventListener('timeupdate', ::this._handleCurrentTime);
+
+    player.addEventListener('play', () =>
+      this.setState({playing: true})
+    );
+
+    player.addEventListener('pause', () =>
+      this.setState({playing: false})
+    );
+
+    player.addEventListener('volumechange', () =>
+      this.setState({muted: player.muted})
+    );
+    
+    player.addEventListener('ended', () =>
+      this.setState({playing: false})
+    );
+  }
+
   _handleLoadedMetaData(e) {
+
+    const player = e.target;
+    const { duration, buffered } = player;
+
     this.setState({
-      duration: e.target.duration
+      duration: duration,
+      progress: buffered.end(0) / duration
+    }, () => {
+      // make sure video has loaded meta data before listening for progress
+      player.addEventListener('progress', ::this._handleProgress);
+    });
+  }
+
+  _handleProgress(e) {
+
+    const { player } = this.state;
+    const { buffered, currentTime, duration } = player;
+
+    let progress = 0;
+
+    // if we've reached full progress we don't need to update anymore
+    // not sure if we'll need it if something happens to connection though
+    if(this.state.progress >= 1) {
+      // unbind event here
+      return;
+    }
+    
+    // getting an issue Failed to execute 'start' on 'TimeRanges'
+    // not sure how to fix, need to look at later, try catch for now
+    try {
+      
+      let range = 0;
+
+      while(!(buffered.start(range) < currentTime &&
+            currentTime < buffered.end(range))) {
+        range += 1;
+      }
+
+      progress = (buffered.end(range) / duration) - (buffered.start(range) / duration)
+    
+    } catch(err){
+      progress = this.state.progress;
+    }
+
+    this.setState({
+      progress: progress
     });
   }
 
@@ -46,46 +125,13 @@ class MediaContainer extends Component {
     });
   }
 
-  _bindEvents() {
-
-    const { player } = this.state;
-
-    player.addEventListener('loadedmetadata', ::this._handleLoadedMetaData);
-    player.addEventListener('timeupdate', ::this._handleCurrentTime);
-
-    player.addEventListener('play', () => {
-      this.setState({playing: true});
-    });
-
-    player.addEventListener('pause', () => {
-      this.setState({playing: false});
-    });
-
-    player.addEventListener('volumechange', () => {
-      this.setState({muted: player.muted});
-    });
-    
-    player.addEventListener('ended', () => {
-      this.setState({playing: false});
-    });
-  }
-
-  componentDidMount() {
-    this._setPlayer(this._bindEvents);
-  }
-
-  componentWillUnmount() {
-    // need to write this shiz
-    //this._unbindEvents();
-  }
-
   render() {
     
-    const {children} = this.props;
+    const { children } = this.props;
     const childProps = this.state;
     
-    if(!children) {
-      console.warn('MediaContainer: Please provide at least one component');
+    if(typeof children !== 'function') {
+      console.warn('MediaContainer: Please provide a function');
       return null;
     }
 

@@ -9,8 +9,9 @@ class App extends Component {
         {props =>
           <div>
             <video
-              src="http://sample-videos.com/video/mp4/720/big_buck_bunny_720p_20mb.mp4"
+              src="http://media.w3.org/2010/05/sintel/trailer.mp4"
               controls={true}
+              preload={true}
             />
             <div>
               <PlayPause {...props} />
@@ -27,4 +28,6 @@ class App extends Component {
   }
 }
 
-React.render(<App />, document.body);
+document.addEventListener('DOMContentLoaded', () => {
+  React.render(<App />, document.body);
+});
