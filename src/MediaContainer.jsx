@@ -5,10 +5,11 @@ class MediaContainer extends Component {
   state = {
     player: null,
     playing: false,
-    muted: false,
     duration: 0,
     current: 0,
     progress: 0,
+    muted: false,
+    volume: 1,
     isFullscreen: false
   }
 
@@ -85,9 +86,20 @@ class MediaContainer extends Component {
       this.setState({playing: false})
     );
 
-    player.addEventListener('volumechange', () =>
-      this.setState({muted: player.muted})
-    );
+    player.addEventListener('volumechange', () => {
+
+      const { muted } = player;
+      let volume = 0;
+
+      if(!muted) {
+        volume = player.volume;
+      }
+
+      this.setState({
+        muted: muted,
+        volume: volume
+      });
+    });
     
     player.addEventListener('ended', () =>
       this.setState({playing: false})

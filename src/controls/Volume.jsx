@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 
-class Progress {
+class Volume {
 
   dragging = false
 
   _handleChange(e) {
     const { player } = this.props;
-    player.currentTime = +e.target.value;
+    player.volume = (+e.target.value).toFixed(4);
   }
 
   _handleDragging() {
@@ -19,7 +19,7 @@ class Progress {
 
     if(this.dragging) {
 
-      player.currentTime = +e.target.value;
+      player.volume = (+e.target.value).toFixed(4);
 
       if(e.type === 'mouseup') {
         this.dragging = false;
@@ -32,8 +32,9 @@ class Progress {
       <input
         type="range"
         step="any"
-        max={(this.props.duration).toFixed(4)}
-        value={this.props.current}
+        min={0}
+        max={1}
+        value={this.props.volume}
         onChange={::this._handleChange}
         onMouseDown={::this._handleDragging}
         onMouseMove={::this._handleDrag}
@@ -43,4 +44,4 @@ class Progress {
   }
 }
 
-export default Progress;
+export default Volume;

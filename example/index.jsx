@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { MediaContainer, PlayPause, Progress, MuteUnmute, Fullscreen } from '../src/index';
+import { MediaContainer, PlayPause, Progress, MuteUnmute, Volume, Fullscreen } from '../src/index';
 
 class App extends Component {
 
@@ -16,8 +16,8 @@ class App extends Component {
       <MediaContainer ref="media-player" type="video">
         {props => {
 
-          const { player, playing, muted, duration, current, progress, isFullscreen } = props;
-
+          const { player, playing, duration, current, progress, muted, volume, isFullscreen } = props;
+          
           return(
             <div className="media__container">
               <div
@@ -31,7 +31,6 @@ class App extends Component {
                 />
               </div>
               <div className="media__controls">
-
                 <PlayPause
                   playing={playing}
                   onPlayPause={::this._handlePlayPause}
@@ -46,6 +45,10 @@ class App extends Component {
                 <MuteUnmute
                   muted={muted}
                   onMuteUnmute={::this._handleMuteUnmute}
+                />
+                <Volume
+                  player={player}
+                  volume={volume}
                 />
                 <Fullscreen
                   player={player}
