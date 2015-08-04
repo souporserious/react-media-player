@@ -72,6 +72,11 @@ class MediaContainer extends Component {
 
     player.addEventListener('loadedmetadata', ::this._handleLoadedMetaData);
 
+    player.addEventListener('loadeddata', () =>
+      // make sure video is ready before trying to check buffer progress
+      player.addEventListener('progress', ::this._handleProgress)
+    );
+
     player.addEventListener('timeupdate', ::this._handleTimeUpdate);
 
     ['fullscreenchange', 'webkitfullscreenchange', 'mozfullscreenchange'].forEach(e =>
@@ -114,9 +119,6 @@ class MediaContainer extends Component {
     this.setState({
       duration: duration,
       progress: buffered.end(0) / duration
-    }, () => {
-      // make sure video has loaded meta data before listening for progress
-      player.addEventListener('progress', ::this._handleProgress);
     });
   }
 
@@ -133,23 +135,15 @@ class MediaContainer extends Component {
       // unbind event here
       return;
     }
-    
-    // getting an issue Failed to execute 'start' on 'TimeRanges'
-    // not sure how to fix, need to look at later, try catch for now
-    try {
       
-      let range = 0;
+    let range = 0;
 
-      while(!(buffered.start(range) < currentTime &&
-            currentTime < buffered.end(range))) {
-        range += 1;
-      }
-
-      progress = (buffered.end(range) / duration) - (buffered.start(range) / duration)
-    
-    } catch(err){
-      progress = this.state.progress;
+    while(!(buffered.start(range) < currentTime &&
+          currentTime < buffered.end(range))) {
+      range += 1;
     }
+
+    progress = (buffered.end(range) / duration) - (buffered.start(range) / duration)
 
     this.setState({
       progress: progress
