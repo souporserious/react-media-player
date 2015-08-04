@@ -67,6 +67,8 @@ class MediaContainer extends Component {
         player.webkitRequestFullscreen();
       } else if(player.mozRequestFullScreen) {
         player.mozRequestFullScreen();
+      } else if(player.msRequestFullscreen) {
+        player.msRequestFullscreen();
       }
     } else {
 
@@ -78,6 +80,8 @@ class MediaContainer extends Component {
         d.webkitCancelFullScreen();
       } else if (d.mozCancelFullScreen) {
         d.mozCancelFullScreen();
+      } else if(d.msExitFullscreen) {
+        d.msExitFullscreen();
       }
     }
   }
@@ -105,7 +109,7 @@ class MediaContainer extends Component {
 
     player.addEventListener('timeupdate', ::this._handleTimeUpdate);
 
-    ['fullscreenchange', 'webkitfullscreenchange', 'mozfullscreenchange'].forEach(e =>
+    ['fullscreenchange', 'webkitfullscreenchange', 'mozfullscreenchange', 'msfullscreenchange'].forEach(e =>
       player.addEventListener(e, ::this._handleFullscreenChange)
     );
 
@@ -191,7 +195,7 @@ class MediaContainer extends Component {
     const d = document;
 
     this.setState({
-      fullscreen: d.fullScreen || d.mozFullScreen || d.webkitIsFullScreen
+      fullscreen: d.fullScreen || d.webkitIsFullScreen || d.mozFullScreen || d.msFullscreenElement
     });
   }
 
