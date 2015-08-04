@@ -10,7 +10,7 @@ class MediaContainer extends Component {
     progress: 0,
     muted: false,
     volume: 1,
-    isFullscreen: false
+    fullscreen: false
   }
 
   static formatTime(current) {
@@ -53,6 +53,32 @@ class MediaContainer extends Component {
       player.muted = true;
     } else {
       player.muted = false;
+    }
+  }
+
+  toggleFullscreen() {
+
+    const { player, fullscreen } = this.state;
+
+    if(!fullscreen) {
+      if(player.requestFullscreen) {
+        player.requestFullscreen();
+      } else if(player.webkitRequestFullscreen) {
+        player.webkitRequestFullscreen();
+      } else if(player.mozRequestFullScreen) {
+        player.mozRequestFullScreen();
+      }
+    } else {
+
+      const d = document;
+
+      if(d.cancelFullScreen) {
+        d.cancelFullScreen();
+      } else if (d.webkitCancelFullScreen) {
+        d.webkitCancelFullScreen();
+      } else if (d.mozCancelFullScreen) {
+        d.mozCancelFullScreen();
+      }
     }
   }
 
@@ -165,7 +191,7 @@ class MediaContainer extends Component {
     const d = document;
 
     this.setState({
-      isFullscreen: d.fullScreen || d.mozFullScreen || d.webkitIsFullScreen
+      fullscreen: d.fullScreen || d.mozFullScreen || d.webkitIsFullScreen
     });
   }
 

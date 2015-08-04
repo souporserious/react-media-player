@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { MediaContainer, PlayPause, Progress, MuteUnmute, Volume, Fullscreen } from '../src/index';
 
+import './main.scss';
+
 class App extends Component {
 
   _handlePlayPause() {
@@ -11,13 +13,17 @@ class App extends Component {
     this.refs['media-player'].muteUnmute();
   }
 
+  _handleFullscreen() {
+    this.refs['media-player'].toggleFullscreen();
+  }
+
   render() {
     return(
       <MediaContainer ref="media-player" type="video">
         {props => {
 
-          const { player, playing, duration, current, progress, muted, volume, isFullscreen } = props;
-          
+          const { player, playing, duration, current, progress, muted, volume, fullscreen } = props;
+
           return(
             <div className="media__container">
               <div
@@ -26,7 +32,7 @@ class App extends Component {
               >
                 <video
                   src="http://media.w3.org/2010/05/sintel/trailer.mp4"
-                  controls={true}
+                  controls={false}
                   preload={true}
                 />
               </div>
@@ -51,7 +57,8 @@ class App extends Component {
                   volume={volume}
                 />
                 <Fullscreen
-                  player={player}
+                  fullscreen={fullscreen}
+                  onFullscreen={::this._handleFullscreen}
                 />
               </div>
             </div>

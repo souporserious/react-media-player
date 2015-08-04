@@ -5,29 +5,18 @@ import React, {Component} from 'react';
 
 class Fullscreen {
 
-  // shouldComponentUpdate(nextProps) {
-  //   return nextProps.isFullscreen;
-  // }
+  shouldComponentUpdate(nextProps) {
+    return this.props.fullscreen !== nextProps.fullscreen;
+  }
 
   _handleFullscreen() {
-
-    const { player } = this.props;
-
-    // need to get correct fullscreen on componentDidMount
-    // instead of checking here every time
-    if(player.requestFullscreen) {
-      player.requestFullscreen();
-    } else if(player.webkitRequestFullscreen) {
-      player.webkitRequestFullscreen();
-    } else if(player.mozRequestFullScreen) {
-      player.mozRequestFullScreen();
-    }
+    this.props.onFullscreen();
   }
 
   render() {
     return(
       <button onClick={::this._handleFullscreen}>
-        Fullscreen
+        {this.props.fullscreen ? 'Exit Fullscreen' : 'Fullscreen'}
       </button>
     );
   }

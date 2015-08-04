@@ -1,0 +1,10 @@
+// hide native controls
+video::-webkit-media-controls {
+  display: none !important;
+}
+
+// push controls above fullscreen video
+.media__controls {
+  position: relative;
+  z-index: 2147483647;
+}
