@@ -32,6 +32,19 @@ class MediaContainer extends Component {
     //this._unbindEvents();
   }
 
+  // Public Methods
+  playPause() {
+
+    const { player } = this.state;
+
+    if(player.paused) {
+      player.play();
+    } else {
+      player.pause();
+    }
+  }
+
+  // Private Methods
   _setPlayer(cb) {
     
     const component = React.findDOMNode(this);
@@ -136,8 +149,6 @@ class MediaContainer extends Component {
 
     this.setState({
       isFullscreen: d.fullScreen || d.mozFullScreen || d.webkitIsFullScreen
-    }, () => {
-      console.log(this.state.isFullscreen);
     });
   }
 

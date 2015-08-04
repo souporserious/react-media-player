@@ -8,7 +8,7 @@ class MuteUnmute {
 
   _handleMuteUnmute() {
 
-    const {player} = this.props;
+    const { player } = this.props;
 
     if(player.muted === false) {
       player.muted = true;

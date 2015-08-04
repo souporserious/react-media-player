@@ -5,7 +5,7 @@ class Progress {
   dragging = false
 
   _handleChange(e) {
-    const {player} = this.props;
+    const { player } = this.props;
     player.currentTime = e.target.value;
   }
 
@@ -15,7 +15,7 @@ class Progress {
 
   _handleDrag(e) {
 
-    const {player} = this.props;
+    const { player } = this.props;
 
     if(this.dragging) {
 

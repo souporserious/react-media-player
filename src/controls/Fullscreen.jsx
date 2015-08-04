@@ -11,7 +11,7 @@ class Fullscreen {
 
   _handleFullscreen() {
 
-    const {player} = this.props;
+    const { player } = this.props;
 
     // need to get correct fullscreen on componentDidMount
     // instead of checking here every time

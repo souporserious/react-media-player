@@ -8,7 +8,7 @@ class PlayPause {
 
   _handlePlayPause() {
 
-    const {player} = this.props;
+    const { player } = this.props;
 
     if(player.paused) {
       player.play();
