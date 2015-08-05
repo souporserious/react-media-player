@@ -5,8 +5,14 @@ class Volume {
   dragging = false
 
   _handleChange(e) {
-    const { player } = this.props;
-    player.volume = (+e.target.value).toFixed(4);
+    
+    let { muted, volume } = this.props.player;
+
+    if(muted) {
+      muted = false;
+    }
+
+    volume = (+e.target.value).toFixed(4);
   }
 
   _handleDragging() {
@@ -15,11 +21,15 @@ class Volume {
 
   _handleDrag(e) {
 
-    const { player } = this.props;
+    let { muted, volume } = this.props.player;
 
     if(this.dragging) {
 
-      player.volume = (+e.target.value).toFixed(4);
+      if(muted) {
+        muted = false;
+      }
+
+      volume = (+e.target.value).toFixed(4);
 
       if(e.type === 'mouseup') {
         this.dragging = false;

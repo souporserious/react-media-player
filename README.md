@@ -5,7 +5,7 @@ React media container component to help build video & audio players.
 ## TODOS
 
 - [x] Fix Progress component
-- [] Fix Volume getting locked up when player is muted
+- [x] Fix Volume getting locked up when player is muted
 - [] Playlist feature
 - [] Show time preview when hovering scrubber
 - [] Show thumbnail preview when hovering scrubber
