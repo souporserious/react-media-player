@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class PlayPause {
+class PlayPause extends Component {
 
   shouldComponentUpdate(nextProps) {
     return this.props.playing !== nextProps.playing;
@@ -12,7 +12,7 @@ class PlayPause {
 
   render() {
     return(
-      <button onClick={::this._handlePlayPause}>
+      <button type="button" onClick={::this._handlePlayPause}>
         {this.props.playing ? 'Pause' : 'Play'}
       </button>
     );

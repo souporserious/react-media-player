@@ -1,9 +1,6 @@
 import React, {Component} from 'react';
 
-// we'll do this later
-// http://www.sitepoint.com/use-html5-full-screen-api/
-
-class Fullscreen {
+class Fullscreen extends Component {
 
   shouldComponentUpdate(nextProps) {
     return this.props.fullscreen !== nextProps.fullscreen;
@@ -15,7 +12,7 @@ class Fullscreen {
 
   render() {
     return(
-      <button onClick={::this._handleFullscreen}>
+      <button type="button" onClick={::this._handleFullscreen}>
         {this.props.fullscreen ? 'Exit Fullscreen' : 'Fullscreen'}
       </button>
     );

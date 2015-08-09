@@ -160,9 +160,8 @@ class MediaContainer extends Component {
     let progress = 0;
 
     // if we've reached full progress we don't need to update anymore
-    // not sure if we'll need it if something happens to connection though
     if(this.state.progress >= 1) {
-      // unbind event here
+      // unbind event here ?
       return;
     }
       
@@ -205,7 +204,7 @@ class MediaContainer extends Component {
     const childProps = this.state;
     
     if(typeof children !== 'function') {
-      console.warn('MediaContainer: Please provide a function');
+      console.warn('MediaContainer: Media Container expects a function');
       return null;
     }
 
