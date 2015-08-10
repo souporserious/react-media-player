@@ -45,6 +45,14 @@ class MediaContainer extends Component {
     }
   }
 
+  stop() {
+
+    const { player } = this.state;
+    
+    player.pause();
+    player.currentTime = 0;
+  }
+
   muteUnmute() {
 
     const { player } = this.state;
@@ -84,6 +92,35 @@ class MediaContainer extends Component {
         d.msExitFullscreen();
       }
     }
+  }
+
+  load(src) {
+
+    // function setupURL(id, ext) {
+    //   return urlBase + id + "." + ext;
+    // }
+
+    const { player } = this.state;
+
+    // pause player
+    player.pause();
+
+    // test support
+    // !!!! need to check canPlayType on init
+    if(player.canPlayType('video/mp4')) {
+      player.setAttribute('src', src);
+      //player.setAttribute('src', setupURL(src, 'mp4'));
+    } else if(player.canPlayType('video/webm')) {
+      player.setAttribute('src', setupURL(src, 'webm'));
+    } else if(player.canPlayType('video/ogg')) {
+      player.setAttribute('src', setupURL(src, 'ogv'));
+    }
+
+    // load new media
+    player.load();
+
+    // play new media
+    player.play();
   }
 
   // Private Methods

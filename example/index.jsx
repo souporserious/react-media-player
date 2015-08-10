@@ -3,16 +3,16 @@ import { MediaContainer, PlayPause, Progress, SeekBar, MuteUnmute, Volume, Fulls
 
 import './main.scss';
 
-// Demo Video Links
-// http://demosthenes.info/assets/videos/mountain.mp4
-// http://www.w3schools.com/html/movie.mp4
-// https://pdlvimeocdn-a.akamaihd.net/47099/675/231401431.mp4?token2=1439167198_ea59cfaccb25a955c76114630f028b2d&aksessionid=955e6d7a9e35065288e1fad71df1b989fdad13dc1439152798
-// http://simplypx.com/images/Prometheus.mp4
-// http://jelmerdemaat.nl/online-demos/conexus/video/small.mp4
-// http://shapeshed.com/examples/HTML5-video-element/video/320x240.m4v
-// http://html5demos.com/assets/dizzy.mp4
-// http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4
-// https://vid4u.org/ninja/5/dev/assets/madmax-intro.mp4
+const mediaLinks = [
+  {src: 'http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4', label: 'Big Buck Bunny'},
+  {src: 'https://vid4u.org/ninja/5/dev/assets/madmax-intro.mp4', label: 'Mad Max Intro'},
+  {src: 'http://demosthenes.info/assets/videos/mountain.mp4', label: 'Mountain'},
+  {src: 'http://www.w3schools.com/html/movie.mp4', label: 'Bear'},
+  {src: 'http://simplypx.com/images/Prometheus.mp4', label: 'Prometheus'},
+  {src: 'http://jelmerdemaat.nl/online-demos/conexus/video/small.mp4', label: 'Lego Robot'},
+  {src: 'http://shapeshed.com/examples/HTML5-video-element/video/320x240.m4v', label: 'iPod Help'},
+  {src: 'http://html5demos.com/assets/dizzy.mp4', label: 'Dizzy Kitty'},
+];
 
 class App extends Component {
 
@@ -26,6 +26,10 @@ class App extends Component {
 
   _handleFullscreen() {
     this.refs['media-player'].toggleFullscreen();
+  }
+
+  _loadMedia(src) {
+    this.refs['media-player'].load(src);
   }
 
   render() {
@@ -75,6 +79,20 @@ class App extends Component {
                   onFullscreen={::this._handleFullscreen}
                 />
               </div>
+
+              <aside className="playlist">
+                <h3 className="playlist__title">Playlist</h3>
+                <ul className="playlist__links">
+                  {mediaLinks.map(link =>
+                    <li
+                      className="playlist__link"
+                      onClick={this._loadMedia.bind(this, link.src)}
+                    >
+                      {link.label}
+                    </li>
+                  )}
+                </ul>
+              </aside>
             </div>
           );
         }}
