@@ -12,6 +12,7 @@ import './main.scss';
 // http://shapeshed.com/examples/HTML5-video-element/video/320x240.m4v
 // http://html5demos.com/assets/dizzy.mp4
 // http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4
+// https://vid4u.org/ninja/5/dev/assets/madmax-intro.mp4
 
 class App extends Component {
 
@@ -33,7 +34,7 @@ class App extends Component {
         {props => {
 
           const { player, playing, duration, current, progress, muted, volume, fullscreen } = props;
-          
+
           return(
             <div className="media__container">
               <div

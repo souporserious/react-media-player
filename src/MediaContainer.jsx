@@ -102,10 +102,10 @@ class MediaContainer extends Component {
 
     player.addEventListener('loadedmetadata', ::this._handleLoadedMetaData);
 
-    player.addEventListener('loadeddata', () =>
-      // make sure video is ready before trying to check buffer progress
-      player.addEventListener('progress', ::this._handleProgress)
-    );
+    // player.addEventListener('loadeddata', () =>
+    //   // make sure video is ready before trying to check buffer progress
+    //   player.addEventListener('progress', ::this._handleProgress)
+    // );
 
     player.addEventListener('timeupdate', ::this._handleTimeUpdate);
 
@@ -148,7 +148,7 @@ class MediaContainer extends Component {
 
     this.setState({
       duration: duration,
-      progress: buffered.end(0) / duration
+      //progress: buffered.end(0) / duration
     });
   }
 

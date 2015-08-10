@@ -6,6 +6,7 @@ React media container component to help build video & audio players.
 
 - [x] Fix Progress component
 - [x] Fix Volume getting locked up when player is muted
+- [] SeekBar crashes Safari
 - [] Playlist feature
 - [] Show time preview when hovering scrubber
 - [] Show thumbnail preview when hovering scrubber
