@@ -1,6 +1,54 @@
 import React, { Component, findDOMNode } from 'react';
 
+// somehow load events in the exact same way from all apis
+// HTML5, Youtube, Vimeo
+//import HTML5_API from './apis/HTML5';
+//loadEvents('HTML5');
 
+let youtubeAPILoaded = false;
+
+// load youtube api asynchronously
+function loadYoutubeAPI() {
+    
+  // create script to be injected
+  let api = document.createElement('script');
+
+  // load async
+  api.async = true;
+
+  // set source to youtube's api
+  api.src = 'http://www.youtube.com/player_api';
+
+  // append script to document head
+  document.head.appendChild(api);
+
+  // update flag
+  youtubeAPILoaded = true;
+}
+
+function getYoutubeID(url) {
+  
+  let regExp = /.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#\&\?]*).*/;
+  let match = url.match(regExp);
+  
+  if(match && match[1].length == 11) {
+    return match[1];
+  } else {
+    throw 'Invalid Youtube ID provided';
+  }
+}
+
+function getVendor(src) {
+  if(src.indexOf('youtube') > -1) {
+    return 'youtube';
+  }
+  else if(src.indexOf('vimeo') > -1) {
+    return 'vimeo';
+  }
+  else {
+    return 'html5';
+  }
+}
 
 export const MediaContainer = (Player, type = 'video') =>
   
@@ -19,6 +67,10 @@ export const MediaContainer = (Player, type = 'video') =>
       fullscreen: false
     }
 
+    src = null
+    vendor = null
+    vendorID = null
+
     componentDidMount() {
       this._setPlayer(this._bindEvents);
     }
@@ -31,12 +83,24 @@ export const MediaContainer = (Player, type = 'video') =>
     // Public Methods
     playPause() {
 
-      const { player } = this.state;
+      const { player, playing } = this.state;
 
-      if(player.paused) {
-        player.play();
+      if(!playing) {
+        switch(this.vendor) {
+          case 'youtube':
+            player.playVideo();
+            break;
+          default:
+            player.play();
+        }
       } else {
-        player.pause();
+        switch(this.vendor) {
+          case 'youtube':
+            player.pauseVideo();
+            break;
+          default:
+            player.pause();
+        }
       }
     }
 
@@ -50,9 +114,9 @@ export const MediaContainer = (Player, type = 'video') =>
 
     muteUnmute() {
 
-      const { player } = this.state;
+      const { player, muted } = this.state;
 
-      if(player.muted === false) {
+      if(muted === false) {
         player.muted = true;
       } else {
         player.muted = false;
@@ -118,13 +182,49 @@ export const MediaContainer = (Player, type = 'video') =>
       player.play();
     }
 
+    youtubeHandler() {
+      // load the api if it hasn't been yet
+      if(!youtubeAPILoaded)
+        loadYoutubeAPI();
+
+      // create player when API is ready
+      window.onYouTubeIframeAPIReady = () =>
+        this.createYoutubePlayer();
+    }
+
+    // use youtube api to create player
+    createYoutubePlayer() {
+      const videoId = getYoutubeID(this.src);
+      const player = new YT.Player(this.state.player, {
+        videoId,
+        playerVars: {
+          controls: 0,
+          showinfo: 0,
+          modestbranding: 1
+        },
+        events: {
+          onStateChange: (e) => {
+            this.setState({
+              loading: e.data === 3 ? true : false,
+              playing: e.data === 1 ? true : false
+            });
+          }
+        }
+      });
+      this.setState({player});
+    }
+
     // Private Methods
     _setPlayer(cb) {
       
       const component = findDOMNode(this);
+      const player = component.querySelector(type);
+
+      this.src = player.getAttribute('src');
+      this.vendor = getVendor(this.src);
 
       this.setState({
-        player: component.querySelector(type)
+        player: player
       }, cb);
     }
 
@@ -132,12 +232,24 @@ export const MediaContainer = (Player, type = 'video') =>
 
       const { player } = this.state;
 
+      // determine how to handle video
+      switch(this.vendor) {
+        case 'youtube':
+          this.youtubeHandler();
+          break;
+        default:
+      }
+
       player.addEventListener('loadedmetadata', ::this._handleLoadedMetaData);
 
       // player.addEventListener('loadeddata', () =>
       //   // make sure video is ready before trying to check buffer progress
       //   player.addEventListener('progress', ::this._handleProgress)
       // );
+
+      // player.addEventListener('onStateChange', (e) => {
+      //   alert();
+      // });
 
       player.addEventListener('timeupdate', ::this._handleTimeUpdate);
 
