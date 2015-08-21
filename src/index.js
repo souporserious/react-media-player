@@ -1,9 +1,12 @@
-import MediaContainer from './MediaContainer';
-import PlayPause from './controls/PlayPause';
-import Progress from './controls/Progress';
-import SeekBar from './controls/SeekBar';
-import MuteUnmute from './controls/MuteUnmute';
-import Volume from './controls/Volume';
-import Fullscreen from './controls/Fullscreen';
+export { MediaContainer } from './MediaContainer'; 
+export PlayPause from './controls/PlayPause';
+export Progress from './controls/Progress';
+export SeekBar from './controls/SeekBar';
+export MuteUnmute from './controls/MuteUnmute';
+export Volume from './controls/Volume';
+export Fullscreen from './controls/Fullscreen';
+import formatTime from './formatTime';
 
-export { MediaContainer, PlayPause, Progress, SeekBar, MuteUnmute, Volume, Fullscreen };
+export const utils = {
+  formatTime
+}
