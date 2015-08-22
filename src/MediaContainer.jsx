@@ -1,10 +1,5 @@
 import React, { Component, findDOMNode } from 'react';
 
-// somehow load events in the exact same way from all apis
-// HTML5, Youtube, Vimeo
-//import HTML5_API from './apis/HTML5';
-//loadEvents('HTML5');
-
 let youtubeAPILoaded = false;
 
 // load youtube api asynchronously
@@ -41,11 +36,9 @@ function getYoutubeID(url) {
 function getVendor(src) {
   if(src.indexOf('youtube') > -1) {
     return 'youtube';
-  }
-  else if(src.indexOf('vimeo') > -1) {
+  } else if(src.indexOf('vimeo') > -1) {
     return 'vimeo';
-  }
-  else {
+  } else {
     return 'html5';
   }
 }
@@ -73,7 +66,7 @@ export const MediaContainer = (Player, type = 'video') =>
     _lastVolume = 0
 
     componentDidMount() {
-      this._setPlayer(this._init);
+      this._setPlayer(this._setupApis);
     }
 
     componentWillUnmount() {
@@ -82,30 +75,44 @@ export const MediaContainer = (Player, type = 'video') =>
     }
 
     // Public Methods
+    play() {
+
+      const { player, vendor } = this.state;
+
+      switch(vendor) {
+        case 'youtube':
+          player.playVideo();
+          this._currentTimeID = requestAnimationFrame(
+            this._getCurrentTime.bind(this)
+          );
+          break;
+        default:
+          player.play();
+      }
+    }
+
+    pause() {
+
+      const { player, vendor } = this.state;
+
+      switch(vendor) {
+        case 'youtube':
+          player.pauseVideo();
+          cancelAnimationFrame(this._currentTimeID);
+          break;
+        default:
+          player.pause();
+      }
+    }
+
     playPause() {
 
-      const { player, vendor, playing } = this.state;
+      const { playing } = this.state;
 
       if(!playing) {
-        switch(vendor) {
-          case 'youtube':
-            player.playVideo();
-            this._currentTimeID = requestAnimationFrame(
-              this._setCurrentTime.bind(this)
-            );
-            break;
-          default:
-            player.play();
-        }
+        this.play();
       } else {
-        switch(vendor) {
-          case 'youtube':
-            player.pauseVideo();
-            cancelAnimationFrame(this._currentTimeID);
-            break;
-          default:
-            player.pause();
-        }
+        this.pause();
       }
     }
 
@@ -115,6 +122,19 @@ export const MediaContainer = (Player, type = 'video') =>
       
       player.pause();
       player.currentTime = 0;
+    }
+
+    setCurrentTime(current) {
+      
+      const { player, vendor } = this.state;
+
+      if(vendor === 'youtube') {
+        player.seekTo(current);
+      } else {
+        player.currentTime = current;
+      }
+
+      this.setState({current});
     }
 
     muteUnmute() {
@@ -195,27 +215,28 @@ export const MediaContainer = (Player, type = 'video') =>
 
     toggleFullscreen() {
 
-      const { player, fullscreen } = this.state;
+      if(!this.state.fullscreen) {
 
-      if(!fullscreen) {
-        if(player.requestFullscreen) {
-          player.requestFullscreen();
-        } else if(player.webkitRequestFullscreen) {
-          player.webkitRequestFullscreen();
-        } else if(player.mozRequestFullScreen) {
-          player.mozRequestFullScreen();
-        } else if(player.msRequestFullscreen) {
-          player.msRequestFullscreen();
+        const n = this.state.playerNode;
+
+        if(n.requestFullscreen) {
+          n.requestFullscreen();
+        } else if(n.webkitRequestFullscreen) {
+          n.webkitRequestFullscreen();
+        } else if(n.mozRequestFullScreen) {
+          n.mozRequestFullScreen();
+        } else if(n.msRequestFullscreen) {
+          n.msRequestFullscreen();
         }
       } else {
 
         const d = document;
 
-        if(d.cancelFullScreen) {
-          d.cancelFullScreen();
-        } else if (d.webkitCancelFullScreen) {
-          d.webkitCancelFullScreen();
-        } else if (d.mozCancelFullScreen) {
+        if(d.exitFullscreen) {
+          d.exitFullscreen();
+        } else if(d.webkitExitFullscreen) {
+          d.webkitExitFullscreen();
+        } else if(d.mozCancelFullScreen) {
           d.mozCancelFullScreen();
         } else if(d.msExitFullscreen) {
           d.msExitFullscreen();
@@ -274,7 +295,7 @@ export const MediaContainer = (Player, type = 'video') =>
         }
       });
       this.setState({player}, () => {
-        this._bindEvents();
+        this._init();
       });
     }
 
@@ -283,16 +304,19 @@ export const MediaContainer = (Player, type = 'video') =>
       
       const component = findDOMNode(this);
       const player = component.querySelector(type);
+      let vendor;
 
       this._src = player.getAttribute('src');
 
+      vendor = getVendor(this._src);
+
       this.setState({
-        player: player,
-        vendor: getVendor(this._src)
+        player,
+        vendor
       }, cb);
     }
 
-    _init() {
+    _setupApis() {
 
       const { vendor } = this.state;
 
@@ -302,12 +326,30 @@ export const MediaContainer = (Player, type = 'video') =>
           this.youtubeHandler();
           break;
         default:
-          this._bindEvents();
+          this._init();
       }
     }
 
+    _init() {
+
+      const { player, vendor } = this.state;
+      let playerNode;
+
+      switch(vendor) {
+        case 'youtube':
+          playerNode = player.getIframe();
+          break;
+        default:
+          playerNode = player;
+      }
+      
+      this.setState({playerNode}, () => {
+        this._bindEvents();
+      });
+    }
+
     // used to get the current time of Youtube videos
-    _setCurrentTime() {
+    _getCurrentTime() {
 
       const { player } = this.state;
 
@@ -316,13 +358,13 @@ export const MediaContainer = (Player, type = 'video') =>
       });
 
       this._currentTimeID = requestAnimationFrame(
-        this._setCurrentTime.bind(this)
+        this._getCurrentTime.bind(this)
       );
     }
 
     _bindEvents() {
 
-      const { player, vendor } = this.state;
+      const { player, playerNode, vendor } = this.state;
 
       if(vendor === 'youtube') {
 
@@ -349,10 +391,6 @@ export const MediaContainer = (Player, type = 'video') =>
 
         player.addEventListener('timeupdate', ::this._handleTimeUpdate);
 
-        ['fullscreenchange', 'webkitfullscreenchange', 'mozfullscreenchange', 'msfullscreenchange'].forEach(e =>
-          player.addEventListener(e, ::this._handleFullscreenChange)
-        );
-
         player.addEventListener('play', () =>
           this.setState({playing: true})
         );
@@ -365,6 +403,10 @@ export const MediaContainer = (Player, type = 'video') =>
           this.setState({playing: false})
         );
       }
+
+      ['fullscreenchange', 'webkitfullscreenchange', 'mozfullscreenchange', 'MSFullscreenChange'].forEach(e =>
+        playerNode.addEventListener(e, ::this._handleFullscreenChange)
+      );
     }
 
     _handleLoadedMetaData(e) {
@@ -418,18 +460,23 @@ export const MediaContainer = (Player, type = 'video') =>
     _handleFullscreenChange() {
 
       const d = document;
+      const fullscreen = d.fullscreenElement ||
+                         d.webkitFullscreenElement ||
+                         d.mozFullScreenElement ||
+                         d.msFullscreenElement;
 
-      this.setState({
-        fullscreen: d.fullScreen || d.webkitIsFullScreen || d.mozFullScreen || d.msFullscreenElement
-      });
+      this.setState({fullscreen});
     }
 
     render() {
       return(
         <Player
           {...this.state}
+          play={::this.play}
+          pause={::this.pause}
           playPause={::this.playPause}
           stop={::this.stop}
+          setCurrentTime={::this.setCurrentTime}
           muteUnmute={::this.muteUnmute}
           setVolume={::this.setVolume}
           toggleFullscreen={::this.toggleFullscreen}

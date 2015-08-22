@@ -19,8 +19,20 @@ const mediaLinks = [
 
 class App extends Component {
 
+  _handlePlay() {
+    this.props.play();
+  }
+
+  _handlePause() {
+    this.props.pause();
+  }
+
   _handlePlayPause() {
     this.props.playPause();
+  }
+
+  _handleCurrentTimeChange(time) {
+    this.props.setCurrentTime(time);
   }
 
   _handleMuteUnmute() {
@@ -65,9 +77,11 @@ class App extends Component {
             progress={progress}
           />
           <SeekBar
-            player={player}
             duration={duration}
             current={current}
+            play={::this._handlePlay}
+            pause={::this._handlePause}
+            onCurrentTimeChange={::this._handleCurrentTimeChange}
           />
           {formatTime(duration)}
           <MuteUnmute

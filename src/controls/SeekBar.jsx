@@ -3,16 +3,15 @@ import React, { Component } from 'react';
 class SeekBar extends Component {
 
   _handleChange(e) {
-    const { player } = this.props;
-    player.currentTime = +e.target.value;
+    this.props.onCurrentTimeChange(+e.target.value);
   }
 
   _handleMouseDown() {
-    this.props.player.pause();
+    this.props.pause();
   }
 
   _handleMouseUp() {
-    this.props.player.play();
+    this.props.play();
   }
 
   render() {
