@@ -27,6 +27,10 @@ class App extends Component {
     this.props.muteUnmute();
   }
 
+  _handleVolumeChange(volume) {
+    this.props.setVolume(volume);
+  }
+
   _handleFullscreen() {
     this.props.toggleFullscreen();
   }
@@ -37,7 +41,7 @@ class App extends Component {
 
   render() {
 
-    const { player, playing, duration, current, progress, muted, volume, fullscreen } = this.props;
+    const { player, vendor, playing, duration, current, progress, muted, volume, fullscreen } = this.props;
 
     return(
       <div className="media__container">
@@ -71,8 +75,8 @@ class App extends Component {
             onMuteUnmute={::this._handleMuteUnmute}
           />
           <Volume
-            player={player}
             volume={volume}
+            onVolumeChange={::this._handleVolumeChange}
           />
           <Fullscreen
             fullscreen={fullscreen}

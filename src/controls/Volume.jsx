@@ -8,14 +8,7 @@ class Volume extends Component {
   }
 
   _handleChange(e) {
-    
-    const { player } = this.props;
-
-    if(player.muted) {
-      player.muted = false;
-    }
-
-    player.volume = (+e.target.value).toFixed(4);
+    this.props.onVolumeChange((+e.target.value).toFixed(4));
   }
 
   render() {

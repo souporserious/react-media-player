@@ -58,6 +58,7 @@ export const MediaContainer = (Player, type = 'video') =>
 
     state = {
       player: null,
+      vendor: null,
       playing: false,
       duration: 0,
       current: 0,
@@ -67,12 +68,12 @@ export const MediaContainer = (Player, type = 'video') =>
       fullscreen: false
     }
 
-    src = null
-    vendor = null
-    vendorID = null
+    _src = null
+    _currentTimeID = null
+    _lastVolume = 0
 
     componentDidMount() {
-      this._setPlayer(this._bindEvents);
+      this._setPlayer(this._init);
     }
 
     componentWillUnmount() {
@@ -83,20 +84,24 @@ export const MediaContainer = (Player, type = 'video') =>
     // Public Methods
     playPause() {
 
-      const { player, playing } = this.state;
+      const { player, vendor, playing } = this.state;
 
       if(!playing) {
-        switch(this.vendor) {
+        switch(vendor) {
           case 'youtube':
             player.playVideo();
+            this._currentTimeID = requestAnimationFrame(
+              this._setCurrentTime.bind(this)
+            );
             break;
           default:
             player.play();
         }
       } else {
-        switch(this.vendor) {
+        switch(vendor) {
           case 'youtube':
             player.pauseVideo();
+            cancelAnimationFrame(this._currentTimeID);
             break;
           default:
             player.pause();
@@ -114,13 +119,78 @@ export const MediaContainer = (Player, type = 'video') =>
 
     muteUnmute() {
 
-      const { player, muted } = this.state;
+      const { player, vendor, muted, volume } = this.state;
 
-      if(muted === false) {
-        player.muted = true;
+      if(!muted) {
+        
+        switch(vendor) {
+          case 'youtube':
+            player.mute();
+            break;
+          default:
+            player.muted = true;
+        }
+
+        // store volume for un-mute
+        this._lastVolume = volume;
+
+        // if muted the volume should be set to 0
+        this.setVolume(0);
+
+        this.setState({muted: true});
+
       } else {
-        player.muted = false;
+
+        switch(vendor) {
+          case 'youtube':
+            player.unMute();
+            break;
+          default:
+            player.muted = false;
+        }
+
+        // if unmuted set to last volume
+        this.setVolume(this._lastVolume);
+
+        this.setState({muted: false});
       }
+    }
+
+    setVolume(volume) {
+
+      const { player, vendor } = this.state;
+      let muted = false;
+
+      if(volume <= 0) {
+        muted = true;
+      }
+
+      if(vendor === 'youtube') {
+        player.setVolume(volume * 100);
+      } else {
+        player.volume = volume;
+      }
+
+      this.setState({volume, muted}, () => {
+        if(muted) {
+          switch(vendor) {
+            case 'youtube':
+              player.mute();
+              break;
+            default:
+              player.muted = true;
+          }
+        } else {
+
+          switch(vendor) {
+            case 'youtube':
+              player.unMute();
+              break;
+            default:
+              player.muted = false;
+          }
+        }
+      });
     }
 
     toggleFullscreen() {
@@ -194,24 +264,18 @@ export const MediaContainer = (Player, type = 'video') =>
 
     // use youtube api to create player
     createYoutubePlayer() {
-      const videoId = getYoutubeID(this.src);
+      const videoId = getYoutubeID(this._src);
       const player = new YT.Player(this.state.player, {
         videoId,
         playerVars: {
           controls: 0,
           showinfo: 0,
           modestbranding: 1
-        },
-        events: {
-          onStateChange: (e) => {
-            this.setState({
-              loading: e.data === 3 ? true : false,
-              playing: e.data === 1 ? true : false
-            });
-          }
         }
       });
-      this.setState({player});
+      this.setState({player}, () => {
+        this._bindEvents();
+      });
     }
 
     // Private Methods
@@ -220,69 +284,87 @@ export const MediaContainer = (Player, type = 'video') =>
       const component = findDOMNode(this);
       const player = component.querySelector(type);
 
-      this.src = player.getAttribute('src');
-      this.vendor = getVendor(this.src);
+      this._src = player.getAttribute('src');
 
       this.setState({
-        player: player
+        player: player,
+        vendor: getVendor(this._src)
       }, cb);
     }
 
-    _bindEvents() {
+    _init() {
 
-      const { player } = this.state;
+      const { vendor } = this.state;
 
       // determine how to handle video
-      switch(this.vendor) {
+      switch(vendor) {
         case 'youtube':
           this.youtubeHandler();
           break;
         default:
+          this._bindEvents();
       }
+    }
 
-      player.addEventListener('loadedmetadata', ::this._handleLoadedMetaData);
+    // used to get the current time of Youtube videos
+    _setCurrentTime() {
 
-      // player.addEventListener('loadeddata', () =>
-      //   // make sure video is ready before trying to check buffer progress
-      //   player.addEventListener('progress', ::this._handleProgress)
-      // );
+      const { player } = this.state;
 
-      // player.addEventListener('onStateChange', (e) => {
-      //   alert();
-      // });
-
-      player.addEventListener('timeupdate', ::this._handleTimeUpdate);
-
-      ['fullscreenchange', 'webkitfullscreenchange', 'mozfullscreenchange', 'msfullscreenchange'].forEach(e =>
-        player.addEventListener(e, ::this._handleFullscreenChange)
-      );
-
-      player.addEventListener('play', () =>
-        this.setState({playing: true})
-      );
-
-      player.addEventListener('pause', () =>
-        this.setState({playing: false})
-      );
-
-      player.addEventListener('volumechange', () => {
-
-        const { muted } = player;
-        let volume = 0;
-
-        if(!muted) {
-          volume = player.volume;
-        }
-
-        this.setState({
-          muted: muted,
-          volume: volume
-        });
+      this.setState({
+        current: player.getCurrentTime()
       });
-      
-      player.addEventListener('ended', () =>
-        this.setState({playing: false})
+
+      this._currentTimeID = requestAnimationFrame(
+        this._setCurrentTime.bind(this)
       );
+    }
+
+    _bindEvents() {
+
+      const { player, vendor } = this.state;
+
+      if(vendor === 'youtube') {
+
+        player.addEventListener('onStateChange', (e) => {
+          this.setState({
+            loading: e.data === 3 ? true : false,
+            playing: e.data === 1 ? true : false
+          });
+        });
+
+        player.addEventListener('onReady', () => {
+          this.setState({
+            duration: player.getDuration()
+          });
+        });
+      } else {
+
+        player.addEventListener('loadedmetadata', ::this._handleLoadedMetaData);
+
+        // player.addEventListener('loadeddata', () =>
+        //   // make sure video is ready before trying to check buffer progress
+        //   player.addEventListener('progress', ::this._handleProgress)
+        // );
+
+        player.addEventListener('timeupdate', ::this._handleTimeUpdate);
+
+        ['fullscreenchange', 'webkitfullscreenchange', 'mozfullscreenchange', 'msfullscreenchange'].forEach(e =>
+          player.addEventListener(e, ::this._handleFullscreenChange)
+        );
+
+        player.addEventListener('play', () =>
+          this.setState({playing: true})
+        );
+
+        player.addEventListener('pause', () =>
+          this.setState({playing: false})
+        );
+        
+        player.addEventListener('ended', () =>
+          this.setState({playing: false})
+        );
+      }
     }
 
     _handleLoadedMetaData(e) {
@@ -349,6 +431,7 @@ export const MediaContainer = (Player, type = 'video') =>
           playPause={::this.playPause}
           stop={::this.stop}
           muteUnmute={::this.muteUnmute}
+          setVolume={::this.setVolume}
           toggleFullscreen={::this.toggleFullscreen}
           load={::this.load}
         />
