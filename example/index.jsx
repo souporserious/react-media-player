@@ -15,6 +15,8 @@ const mediaLinks = [
   {src: 'http://jelmerdemaat.nl/online-demos/conexus/video/small.mp4', label: 'Lego Robot'},
   {src: 'http://shapeshed.com/examples/HTML5-video-element/video/320x240.m4v', label: 'iPod Help'},
   {src: 'http://html5demos.com/assets/dizzy.mp4', label: 'Dizzy Kitty'},
+  {src: 'http://www.youtube.com/embed/h3YVKTxTOgU', label: 'Brand New'},
+  {src: 'http://www.noiseaddicts.com/samples_1w72b820/3890.mp3', label: 'Noise Addicts'}
 ];
 
 class App extends Component {
@@ -55,6 +57,11 @@ class App extends Component {
 
     const { player, vendor, playing, duration, current, progress, muted, volume, fullscreen } = this.props;
 
+    // maybe a component gets passed?
+    // that loads either an audio or video tag
+    // so something like <Media src="" />
+    // then it could read wheter it was a video/auido url
+
     return(
       <div className="media__container">
         <div
@@ -62,7 +69,7 @@ class App extends Component {
           onClick={::this._handlePlayPause}
         >
           <video
-            src="http://www.youtube.com/embed/h3YVKTxTOgU"
+            src={mediaLinks[0].src}
             controls={false}
             preload={true}
           />

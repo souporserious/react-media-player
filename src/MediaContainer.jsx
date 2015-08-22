@@ -62,6 +62,8 @@ export const MediaContainer = (Player, type = 'video') =>
     }
 
     _src = null
+    _currentProgressID = null
+    _currentYTProgressID = null
     _currentTimeID = null
     _lastVolume = 0
 
@@ -342,13 +344,47 @@ export const MediaContainer = (Player, type = 'video') =>
         default:
           playerNode = player;
       }
-      
+
       this.setState({playerNode}, () => {
         this._bindEvents();
       });
     }
 
-    // used to get the current time of Youtube videos
+    // get the current progress of HTML5 videos
+    _getCurrentProgress() {
+      
+      const { player } = this.state;
+      let progress = 0;
+
+      if(player.buffered.length > 0) {
+        progress = player.buffered.end(0) / player.duration;
+      }
+
+      this.setState({progress});
+
+      if(progress < 1) {
+        this._currentProgressID = requestAnimationFrame(
+          this._getCurrentProgress.bind(this)
+        );
+      }
+    }
+
+    // get the current progress of Youtube videos
+    _getCurrentYTProgress() {
+      
+      const { player } = this.state;
+      const progress = player.getVideoLoadedFraction();
+
+      this.setState({progress});
+
+      if(progress < 1) {
+        this._currentYTProgressID = requestAnimationFrame(
+          this._getCurrentYTProgress.bind(this)
+        );
+      }
+    }
+
+    // get the current time of Youtube videos
     _getCurrentTime() {
 
       const { player } = this.state;
@@ -376,18 +412,24 @@ export const MediaContainer = (Player, type = 'video') =>
         });
 
         player.addEventListener('onReady', () => {
+          this._currentYTProgressID = requestAnimationFrame(
+            this._getCurrentYTProgress.bind(this)
+          );
           this.setState({
             duration: player.getDuration()
           });
         });
+
       } else {
 
         player.addEventListener('loadedmetadata', ::this._handleLoadedMetaData);
 
-        // player.addEventListener('loadeddata', () =>
-        //   // make sure video is ready before trying to check buffer progress
-        //   player.addEventListener('progress', ::this._handleProgress)
-        // );
+        player.addEventListener('canplay', () => {
+          // http://stackoverflow.com/questions/9313697/html5-video-using-the-progress-event-with-dynamically-loaded-videos
+          this._currentProgressID = requestAnimationFrame(
+            this._getCurrentProgress.bind(this)
+          );
+        });
 
         player.addEventListener('timeupdate', ::this._handleTimeUpdate);
 
@@ -417,33 +459,6 @@ export const MediaContainer = (Player, type = 'video') =>
       this.setState({
         duration: duration,
         //progress: buffered.end(0) / duration
-      });
-    }
-
-    _handleProgress(e) {
-
-      const { player } = this.state;
-      const { buffered, currentTime, duration } = player;
-
-      let progress = 0;
-
-      // if we've reached full progress we don't need to update anymore
-      if(this.state.progress >= 1) {
-        // unbind event here ?
-        return;
-      }
-        
-      let range = 0;
-
-      while(!(buffered.start(range) < currentTime &&
-            currentTime < buffered.end(range))) {
-        range += 1;
-      }
-
-      progress = (buffered.end(range) / duration) - (buffered.start(range) / duration)
-
-      this.setState({
-        progress: progress
       });
     }
 
