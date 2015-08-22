@@ -1,9 +1,13 @@
 import React, { Component, findDOMNode } from 'react';
 
-let youtubeAPILoaded = false;
+let apiFlags = {
+  youtube: false,
+  vimeo: false
+};
 
-// load youtube api asynchronously
-function loadYoutubeAPI() {
+// load api asynchronously
+// probably need to provide a callback for when it's actually loaded
+function loadAPI(src, vendor) {
     
   // create script to be injected
   let api = document.createElement('script');
@@ -12,13 +16,13 @@ function loadYoutubeAPI() {
   api.async = true;
 
   // set source to youtube's api
-  api.src = 'http://www.youtube.com/player_api';
+  api.src = src;
 
   // append script to document head
   document.head.appendChild(api);
 
   // update flag
-  youtubeAPILoaded = true;
+  apiFlags[vendor] = true;
 }
 
 function getYoutubeID(url) {
@@ -30,6 +34,18 @@ function getYoutubeID(url) {
     return match[1];
   } else {
     throw 'Invalid Youtube ID provided';
+  }
+}
+
+function getVimeoID(url) {
+
+  let regExp = /^.*(vimeo\.com\/)((channels\/[A-z]+\/)|(groups\/[A-z]+\/videos\/))?([0-9]+)/;
+  let match = url.match(regExp);
+
+  if(match) {
+    return match[5];
+  } else {
+    throw 'Invalid Vimeo ID provided';
   }
 }
 
@@ -68,7 +84,7 @@ export const MediaContainer = (Player, type = 'video') =>
     _lastVolume = 0
 
     componentDidMount() {
-      this._setPlayer(this._setupApis);
+      this._setPlayer(this._setupAPI);
     }
 
     componentWillUnmount() {
@@ -88,6 +104,9 @@ export const MediaContainer = (Player, type = 'video') =>
             this._getCurrentTime.bind(this)
           );
           break;
+        case 'vimeo':
+          player.api('play');
+          break;
         default:
           player.play();
       }
@@ -101,6 +120,9 @@ export const MediaContainer = (Player, type = 'video') =>
         case 'youtube':
           player.pauseVideo();
           cancelAnimationFrame(this._currentTimeID);
+          break;
+        case 'vimeo':
+          player.api('pause');
           break;
         default:
           player.pause();
@@ -132,6 +154,8 @@ export const MediaContainer = (Player, type = 'video') =>
 
       if(vendor === 'youtube') {
         player.seekTo(current);
+      } else if(vendor === 'vimeo') {
+        player.api('seekTo', current);
       } else {
         player.currentTime = current;
       }
@@ -189,6 +213,8 @@ export const MediaContainer = (Player, type = 'video') =>
 
       if(vendor === 'youtube') {
         player.setVolume(volume * 100);
+      } else if(vendor === 'vimeo') {
+        player.api('setVolume', volume);
       } else {
         player.volume = volume;
       }
@@ -275,18 +301,23 @@ export const MediaContainer = (Player, type = 'video') =>
       player.play();
     }
 
-    youtubeHandler() {
+    // Private Methods
+    _setupYoutubeAPI() {
+
+      const vendor = 'youtube';
+      const api = 'http://www.youtube.com/player_api';
+
       // load the api if it hasn't been yet
-      if(!youtubeAPILoaded)
-        loadYoutubeAPI();
+      if(!apiFlags[vendor])
+        loadAPI(api, vendor);
 
       // create player when API is ready
       window.onYouTubeIframeAPIReady = () =>
-        this.createYoutubePlayer();
+        this._createYoutubePlayer();
     }
 
     // use youtube api to create player
-    createYoutubePlayer() {
+    _createYoutubePlayer() {
       const videoId = getYoutubeID(this._src);
       const player = new YT.Player(this.state.player, {
         videoId,
@@ -301,7 +332,60 @@ export const MediaContainer = (Player, type = 'video') =>
       });
     }
 
-    // Private Methods
+    _setupVimeoAPI() {
+
+      const vendor = 'vimeo';
+      const api = 'https://f.vimeocdn.com/js/froogaloop2.min.js';
+
+      // load the api if it hasn't been yet
+      if(!apiFlags[vendor])
+        loadAPI(api, vendor);
+
+      // create player when API is ready
+      this._createVimeoPlayer();
+    }
+
+    _getVimeoPlayer(id, cb) {
+
+      var request = new XMLHttpRequest();
+      
+      request.open('GET', `https://vimeo.com/api/oembed.json?url=https%3A//vimeo.com/${id}`, true);
+
+      request.onload = () => {
+        if(request.status >= 200 && request.status < 400) {
+          const data = JSON.parse(request.responseText);
+          cb(data);
+        }
+      };
+
+      request.send();
+    }
+
+    _createVimeoPlayer() {
+
+      const { player } = this.state;
+      const videoId = getVimeoID(this._src);
+
+      this._getVimeoPlayer(videoId, (data) => {
+
+        const parentNode = player.parentNode;
+
+        // enable javascirpt API on the data html
+        data.html = data.html.replace(/(<iframe *src=")(?!http:\/\/)(.*?)"/, `$1$2?api=1"`);
+        
+        // replace video player with our Vimeo iframe
+        player.outerHTML = unescape(data.html);
+
+        this.setState({
+          player: $f(parentNode.querySelector('iframe')),
+          playerNode: parentNode.querySelector('iframe'),
+          duration: data.duration
+        }, () => {
+          this._init();
+        });
+      });
+    }
+
     _setPlayer(cb) {
       
       const component = findDOMNode(this);
@@ -318,14 +402,17 @@ export const MediaContainer = (Player, type = 'video') =>
       }, cb);
     }
 
-    _setupApis() {
+    _setupAPI() {
 
       const { vendor } = this.state;
 
       // determine how to handle video
       switch(vendor) {
         case 'youtube':
-          this.youtubeHandler();
+          this._setupYoutubeAPI();
+          break;
+        case 'vimeo':
+          this._setupVimeoAPI();
           break;
         default:
           this._init();
@@ -340,6 +427,9 @@ export const MediaContainer = (Player, type = 'video') =>
       switch(vendor) {
         case 'youtube':
           playerNode = player.getIframe();
+          break;
+        case 'vimeo':
+          playerNode = this.state.playerNode;
           break;
         default:
           playerNode = player;
@@ -384,6 +474,13 @@ export const MediaContainer = (Player, type = 'video') =>
       }
     }
 
+    // get the current progress of Vimeo videos
+    _getCurrentVimeoProgress(data) {
+      this.setState({
+        progress: data.percent
+      });
+    }
+
     // get the current time of Youtube videos
     _getCurrentTime() {
 
@@ -418,6 +515,27 @@ export const MediaContainer = (Player, type = 'video') =>
           this.setState({
             duration: player.getDuration()
           });
+        });
+
+      } else if(vendor === 'vimeo') {
+
+        player.addEvent('ready', () => {
+
+          player.addEvent('play', () =>
+            this.setState({playing: true})
+          );
+
+          player.addEvent('pause', () =>
+            this.setState({playing: false})
+          );
+
+          player.addEvent('finish', () =>
+            this.setState({playing: false})
+          );
+
+          player.addEvent('loadProgress', ::this._getCurrentVimeoProgress);
+
+          player.addEvent('playProgress', ::this._handleVimeoTimeUpdate);
         });
 
       } else {
@@ -459,6 +577,12 @@ export const MediaContainer = (Player, type = 'video') =>
       this.setState({
         duration: duration,
         //progress: buffered.end(0) / duration
+      });
+    }
+
+    _handleVimeoTimeUpdate(data) {
+      this.setState({
+        current: data.seconds
       });
     }
 

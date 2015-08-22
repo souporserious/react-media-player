@@ -15,7 +15,8 @@ const mediaLinks = [
   {src: 'http://jelmerdemaat.nl/online-demos/conexus/video/small.mp4', label: 'Lego Robot'},
   {src: 'http://shapeshed.com/examples/HTML5-video-element/video/320x240.m4v', label: 'iPod Help'},
   {src: 'http://html5demos.com/assets/dizzy.mp4', label: 'Dizzy Kitty'},
-  {src: 'http://www.youtube.com/embed/h3YVKTxTOgU', label: 'Brand New'},
+  {src: 'http://www.youtube.com/embed/h3YVKTxTOgU', label: 'Brand New (Youtube)'},
+  {src: 'https://vimeo.com/76979871', label: 'Vimeo'},
   {src: 'http://www.noiseaddicts.com/samples_1w72b820/3890.mp3', label: 'Noise Addicts'}
 ];
 
@@ -69,7 +70,7 @@ class App extends Component {
           onClick={::this._handlePlayPause}
         >
           <video
-            src={mediaLinks[0].src}
+            src={mediaLinks[10].src}
             controls={false}
             preload={true}
           />

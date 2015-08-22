@@ -1,6 +1,13 @@
+.media__player {
+  max-width: 500px;
+
+  iframe {
+    width: 100%;
+  }
+}
+
 video {
   width: 100%;
-  max-width: 500px;
 }
 
 // hide native controls
