@@ -1,13 +1,15 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
-import { MediaContainer, controls, utils } from '../src/index'
+import { Media, controls, utils } from '../src/react-media-player'
 
 import './main.scss'
 
 const { PlayPause, Progress, SeekBar, MuteUnmute, Volume, Fullscreen } = controls
 const { formatTime } = utils
 
-const mediaLinks = [
+const playlist = [
+  {src: 'http://www.youtube.com/embed/h3YVKTxTOgU', label: 'Brand New (Youtube)'},
+  {src: 'https://vimeo.com/76979871', label: 'Vimeo'},
   {src: 'http://a1083.phobos.apple.com/us/r1000/014/Music/v4/4e/44/b7/4e44b7dc-aaa2-c63b-fb38-88e1635b5b29/mzaf_1844128138535731917.plus.aac.p.m4a', label: 'iTunes Preview'},
   {src: 'http://media.w3.org/2010/05/sintel/trailer.mp4', label: 'Sintel Trailer'},
   {src: 'http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4', label: 'Big Buck Bunny'},
@@ -18,99 +20,114 @@ const mediaLinks = [
   {src: 'http://jelmerdemaat.nl/online-demos/conexus/video/small.mp4', label: 'Lego Robot'},
   {src: 'http://shapeshed.com/examples/HTML5-video-element/video/320x240.m4v', label: 'iPod Help'},
   {src: 'http://html5demos.com/assets/dizzy.mp4', label: 'Dizzy Kitty'},
-  {src: 'http://www.youtube.com/embed/h3YVKTxTOgU', label: 'Brand New (Youtube)'},
-  {src: 'https://vimeo.com/76979871', label: 'Vimeo'},
   {src: 'http://www.noiseaddicts.com/samples_1w72b820/3890.mp3', label: 'Noise Addicts'}
 ]
 
 class App extends Component {
-  _handlePlay() {
-    this.props.play()
+  state = {
+    isPlaying: false
   }
 
-  _handlePause() {
-    this.props.pause()
+  componentDidMount() {
+    this._player = this.refs['player']
   }
 
-  _handlePlayPause() {
-    this.props.playPause()
+  _handlePlay = () => {
+    this._player.play()
   }
 
-  _handleCurrentTimeChange(time) {
-    this.props.setCurrentTime(time)
+  _handlePause = () => {
+    this._player.pause()
   }
 
-  _handleMuteUnmute() {
-    this.props.muteUnmute()
+  _handlePlayPause = () => {
+    this._player.playPause()
   }
 
-  _handleVolumeChange(volume) {
-    this.props.setVolume(volume)
+  _handleCurrentTimeChange = (time) => {
+    this._player.setCurrentTime(time)
   }
 
-  _handleFullscreen() {
-    this.props.toggleFullscreen()
+  _handleMuteUnmute = () => {
+    this._player.muteUnmute()
   }
 
-  _loadMedia(src) {
-    this.props.load(src)
+  _handleVolumeChange = (volume) => {
+    this._player.setVolume(volume)
+  }
+
+  _handleFullscreen = () => {
+    this._player.toggleFullscreen()
+  }
+
+  _loadMedia = (src) => {
+    this.refs['player'].load(src)
   }
 
   render() {
-    const { player, vendor, playing, duration, current, progress, muted, volume, fullscreen } = this.props;
-
-    // maybe a component gets passed?
-    // that loads either an audio or video tag
-    // so something like <Media src="" />
-    // then it could read wheter it was a video/auido url
-
     return(
-      <div className="media__container">
-        <div
-          className="media__player"
-          onClick={::this._handlePlayPause}
+      <div>
+        <Media
+          ref="player"
+          onPlaying={playing => this.setState({isPlaying: playing})}
+          onLoading={progress => null}
+          onTimeChange={(current, duration) => null}
+          onMute={muted => null}
+          onVolumeChange={volume => null}
+          onFullscreen={fullscreen => null}
+          onChange={src => {
+            // should fire when new media loaded
+          }}
         >
-          <video
-            src={mediaLinks[2].src}
-            controls={false}
-            preload={true}
-          />
-        </div>
-        <div className="media__controls">
-          <PlayPause
-            playing={playing}
-            onPlayPause={::this._handlePlayPause}
-          />
-          {formatTime(current)}
-          <Progress
-            progress={progress}
-          />
-          <SeekBar
-            duration={duration}
-            current={current}
-            play={::this._handlePlay}
-            pause={::this._handlePause}
-            onCurrentTimeChange={::this._handleCurrentTimeChange}
-          />
-          {formatTime(duration)}
-          <MuteUnmute
-            muted={muted}
-            onMuteUnmute={::this._handleMuteUnmute}
-          />
-          <Volume
-            volume={volume}
-            onVolumeChange={::this._handleVolumeChange}
-          />
-          <Fullscreen
-            fullscreen={fullscreen}
-            onFullscreen={::this._handleFullscreen}
-          />
-        </div>
-
+          {({playing, progress, current, duration, muted, volume, fullscreen}) =>
+            <div className="media__container">
+              <div
+                className="media__player"
+                onClick={this._handlePlayPause}
+              >
+                <video
+                  src={playlist[4].src}
+                  controls={false}
+                  preload={true}
+                />
+              </div>
+              <div className="media__controls">
+                <PlayPause
+                  playing={playing}
+                  onPlayPause={this._handlePlayPause}
+                />
+                {formatTime(current)}
+                <Progress
+                  progress={progress}
+                />
+                <SeekBar
+                  duration={duration}
+                  current={current}
+                  play={this._handlePlay}
+                  pause={this._handlePause}
+                  onCurrentTimeChange={this._handleCurrentTimeChange}
+                />
+                {formatTime(duration)}
+                <MuteUnmute
+                  muted={muted}
+                  onMuteUnmute={this._handleMuteUnmute}
+                />
+                <Volume
+                  volume={volume}
+                  onVolumeChange={this._handleVolumeChange}
+                />
+                <Fullscreen
+                  fullscreen={fullscreen}
+                  onFullscreen={this._handleFullscreen}
+                />
+              </div>
+            </div>
+          }
+        </Media>
         <aside className="playlist">
           <h3 className="playlist__title">Playlist</h3>
           <ul className="playlist__links">
-            {mediaLinks.map(link =>
+            {playlist.map(link =>
               <li
                 key={link.label}
                 className="playlist__link"
@@ -125,7 +142,5 @@ class App extends Component {
     )
   }
 }
-
-App = MediaContainer(App)
 
 ReactDOM.render(<App />, document.getElementById('app'))

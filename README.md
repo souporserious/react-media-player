@@ -15,7 +15,6 @@ React media container component to help build video & audio players.
 - [ ] Playback speed option
 - [ ] Keyboard friendly
 - [ ] ARIA a11y ready
-- [ ] Make MediaContainer main exposed component
 - [ ] Move controls into addons
 - [x] Fullscreen control example
 - [ ] Add tests

@@ -4,7 +4,7 @@ var TARGET = process.env.TARGET || null;
 
 var config = {
     entry: {
-        index: './scripts/VelocityTransitionGroup.jsx'
+        index: './scripts/react-media-player.jsx'
     },
     output: {
         path: path.join(__dirname, 'dist'),
@@ -24,21 +24,19 @@ var config = {
         extensions: ['', '.js', '.jsx']
     },
     externals: {
-        'react/addons': 'React',
-        'velocity-animate': 'Velocity',
-        'velocity-animate/velocity.ui': 'velocity-animate/velocity.ui'
+        'react': 'React'
     },
 };
 
 if(TARGET === 'minify') {
-    config.output.filename = 'VelocityTransitionGroup.min.js';
-    config.output.sourceMapFilename = 'VelocityTransitionGroup.min.js';
+    config.output.filename = 'react-media-player.min.js';
+    config.output.sourceMapFilename = 'react-media-player.min.js';
     config.plugins.push(new webpack.optimize.UglifyJsPlugin({
         compress: {
             warnings: false
         },
         mangle: {
-            except: ['React', 'Velocity', 'VelocityTransitionGroup']
+            except: ['React', 'ReactMediaPlayer']
         }
     }));
 }

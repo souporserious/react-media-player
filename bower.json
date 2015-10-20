@@ -6,13 +6,17 @@
     "Travis Arnold <ftntravis@gmail.com>"
   ],
   "description": "React media player.",
-  "main": ["./dist/ReactMediaPlayer.js", "./dist/ReactMediaPlayer.min.js"],
+  "main": ["./dist/react-media-player.js", "./dist/react-media-player.min.js"],
   "keywords": [
     "react",
-    "transition",
-    "ui"
+    "component",
+    "media",
+    "audio",
+    "video",
+    "player",
+    "playlist"
   ],
-  "license": "ISC",
+  "license": "MIT",
   "ignore": [
     "**/.*",
     "node_modules",
