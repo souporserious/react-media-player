@@ -1,5 +1,4 @@
 export default function formatTime(current) {
-
   let minutes = Math.floor(current / 60);
   let seconds = Math.floor(current % 60);
 

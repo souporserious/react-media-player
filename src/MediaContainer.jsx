@@ -1,68 +1,64 @@
-import React, { Component, findDOMNode } from 'react';
+import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
 
 let apiFlags = {
   youtube: false,
   vimeo: false
-};
+}
 
 // load api asynchronously
 // probably need to provide a callback for when it's actually loaded
-function loadAPI(src, vendor) {
-    
+function loadAPI(src, vendor) {   
   // create script to be injected
-  let api = document.createElement('script');
+  let api = document.createElement('script')
 
   // load async
-  api.async = true;
+  api.async = true
 
   // set source to youtube's api
-  api.src = src;
+  api.src = src
 
   // append script to document head
-  document.head.appendChild(api);
+  document.head.appendChild(api)
 
   // update flag
-  apiFlags[vendor] = true;
+  apiFlags[vendor] = true
 }
 
 function getYoutubeID(url) {
+  const regExp = /.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#\&\?]*).*/
+  const match = url.match(regExp)
   
-  let regExp = /.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#\&\?]*).*/;
-  let match = url.match(regExp);
-  
-  if(match && match[1].length == 11) {
+  if (match && match[1].length === 11) {
     return match[1];
   } else {
-    throw 'Invalid Youtube ID provided';
+    throw 'Invalid Youtube ID provided'
   }
 }
 
 function getVimeoID(url) {
+  const regExp = /^.*(vimeo\.com\/)((channels\/[A-z]+\/)|(groups\/[A-z]+\/videos\/))?([0-9]+)/
+  const match = url.match(regExp)
 
-  let regExp = /^.*(vimeo\.com\/)((channels\/[A-z]+\/)|(groups\/[A-z]+\/videos\/))?([0-9]+)/;
-  let match = url.match(regExp);
-
-  if(match) {
-    return match[5];
+  if (match) {
+    return match[5]
   } else {
-    throw 'Invalid Vimeo ID provided';
+    throw 'Invalid Vimeo ID provided'
   }
 }
 
 function getVendor(src) {
-  if(src.indexOf('youtube') > -1) {
-    return 'youtube';
-  } else if(src.indexOf('vimeo') > -1) {
-    return 'vimeo';
+  if (src.indexOf('youtube') > -1) {
+    return 'youtube'
+  } else if (src.indexOf('vimeo') > -1) {
+    return 'vimeo'
   } else {
-    return 'html5';
+    return 'html5'
   }
 }
 
-export const MediaContainer = (Player, type = 'video') =>
-  
+const MediaContainer = (Player, type = 'video') =>
   class extends Component {
-
     static displayName = 'MediaContainer'
 
     state = {
@@ -84,7 +80,7 @@ export const MediaContainer = (Player, type = 'video') =>
     _lastVolume = 0
 
     componentDidMount() {
-      this._setPlayer(this._setupAPI);
+      this._setPlayer(this._setupAPI)
     }
 
     componentWillUnmount() {
@@ -94,186 +90,172 @@ export const MediaContainer = (Player, type = 'video') =>
 
     // Public Methods
     play() {
+      const { player, vendor } = this.state
 
-      const { player, vendor } = this.state;
-
-      switch(vendor) {
+      switch (vendor) {
         case 'youtube':
-          player.playVideo();
+          player.playVideo()
           this._currentTimeID = requestAnimationFrame(
             this._getCurrentTime.bind(this)
-          );
-          break;
+          )
+          break
         case 'vimeo':
-          player.api('play');
-          break;
+          player.api('play')
+          break
         default:
-          player.play();
+          player.play()
       }
     }
 
     pause() {
+      const { player, vendor } = this.state
 
-      const { player, vendor } = this.state;
-
-      switch(vendor) {
+      switch (vendor) {
         case 'youtube':
-          player.pauseVideo();
-          cancelAnimationFrame(this._currentTimeID);
-          break;
+          player.pauseVideo()
+          cancelAnimationFrame(this._currentTimeID)
+          break
         case 'vimeo':
-          player.api('pause');
-          break;
+          player.api('pause')
+          break
         default:
-          player.pause();
+          player.pause()
       }
     }
 
     playPause() {
+      const { playing } = this.state
 
-      const { playing } = this.state;
-
-      if(!playing) {
-        this.play();
+      if (!playing) {
+        this.play()
       } else {
-        this.pause();
+        this.pause()
       }
     }
 
     stop() {
-
-      const { player } = this.state;
+      const { player } = this.state
       
-      player.pause();
-      player.currentTime = 0;
+      player.pause()
+      player.currentTime = 0
     }
 
     setCurrentTime(current) {
-      
-      const { player, vendor } = this.state;
+      const { player, vendor } = this.state
 
       if(vendor === 'youtube') {
-        player.seekTo(current);
+        player.seekTo(current)
       } else if(vendor === 'vimeo') {
-        player.api('seekTo', current);
+        player.api('seekTo', current)
       } else {
-        player.currentTime = current;
+        player.currentTime = current
       }
 
-      this.setState({current});
+      this.setState({current})
     }
 
     muteUnmute() {
+      const { player, vendor, muted, volume } = this.state
 
-      const { player, vendor, muted, volume } = this.state;
-
-      if(!muted) {
-        
-        switch(vendor) {
+      if (!muted) {
+        switch (vendor) {
           case 'youtube':
-            player.mute();
-            break;
+            player.mute()
+            break
           default:
-            player.muted = true;
+            player.muted = true
         }
 
         // store volume for un-mute
-        this._lastVolume = volume;
+        this._lastVolume = volume
 
         // if muted the volume should be set to 0
-        this.setVolume(0);
+        this.setVolume(0)
 
-        this.setState({muted: true});
-
+        this.setState({muted: true})
       } else {
 
-        switch(vendor) {
+        switch (vendor) {
           case 'youtube':
-            player.unMute();
-            break;
+            player.unMute()
+            break
           default:
-            player.muted = false;
+            player.muted = false
         }
 
         // if unmuted set to last volume
-        this.setVolume(this._lastVolume);
+        this.setVolume(this._lastVolume)
 
-        this.setState({muted: false});
+        this.setState({muted: false})
       }
     }
 
     setVolume(volume) {
+      const { player, vendor } = this.state
+      let muted = false
 
-      const { player, vendor } = this.state;
-      let muted = false;
-
-      if(volume <= 0) {
-        muted = true;
+      if (volume <= 0) {
+        muted = true
       }
 
-      if(vendor === 'youtube') {
+      if (vendor === 'youtube') {
         player.setVolume(volume * 100);
-      } else if(vendor === 'vimeo') {
+      } else if (vendor === 'vimeo') {
         player.api('setVolume', volume);
       } else {
-        player.volume = volume;
+        player.volume = volume
       }
 
       this.setState({volume, muted}, () => {
-        if(muted) {
-          switch(vendor) {
+        if (muted) {
+          switch (vendor) {
             case 'youtube':
-              player.mute();
-              break;
+              player.mute()
+              break
             default:
-              player.muted = true;
+              player.muted = true
           }
         } else {
-
-          switch(vendor) {
+          switch (vendor) {
             case 'youtube':
-              player.unMute();
-              break;
+              player.unMute()
+              break
             default:
-              player.muted = false;
+              player.muted = false
           }
         }
       });
     }
 
     toggleFullscreen() {
+      if (!this.state.fullscreen) {
+        const n = this.state.playerNode
 
-      if(!this.state.fullscreen) {
-
-        const n = this.state.playerNode;
-
-        if(n.requestFullscreen) {
-          n.requestFullscreen();
-        } else if(n.webkitRequestFullscreen) {
-          n.webkitRequestFullscreen();
-        } else if(n.mozRequestFullScreen) {
-          n.mozRequestFullScreen();
-        } else if(n.msRequestFullscreen) {
-          n.msRequestFullscreen();
+        if (n.requestFullscreen) {
+          n.requestFullscreen()
+        } else if (n.webkitRequestFullscreen) {
+          n.webkitRequestFullscreen()
+        } else if (n.mozRequestFullScreen) {
+          n.mozRequestFullScreen()
+        } else if (n.msRequestFullscreen) {
+          n.msRequestFullscreen()
         }
       } else {
+        const d = document
 
-        const d = document;
-
-        if(d.exitFullscreen) {
-          d.exitFullscreen();
-        } else if(d.webkitExitFullscreen) {
-          d.webkitExitFullscreen();
-        } else if(d.mozCancelFullScreen) {
-          d.mozCancelFullScreen();
-        } else if(d.msExitFullscreen) {
-          d.msExitFullscreen();
+        if (d.exitFullscreen) {
+          d.exitFullscreen()
+        } else if (d.webkitExitFullscreen) {
+          d.webkitExitFullscreen()
+        } else if (d.mozCancelFullScreen) {
+          d.mozCancelFullScreen()
+        } else if (d.msExitFullscreen) {
+          d.msExitFullscreen()
         }
       }
     }
 
     load(src) {
-
       // function setupURL(id, ext) {
       //   return urlBase + id + "." + ext;
       // }
@@ -285,40 +267,40 @@ export const MediaContainer = (Player, type = 'video') =>
 
       // test support
       // !!!! need to check canPlayType on init
-      if(player.canPlayType('video/mp4')) {
-        player.setAttribute('src', src);
-        //player.setAttribute('src', setupURL(src, 'mp4'));
-      } else if(player.canPlayType('video/webm')) {
-        player.setAttribute('src', setupURL(src, 'webm'));
-      } else if(player.canPlayType('video/ogg')) {
-        player.setAttribute('src', setupURL(src, 'ogv'));
+      if (player.canPlayType('video/mp4')) {
+        player.setAttribute('src', src)
+        //player.setAttribute('src', setupURL(src, 'mp4'))
+      } else if (player.canPlayType('video/webm')) {
+        player.setAttribute('src', setupURL(src, 'webm'))
+      } else if (player.canPlayType('video/ogg')) {
+        player.setAttribute('src', setupURL(src, 'ogv'))
       }
 
       // load new media
-      player.load();
+      player.load()
 
       // play new media
-      player.play();
+      player.play()
     }
 
     // Private Methods
     _setupYoutubeAPI() {
-
-      const vendor = 'youtube';
-      const api = 'http://www.youtube.com/player_api';
+      const vendor = 'youtube'
+      const api = 'http://www.youtube.com/player_api'
 
       // load the api if it hasn't been yet
-      if(!apiFlags[vendor])
-        loadAPI(api, vendor);
+      if (!apiFlags[vendor]) {
+        loadAPI(api, vendor)
+      }
 
       // create player when API is ready
       window.onYouTubeIframeAPIReady = () =>
-        this._createYoutubePlayer();
+        this._createYoutubePlayer()
     }
 
     // use youtube api to create player
     _createYoutubePlayer() {
-      const videoId = getYoutubeID(this._src);
+      const videoId = getYoutubeID(this._src)
       const player = new YT.Player(this.state.player, {
         videoId,
         playerVars: {
@@ -326,128 +308,120 @@ export const MediaContainer = (Player, type = 'video') =>
           showinfo: 0,
           modestbranding: 1
         }
-      });
+      })
       this.setState({player}, () => {
-        this._init();
-      });
+        this._init()
+      })
     }
 
     _setupVimeoAPI() {
-
-      const vendor = 'vimeo';
-      const api = 'https://f.vimeocdn.com/js/froogaloop2.min.js';
+      const vendor = 'vimeo'
+      const api = 'https://f.vimeocdn.com/js/froogaloop2.min.js'
 
       // load the api if it hasn't been yet
-      if(!apiFlags[vendor])
-        loadAPI(api, vendor);
+      if (!apiFlags[vendor]) {
+        loadAPI(api, vendor)
+      }
 
       // create player when API is ready
-      this._createVimeoPlayer();
+      this._createVimeoPlayer()
     }
 
     _getVimeoPlayer(id, cb) {
-
-      var request = new XMLHttpRequest();
+      const request = new XMLHttpRequest()
       
-      request.open('GET', `https://vimeo.com/api/oembed.json?url=https%3A//vimeo.com/${id}`, true);
+      request.open('GET', `https://vimeo.com/api/oembed.json?url=https%3A//vimeo.com/${id}`, true)
 
       request.onload = () => {
-        if(request.status >= 200 && request.status < 400) {
-          const data = JSON.parse(request.responseText);
-          cb(data);
+        if (request.status >= 200 && request.status < 400) {
+          cb(JSON.parse(request.responseText))
         }
-      };
+      }
 
-      request.send();
+      request.send()
     }
 
     _createVimeoPlayer() {
-
-      const { player } = this.state;
-      const videoId = getVimeoID(this._src);
+      const { player } = this.state
+      const videoId = getVimeoID(this._src)
 
       this._getVimeoPlayer(videoId, (data) => {
-
-        const parentNode = player.parentNode;
+        const parentNode = player.parentNode
 
         // enable javascirpt API on the data html
-        data.html = data.html.replace(/(<iframe *src=")(?!http:\/\/)(.*?)"/, `$1$2?api=1"`);
+        data.html = data.html.replace(/(<iframe *src=")(?!http:\/\/)(.*?)"/, `$1$2?api=1"`)
         
         // replace video player with our Vimeo iframe
-        player.outerHTML = unescape(data.html);
+        player.outerHTML = unescape(data.html)
 
         this.setState({
           player: $f(parentNode.querySelector('iframe')),
           playerNode: parentNode.querySelector('iframe'),
           duration: data.duration
         }, () => {
-          this._init();
-        });
-      });
+          this._init()
+        })
+      })
     }
 
     _setPlayer(cb) {
-      
-      const component = findDOMNode(this);
-      const player = component.querySelector(type);
-      let vendor;
+      const component = ReactDOM.findDOMNode(this)
+      const player = component.querySelector(type)
+      let vendor
 
-      this._src = player.getAttribute('src');
+      this._src = player.getAttribute('src')
 
-      vendor = getVendor(this._src);
+      vendor = getVendor(this._src)
 
       this.setState({
         player,
         vendor
-      }, cb);
+      }, cb)
     }
 
     _setupAPI() {
-
-      const { vendor } = this.state;
+      const { vendor } = this.state
 
       // determine how to handle video
-      switch(vendor) {
+      switch (vendor) {
         case 'youtube':
-          this._setupYoutubeAPI();
-          break;
+          this._setupYoutubeAPI()
+          break
         case 'vimeo':
-          this._setupVimeoAPI();
-          break;
+          this._setupVimeoAPI()
+          break
         default:
-          this._init();
+          this._init()
       }
     }
 
     _init() {
+      const { player, vendor } = this.state
+      let playerNode
 
-      const { player, vendor } = this.state;
-      let playerNode;
-
-      switch(vendor) {
+      switch (vendor) {
         case 'youtube':
-          playerNode = player.getIframe();
-          break;
+          playerNode = player.getIframe()
+          break
         case 'vimeo':
-          playerNode = this.state.playerNode;
-          break;
+          playerNode = this.state.playerNode
+          break
         default:
-          playerNode = player;
+          playerNode = player
       }
 
       this.setState({playerNode}, () => {
-        this._bindEvents();
-      });
+        this._bindEvents()
+      })
     }
 
     // get the current progress of HTML5 videos
     _getCurrentProgress() {
-      
-      const { player } = this.state;
-      let progress = 0;
+      const { player } = this.state
+      let progress = 0
 
-      if(player.buffered.length > 0) {
-        progress = player.buffered.end(0) / player.duration;
+      if (player.buffered.length > 0) {
+        progress = player.buffered.end(0) / player.duration
       }
 
       this.setState({progress});
@@ -461,16 +435,15 @@ export const MediaContainer = (Player, type = 'video') =>
 
     // get the current progress of Youtube videos
     _getCurrentYTProgress() {
-      
-      const { player } = this.state;
-      const progress = player.getVideoLoadedFraction();
+      const { player } = this.state
+      const progress = player.getVideoLoadedFraction()
 
-      this.setState({progress});
+      this.setState({progress})
 
-      if(progress < 1) {
+      if (progress < 1) {
         this._currentYTProgressID = requestAnimationFrame(
           this._getCurrentYTProgress.bind(this)
-        );
+        )
       }
     }
 
@@ -478,133 +451,124 @@ export const MediaContainer = (Player, type = 'video') =>
     _getCurrentVimeoProgress(data) {
       this.setState({
         progress: data.percent
-      });
+      })
     }
 
     // get the current time of Youtube videos
     _getCurrentTime() {
-
-      const { player } = this.state;
+      const { player } = this.state
 
       this.setState({
         current: player.getCurrentTime()
-      });
+      })
 
       this._currentTimeID = requestAnimationFrame(
         this._getCurrentTime.bind(this)
-      );
+      )
     }
 
     _bindEvents() {
+      const { player, playerNode, vendor } = this.state
 
-      const { player, playerNode, vendor } = this.state;
-
-      if(vendor === 'youtube') {
-
+      if (vendor === 'youtube') {
         player.addEventListener('onStateChange', (e) => {
           this.setState({
             loading: e.data === 3 ? true : false,
             playing: e.data === 1 ? true : false
-          });
-        });
+          })
+        })
 
         player.addEventListener('onReady', () => {
           this._currentYTProgressID = requestAnimationFrame(
             this._getCurrentYTProgress.bind(this)
-          );
+          )
           this.setState({
             duration: player.getDuration()
-          });
-        });
+          })
+        })
 
-      } else if(vendor === 'vimeo') {
-
+      } else if (vendor === 'vimeo') {
         player.addEvent('ready', () => {
-
           player.addEvent('play', () =>
             this.setState({playing: true})
-          );
+          )
 
           player.addEvent('pause', () =>
             this.setState({playing: false})
-          );
+          )
 
           player.addEvent('finish', () =>
             this.setState({playing: false})
-          );
+          )
 
-          player.addEvent('loadProgress', ::this._getCurrentVimeoProgress);
+          player.addEvent('loadProgress', ::this._getCurrentVimeoProgress)
 
-          player.addEvent('playProgress', ::this._handleVimeoTimeUpdate);
-        });
-
+          player.addEvent('playProgress', ::this._handleVimeoTimeUpdate)
+        })
       } else {
-
-        player.addEventListener('loadedmetadata', ::this._handleLoadedMetaData);
+        player.addEventListener('loadedmetadata', ::this._handleLoadedMetaData)
 
         player.addEventListener('canplay', () => {
           // http://stackoverflow.com/questions/9313697/html5-video-using-the-progress-event-with-dynamically-loaded-videos
           this._currentProgressID = requestAnimationFrame(
             this._getCurrentProgress.bind(this)
           );
-        });
+        })
 
-        player.addEventListener('timeupdate', ::this._handleTimeUpdate);
+        player.addEventListener('timeupdate', ::this._handleTimeUpdate)
 
         player.addEventListener('play', () =>
           this.setState({playing: true})
-        );
+        )
 
         player.addEventListener('pause', () =>
           this.setState({playing: false})
-        );
+        )
         
         player.addEventListener('ended', () =>
           this.setState({playing: false})
-        );
+        )
       }
 
+      // check this http://codepen.io/ludviglindblom/pen/medXwN
       ['fullscreenchange', 'webkitfullscreenchange', 'mozfullscreenchange', 'MSFullscreenChange'].forEach(e =>
         playerNode.addEventListener(e, ::this._handleFullscreenChange)
-      );
+      )
     }
 
     _handleLoadedMetaData(e) {
-
-      const player = e.target;
-      const { duration, buffered } = player;
+      const player = e.target
+      const { duration, buffered } = player
 
       this.setState({
         duration: duration,
         //progress: buffered.end(0) / duration
-      });
+      })
     }
 
     _handleVimeoTimeUpdate(data) {
       this.setState({
         current: data.seconds
-      });
+      })
     }
 
     _handleTimeUpdate() {
-      
-      const { player } = this.state;
+      const { player } = this.state
 
       this.setState({
         current: player.currentTime,
         muted: player.muted
-      });
+      })
     }
 
     _handleFullscreenChange() {
-
-      const d = document;
+      const d = document
       const fullscreen = d.fullscreenElement ||
                          d.webkitFullscreenElement ||
                          d.mozFullScreenElement ||
-                         d.msFullscreenElement;
-
-      this.setState({fullscreen});
+                         d.msFullscreenElement
+      
+      this.setState({fullscreen})
     }
 
     render() {
@@ -621,6 +585,8 @@ export const MediaContainer = (Player, type = 'video') =>
           toggleFullscreen={::this.toggleFullscreen}
           load={::this.load}
         />
-      );
+      )
     }
   }
+
+export default MediaContainer

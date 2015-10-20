@@ -1,11 +1,14 @@
-import React, { Component } from 'react';
-import { MediaContainer, PlayPause, Progress, SeekBar, MuteUnmute, Volume, Fullscreen, utils } from '../src/index';
+import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
+import { MediaContainer, controls, utils } from '../src/index'
 
-import './main.scss';
+import './main.scss'
 
-const { formatTime } = utils;
+const { PlayPause, Progress, SeekBar, MuteUnmute, Volume, Fullscreen } = controls
+const { formatTime } = utils
 
 const mediaLinks = [
+  {src: 'http://a1083.phobos.apple.com/us/r1000/014/Music/v4/4e/44/b7/4e44b7dc-aaa2-c63b-fb38-88e1635b5b29/mzaf_1844128138535731917.plus.aac.p.m4a', label: 'iTunes Preview'},
   {src: 'http://media.w3.org/2010/05/sintel/trailer.mp4', label: 'Sintel Trailer'},
   {src: 'http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4', label: 'Big Buck Bunny'},
   {src: 'https://vid4u.org/ninja/5/dev/assets/madmax-intro.mp4', label: 'Mad Max Intro'},
@@ -18,44 +21,42 @@ const mediaLinks = [
   {src: 'http://www.youtube.com/embed/h3YVKTxTOgU', label: 'Brand New (Youtube)'},
   {src: 'https://vimeo.com/76979871', label: 'Vimeo'},
   {src: 'http://www.noiseaddicts.com/samples_1w72b820/3890.mp3', label: 'Noise Addicts'}
-];
+]
 
 class App extends Component {
-
   _handlePlay() {
-    this.props.play();
+    this.props.play()
   }
 
   _handlePause() {
-    this.props.pause();
+    this.props.pause()
   }
 
   _handlePlayPause() {
-    this.props.playPause();
+    this.props.playPause()
   }
 
   _handleCurrentTimeChange(time) {
-    this.props.setCurrentTime(time);
+    this.props.setCurrentTime(time)
   }
 
   _handleMuteUnmute() {
-    this.props.muteUnmute();
+    this.props.muteUnmute()
   }
 
   _handleVolumeChange(volume) {
-    this.props.setVolume(volume);
+    this.props.setVolume(volume)
   }
 
   _handleFullscreen() {
-    this.props.toggleFullscreen();
+    this.props.toggleFullscreen()
   }
 
   _loadMedia(src) {
-    this.props.load(src);
+    this.props.load(src)
   }
 
   render() {
-
     const { player, vendor, playing, duration, current, progress, muted, volume, fullscreen } = this.props;
 
     // maybe a component gets passed?
@@ -70,7 +71,7 @@ class App extends Component {
           onClick={::this._handlePlayPause}
         >
           <video
-            src={mediaLinks[10].src}
+            src={mediaLinks[2].src}
             controls={false}
             preload={true}
           />
@@ -121,10 +122,10 @@ class App extends Component {
           </ul>
         </aside>
       </div>
-    );
+    )
   }
 }
 
-App = MediaContainer(App);
+App = MediaContainer(App)
 
-React.render(<App />, document.body);
+ReactDOM.render(<App />, document.getElementById('app'))
