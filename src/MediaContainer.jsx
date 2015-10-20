@@ -1,7 +1,15 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 
-let apiFlags = {
+class Player extends Component {
+  render() {
+    return(
+      <video src="" />
+    )
+  }
+}
+
+const apiFlags = {
   youtube: false,
   vimeo: false
 }
@@ -57,7 +65,7 @@ function getVendor(src) {
   }
 }
 
-const MediaContainer = (Player, type = 'video') =>
+const MediaContainer = (Container, type = 'video') =>
   class extends Component {
     static displayName = 'MediaContainer'
 
@@ -366,9 +374,9 @@ const MediaContainer = (Player, type = 'video') =>
 
     _setPlayer(cb) {
       const component = ReactDOM.findDOMNode(this)
-      const player = component.querySelector(type)
+      const player = ReactDOM.findDOMNode(this.refs.player)
       let vendor
-
+      
       this._src = player.getAttribute('src')
 
       vendor = getVendor(this._src)
@@ -573,8 +581,9 @@ const MediaContainer = (Player, type = 'video') =>
 
     render() {
       return(
-        <Player
+        <Container
           {...this.state}
+          Player={<Player ref="player" />}
           play={::this.play}
           pause={::this.pause}
           playPause={::this.playPause}

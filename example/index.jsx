@@ -57,24 +57,26 @@ class App extends Component {
   }
 
   render() {
-    const { player, vendor, playing, duration, current, progress, muted, volume, fullscreen } = this.props;
+    const { Player, vendor, playing, duration, current, progress, muted, volume, fullscreen } = this.props;
 
     // maybe a component gets passed?
     // that loads either an audio or video tag
     // so something like <Media src="" />
-    // then it could read wheter it was a video/auido url
+    // then it could read whether it was a video/auido url
 
     return(
       <div className="media__container">
         <div
           className="media__player"
           onClick={::this._handlePlayPause}
-        >
-          <video
-            src={mediaLinks[2].src}
+        > 
+          {Player}
+          {/*<Player
+            ref="player"
             controls={false}
             preload={true}
-          />
+            src={mediaLinks[2].src}
+          >*/}
         </div>
         <div className="media__controls">
           <PlayPause
