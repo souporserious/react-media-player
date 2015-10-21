@@ -1,99 +1,15 @@
 import React, { Component, Children } from 'react'
 import ReactDOM from 'react-dom'
 import shallowCompare from 'react/lib/shallowCompare'
+import loadAPI from './load-api'
+import getVendor from './get-vendor'
+import getYoutubeID from './get-youtube-id'
+import getVimeoID from './get-vimeo-id'
+import Player from './Player'
 
 const apiFlags = {
   youtube: false,
   vimeo: false
-}
-
-// load api asynchronously
-// probably need to provide a callback for when it's actually loaded
-function loadAPI(src, vendor) {   
-  // create script to be injected
-  let api = document.createElement('script')
-
-  // load async
-  api.async = true
-
-  // set source to youtube's api
-  api.src = src
-
-  // append script to document head
-  document.head.appendChild(api)
-
-  // update flag
-  apiFlags[vendor] = true
-}
-
-const VIDEO_TYPES = ['mp4', 'webm', 'ogv']
-const AUDIO_TYPES = ['mp3', 'wav', 'ogg']
-const THIRD_PARTY_TYPES = ['youtube', 'vimeo']
-
-// determine what type of tag 
-function getMediaTag(src) {
-  const vendor = getVendor(src)
-  const type = (vendor === 'html5') ? src.split('.').pop() : vendor
-
-  if (VIDEO_TYPES.indexOf(type) > -1) {
-    return 'video' 
-  } else if (AUDIO_TYPES.indexOf(type) > -1) {
-    return 'audio'
-  } else if (THIRD_PARTY_TYPES.indexOf(type) > -1) {
-    return 'iframe'
-  } else {
-    throw new Error('Source could not be determined.')
-  }
-}
-
-function getVendor(src) {
-  if (src.indexOf('youtube') > -1) {
-    return 'youtube'
-  } else if (src.indexOf('vimeo') > -1) {
-    return 'vimeo'
-  } else {
-    return 'html5'
-  }
-}
-
-class Player extends Component {
-  shouldComponentUpdate(nextProps) {
-    return this.props.src !== nextProps.src ||
-           this.props.children !== nextProps.children
-  }
-
-  render() {
-    const { src, children } = this.props
-    const tag = getMediaTag(src)
-
-    return(
-      <div>
-        {React.createElement(tag, {key: 'Player', src}, children)}
-      </div>
-    )
-  }
-}
-
-function getYoutubeID(url) {
-  const regExp = /.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#\&\?]*).*/
-  const match = url.match(regExp)
-  
-  if (match && match[1].length === 11) {
-    return match[1];
-  } else {
-    throw 'Invalid Youtube ID provided'
-  }
-}
-
-function getVimeoID(url) {
-  const regExp = /^.*(vimeo\.com\/)((channels\/[A-z]+\/)|(groups\/[A-z]+\/videos\/))?([0-9]+)/
-  const match = url.match(regExp)
-
-  if (match) {
-    return match[5]
-  } else {
-    throw 'Invalid Vimeo ID provided'
-  }
 }
 
 class Media extends Component {
@@ -390,7 +306,10 @@ class Media extends Component {
 
     // load the api if it hasn't been yet
     if (!apiFlags[vendor]) {
-      loadAPI(api, vendor)
+      loadAPI(api)
+      
+      // update flag
+      apiFlags[vendor] = true
     }
 
     // create player when API is ready
@@ -422,6 +341,9 @@ class Media extends Component {
     // load the api if it hasn't been yet
     if (!apiFlags[vendor]) {
       loadAPI(api, vendor)
+
+      // update flag
+      apiFlags[vendor] = true
     }
 
     // create player when API is ready
