@@ -25,7 +25,13 @@ const playlist = [
 
 class App extends Component {
   state = {
-    isPlaying: false
+    playing: false,
+    progress: 0,
+    current: 0,
+    duration: 0,
+    muted: false,
+    volume: 1,
+    fullscreen: false
   }
 
   componentDidMount() {
@@ -65,65 +71,58 @@ class App extends Component {
   }
 
   render() {
+    const { playing, progress, current, duration, muted, volume, fullscreen } = this.state
+
     return(
       <div>
-        <Media
-          ref="player"
-          onPlaying={playing => this.setState({isPlaying: playing})}
-          onLoading={progress => null}
-          onTimeChange={(current, duration) => null}
-          onMute={muted => null}
-          onVolumeChange={volume => null}
-          onFullscreen={fullscreen => null}
-          onChange={src => {
-            // should fire when new media loaded
-          }}
+        <div
+          onClick={this._handlePlayPause}
         >
-          {({playing, progress, current, duration, muted, volume, fullscreen}) =>
-            <div className="media__container">
-              <div
-                className="media__player"
-                onClick={this._handlePlayPause}
-              >
-                <video
-                  src={playlist[4].src}
-                  controls={false}
-                  preload={true}
-                />
-              </div>
-              <div className="media__controls">
-                <PlayPause
-                  playing={playing}
-                  onPlayPause={this._handlePlayPause}
-                />
-                {formatTime(current)}
-                <Progress
-                  progress={progress}
-                />
-                <SeekBar
-                  duration={duration}
-                  current={current}
-                  play={this._handlePlay}
-                  pause={this._handlePause}
-                  onCurrentTimeChange={this._handleCurrentTimeChange}
-                />
-                {formatTime(duration)}
-                <MuteUnmute
-                  muted={muted}
-                  onMuteUnmute={this._handleMuteUnmute}
-                />
-                <Volume
-                  volume={volume}
-                  onVolumeChange={this._handleVolumeChange}
-                />
-                <Fullscreen
-                  fullscreen={fullscreen}
-                  onFullscreen={this._handleFullscreen}
-                />
-              </div>
-            </div>
-          }
-        </Media>
+          <Media
+            ref="player"
+            src={playlist[4].src}
+            onPlaying={playing => this.setState({playing})}
+            getProgress={progress => this.setState({progress})}
+            getCurrentTime={current => this.setState({current})}
+            getDuration={duration => this.setState({duration})}
+            onMute={muted => this.setState({muted})}
+            onVolumeChange={volume => this.setState({volume})}
+            onFullscreen={fullscreen => this.setState({fullscreen})}
+            onChange={src => {
+              // should fire when new media loaded
+            }}
+          />
+        </div>
+        <div className="media__controls">
+          <PlayPause
+            playing={playing}
+            onPlayPause={this._handlePlayPause}
+          />
+          {formatTime(current)}
+          <Progress
+            progress={progress}
+          />
+          <SeekBar
+            duration={duration}
+            current={current}
+            play={this._handlePlay}
+            pause={this._handlePause}
+            onCurrentTimeChange={this._handleCurrentTimeChange}
+          />
+          {formatTime(duration)}
+          <MuteUnmute
+            muted={muted}
+            onMuteUnmute={this._handleMuteUnmute}
+          />
+          <Volume
+            volume={volume}
+            onVolumeChange={this._handleVolumeChange}
+          />
+          <Fullscreen
+            fullscreen={fullscreen}
+            onFullscreen={this._handleFullscreen}
+          />
+        </div>
         <aside className="playlist">
           <h3 className="playlist__title">Playlist</h3>
           <ul className="playlist__links">
