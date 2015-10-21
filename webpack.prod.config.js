@@ -4,14 +4,14 @@ var TARGET = process.env.TARGET || null;
 
 var config = {
     entry: {
-        index: './scripts/react-media-player.jsx'
+        index: './src/react-media-player.js'
     },
     output: {
         path: path.join(__dirname, 'dist'),
         publicPath: 'dist/',
-        filename: '[id].js',
-        sourceMapFilename: '[id].sourcemap.js',
-        library: '[id]',
+        filename: 'react-media-player.js',
+        sourceMapFilename: 'react-media-player.sourcemap.js',
+        library: 'ReactMediaPlayer',
         libraryTarget: 'umd'
     },
     module: {
@@ -24,7 +24,8 @@ var config = {
         extensions: ['', '.js', '.jsx']
     },
     externals: {
-        'react': 'React'
+        'react': 'React',
+        'react-dom': 'ReactDOM'
     },
 };
 
