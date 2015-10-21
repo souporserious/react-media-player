@@ -1,8 +1,11 @@
 import getVendor from './get-vendor'
 
-const VIDEO_TYPES = ['mp4', 'webm', 'ogv']
+// using youtube as a video type for now because it will load
+// properly setting it to an iframe won't load right need to look
+// into this so React stops complaining
+const VIDEO_TYPES = ['mp4', 'webm', 'ogv', 'youtube']
 const AUDIO_TYPES = ['mp3', 'wav', 'ogg']
-const VENDOR_TYPES = ['youtube', 'vimeo']
+const VENDOR_TYPES = ['vimeo']
 
 // determine what type of HTML tag we need to use
 export default function getMediaTag(src) {

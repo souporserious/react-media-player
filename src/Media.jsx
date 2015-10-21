@@ -214,12 +214,17 @@ class Media extends Component {
     }
   }
 
+  // TODO:
+  // check if a vendor file passed in, if so send to load properly
+  // if API's are loaded already need to switch the player for the proper iframe
   load = (src) => {
-    // function setupURL(id, ext) {
-    //   return urlBase + id + "." + ext;
-    // }
+    const { player } = this.state
+    const vendor = getVendor(src)
 
-    const { player } = this.state;
+    if(['youtube', 'vimeo'].indexOf(vendor)) {
+      console.log('fug')
+      // handle loading
+    }
 
     // pause player
     player.pause();

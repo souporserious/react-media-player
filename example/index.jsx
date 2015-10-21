@@ -80,7 +80,7 @@ class App extends Component {
         >
           <Media
             ref="player"
-            src={playlist[1].src}
+            src={playlist[0].src}
             onPlaying={playing => this.setState({playing})}
             getProgress={progress => this.setState({progress})}
             getCurrentTime={current => this.setState({current})}
