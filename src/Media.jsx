@@ -31,12 +31,10 @@ class Media extends Component {
 
   _handlePlay() {
     this._player.play()
-    this.setState({isPlaying: true})
   }
 
   _handlePause() {
     this._player.pause()
-    this.setState({isPlaying: false})
   }
 
   _handlePlayPause = () => {
@@ -54,6 +52,7 @@ class Media extends Component {
     return Player && children(
       createElement(Player, {
         ref: c => this._player = c,
+        onPlaying: isPlaying => this.setState({isPlaying}),
         src
       })
     )
