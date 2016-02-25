@@ -20,7 +20,7 @@ class Volume extends Component {
         value={this.context.volume}
         onChange={this._handleChange}
       />
-    );
+    )
   }
 }
 

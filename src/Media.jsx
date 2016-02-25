@@ -24,7 +24,8 @@ class Media extends Component {
     seekTo: PropTypes.func,
     mute: PropTypes.func,
     muteUnmute: PropTypes.func,
-    setVolume: PropTypes.func
+    setVolume: PropTypes.func,
+    setFullscreen: PropTypes.func
   }
 
   state = {
@@ -60,7 +61,8 @@ class Media extends Component {
       seekTo: this._handleSeekTo,
       mute: this._handleMute,
       muteUnmute: this._handleMuteUnmute,
-      setVolume: this._handleSetVolume
+      setVolume: this._handleSetVolume,
+      setFullscreen: () => null
     }
   }
 
@@ -74,9 +76,9 @@ class Media extends Component {
 
   _handlePlayPause = () => {
     if (!this.state.isPlaying) {
-      this._handlePlay()
+      this._player.play()
     } else {
-      this._handlePause()
+      this._player.pause()
     }
   }
 
@@ -126,12 +128,12 @@ class Media extends Component {
     return Player && children(
       createElement(Player, {
         ref: c => this._player = c,
+        src,
         onPlaying: isPlaying => this.setState({isPlaying}),
         onDuration: duration => this.setState({duration}),
         onProgress: progress => this.setState({progress}),
         onTimeUpdate: currentTime => this.setState({currentTime}),
-        onVolumeChange: (volume, isMuted) => this.setState({volume, isMuted}),
-        src
+        onVolumeChange: (volume, isMuted) => this.setState({volume, isMuted})
       })
     )
   }

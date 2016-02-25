@@ -25,59 +25,26 @@ const playlist = [
 
 class App extends Component {
   state = {
-    playing: false,
-    progress: 0,
-    current: 0,
-    duration: 0,
-    muted: false,
-    volume: 1,
-    fullscreen: false,
     currSrc: playlist[3].src
   }
 
   render() {
-    const { currSrc, playing, progress, current, duration, muted, volume, fullscreen } = this.state
-
-    return(
+    return (
       <div>
-        <div
-          onClick={this._handlePlayPause}
-        >
-          <Media src={currSrc}>
-            {Player =>
-              <div>
-                {Player}
-                <nav>
-                  <PlayPause/>
-                  <Progress/>
-                  <SeekBar/>
-                  <MuteUnmute/>
-                  <Volume/>
-                </nav>
-              </div>
-            }
-          </Media>
-          {/*<Media
-            ref="player"
-            src={playlist[0].src}
-            onPlaying={playing => this.setState({playing})}
-            getProgress={progress => this.setState({progress})}
-            getCurrentTime={current => this.setState({current})}
-            getDuration={duration => this.setState({duration})}
-            onMute={muted => this.setState({muted})}
-            onVolumeChange={volume => this.setState({volume})}
-            onFullscreen={fullscreen => this.setState({fullscreen})}
-            onChange={src => {
-              // should fire when new media loaded
-            }}
-          />*/}
-        </div>
-        <div className="media__controls">
-          <Fullscreen
-            fullscreen={fullscreen}
-            onFullscreen={this._handleFullscreen}
-          />
-        </div>
+        <Media src={this.state.currSrc}>
+          {Player =>
+            <div>
+              {Player}
+              <nav className="media__controls">
+                <PlayPause/>
+                <Progress/>
+                <SeekBar/>
+                <MuteUnmute/>
+                <Volume/>
+              </nav>
+            </div>
+          }
+        </Media>
         <aside className="playlist">
           <h3 className="playlist__title">Playlist</h3>
           <ul className="playlist__links">

@@ -15,7 +15,7 @@ class MuteUnmute extends Component {
       <button type="button" onClick={this._handleMuteUnmute}>
         {this.context.isMuted ? 'Unmute' : 'Mute'}
       </button>
-    );
+    )
   }
 }
 
