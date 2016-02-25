@@ -3,6 +3,7 @@ import getVendor from './utils/get-vendor'
 
 class Media extends Component {
   static propTypes = {
+    src: PropTypes.string,
     children: PropTypes.func
   }
 
@@ -41,19 +42,8 @@ class Media extends Component {
   _lastVolume = 0
 
   getChildContext() {
-    const { currentTime, progress, duration, volume, isPlaying, isMuted, isFullscreen } = this.state
-
     return {
-      // State
-      currentTime,
-      progress,
-      duration,
-      volume,
-      isPlaying,
-      isMuted,
-      isFullscreen,
-
-      // Methods
+      ...this.state,
       play: this._handlePlay,
       pause: this._handlePause,
       playPause: this._handlePlayPause,
@@ -66,13 +56,21 @@ class Media extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillUpdate(nextProps) {
     // clean state if the video has changed
     if (this.props.src !== nextProps.src) {
       this.setState({
         currentTime: 0,
         progress: 0,
-        duration: 0
+        duration: 0,
+        isPlaying: false,
+
+        // TODO: figure out how to keep these settings
+        // getting error because element isn't available when trying to set them
+        // this occurs on componentDidUpdate
+        volume: 1,
+        isMuted: false,
+        isFullscreen: false
       })
     }
   }

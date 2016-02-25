@@ -13,10 +13,12 @@ class Youtube extends Component {
 
   componentDidMount() {
     if (!isAPILoaded) {
-      loadAPI('http://www.youtube.com/player_api', () =>
-        window.onYouTubeIframeAPIReady = () => this._createPlayer()
-      )
-      isAPILoaded = true
+      loadAPI('http://www.youtube.com/player_api')
+
+      window.onYouTubeIframeAPIReady = () => {
+        this._createPlayer()
+        isAPILoaded = true
+      }
     } else {
       this._createPlayer()
     }
@@ -46,7 +48,6 @@ class Youtube extends Component {
     return {
       onReady: () => {
         this.props.onDuration(this._player.getDuration())
-        this._progressId = requestAnimationFrame(this._handleProgress)
       },
       onStateChange: ({ data }) => {
         const isPlaying = (data === 1)
@@ -55,6 +56,15 @@ class Youtube extends Component {
           this._timeUpdateId = requestAnimationFrame(this._handleTimeUpdate)
         } else {
           cancelAnimationFrame(this._timeUpdateId)
+          this._timeUpdateId = null
+
+          cancelAnimationFrame(this._progressId)
+          this._progressId = null
+        }
+
+        // start fetching progress when playing or buffering
+        if (isPlaying || data === 3) {
+          this._progressId = requestAnimationFrame(this._handleProgress)
         }
 
         this.props.onPlaying(isPlaying)
@@ -93,7 +103,7 @@ class Youtube extends Component {
 
     this.props.onProgress(progress)
 
-    if (progress < 1) {
+    if (this._progressId && progress < 1) {
       this._progressId = requestAnimationFrame(this._handleProgress)
     }
   }
