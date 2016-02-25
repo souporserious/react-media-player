@@ -10,7 +10,6 @@ class Vimeo extends Component {
 
   _vimeoId = getVimeoId(this.props.src)
   _origin = '*'
-  _timeUpdateId = null
 
   componentDidMount() {
     window.addEventListener('message', this._onMessage)
@@ -21,7 +20,7 @@ class Vimeo extends Component {
   }
 
   _onMessage = (e) => {
-    // only allow messages from the Vimeo player only
+    // allow messages from the Vimeo player only
     if (!(/^https?:\/\/player.vimeo.com/).test(e.origin)) {
       return false
     }
@@ -71,11 +70,9 @@ class Vimeo extends Component {
   }
 
   _postMessages() {
-    this._postMessage('addEventListener', 'loadProgress')
-    this._postMessage('addEventListener', 'playProgress')
-    this._postMessage('addEventListener', 'play')
-    this._postMessage('addEventListener', 'pause')
-    this._postMessage('addEventListener', 'finish')
+    ['loadProgress', 'playProgress', 'play', 'pause', 'finish'].forEach(listener =>
+      this._postMessage('addEventListener', listener)
+    )
 
     this._postMessage('getDuration')
     this._postMessage('getVolume')
