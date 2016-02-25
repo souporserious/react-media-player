@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import { Media, controls, utils } from '../src/react-media-player'
-console.log(controls, utils)
+
 import './main.scss'
 
 const { PlayPause, Progress, SeekBar, MuteUnmute, Volume, Fullscreen } = controls
@@ -44,6 +44,14 @@ class App extends Component {
           onClick={this._handlePlayPause}
         >
           <Media src={currSrc}>
+            {Player =>
+              <div>
+                {Player}
+                <nav>
+                  <PlayPause/>
+                </nav>
+              </div>
+            }
           </Media>
           {/*<Media
             ref="player"
@@ -61,10 +69,6 @@ class App extends Component {
           />*/}
         </div>
         <div className="media__controls">
-          <PlayPause
-            playing={playing}
-            onPlayPause={this._handlePlayPause}
-          />
           {formatTime(current)}
           <Progress
             progress={progress}

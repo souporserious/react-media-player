@@ -1,19 +1,19 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 
 class PlayPause extends Component {
-
-  shouldComponentUpdate(nextProps) {
-    return this.props.playing !== nextProps.playing;
+  static contextTypes = {
+    isPlaying: PropTypes.bool,
+    onPlayPause: PropTypes.func
   }
 
-  _handlePlayPause() {
-    this.props.onPlayPause();
+  _handlePlayPause = () => {
+    this.context.onPlayPause()
   }
 
   render() {
     return(
-      <button type="button" onClick={::this._handlePlayPause}>
-        {this.props.playing ? 'Pause' : 'Play'}
+      <button type="button" onClick={this._handlePlayPause}>
+        {this.context.isPlaying ? 'Pause' : 'Play'}
       </button>
     );
   }
