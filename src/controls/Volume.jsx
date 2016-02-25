@@ -1,28 +1,27 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react'
 
 class Volume extends Component {
-
-  shouldComponentUpdate(nextProps) {
-    return this.props.volume !== nextProps.volume ||
-           this.props.muted !== nextProps.muted;
+  static contextTypes = {
+    volume: PropTypes.number,
+    setVolume: PropTypes.func
   }
 
-  _handleChange(e) {
-    this.props.onVolumeChange((+e.target.value).toFixed(4));
+  _handleChange = ({ target: { value } }) => {
+    this.context.setVolume((+value).toFixed(4))
   }
 
   render() {
-    return(
+    return (
       <input
         type="range"
         step="any"
         min={0}
         max={1}
-        value={this.props.volume}
-        onChange={::this._handleChange}
+        value={this.context.volume}
+        onChange={this._handleChange}
       />
     );
   }
 }
 
-export default Volume;
+export default Volume

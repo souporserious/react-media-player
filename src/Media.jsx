@@ -21,7 +21,10 @@ class Media extends Component {
     pause: PropTypes.func,
     playPause: PropTypes.func,
     stop: PropTypes.func,
-    seekTo: PropTypes.func
+    seekTo: PropTypes.func,
+    mute: PropTypes.func,
+    muteUnmute: PropTypes.func,
+    setVolume: PropTypes.func
   }
 
   state = {
@@ -33,6 +36,8 @@ class Media extends Component {
     isMuted: false,
     isFullscreen: false
   }
+
+  _lastVolume = 0
 
   getChildContext() {
     const { currentTime, progress, duration, volume, isPlaying, isMuted, isFullscreen } = this.state
@@ -52,7 +57,10 @@ class Media extends Component {
       pause: this._handlePause,
       playPause: this._handlePlayPause,
       stop: this._handleStop,
-      seekTo: this._handleSeekTo
+      seekTo: this._handleSeekTo,
+      mute: this._handleMute,
+      muteUnmute: this._handleMuteUnmute,
+      setVolume: this._handleSetVolume
     }
   }
 
@@ -80,6 +88,37 @@ class Media extends Component {
     this._player.seekTo(currentTime)
   }
 
+  _handleMute = (isMuted) => {
+    if (isMuted) {
+      this._lastVolume = this.state.volume
+      this._player.setVolume(0)
+    } else {
+      let volume = this._lastVolume > 0 ? this._lastVolume : 0.1
+      this._player.setVolume(volume)
+    }
+    this._player.mute(isMuted)
+  }
+
+  _handleMuteUnmute = () => {
+    this._handleMute(!this.state.isMuted)
+  }
+
+  _handleSetVolume = (volume) => {
+    let isMuted = false
+
+    if (volume <= 0) {
+      isMuted = true
+    }
+
+    if (isMuted !== this.state.isMuted) {
+      this._handleMute(isMuted)
+    } else {
+      this._lastVolume = volume
+    }
+
+    this._player.setVolume(volume)
+  }
+
   render() {
     const { src, children } = this.props
     const Player = getVendor(src)
@@ -91,6 +130,7 @@ class Media extends Component {
         onDuration: duration => this.setState({duration}),
         onProgress: progress => this.setState({progress}),
         onTimeUpdate: currentTime => this.setState({currentTime}),
+        onVolumeChange: (volume, isMuted) => this.setState({volume, isMuted}),
         src
       })
     )

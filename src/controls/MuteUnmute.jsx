@@ -1,22 +1,22 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react'
 
 class MuteUnmute extends Component {
-
-  shouldComponentUpdate(nextProps) {
-    return this.props.muted !== nextProps.muted;
+  static contextTypes = {
+    muteUnmute: PropTypes.func,
+    isMuted: PropTypes.bool
   }
 
-  _handleMuteUnmute() {
-    this.props.onMuteUnmute();
+  _handleMuteUnmute = () => {
+    this.context.muteUnmute()
   }
 
   render() {
-    return(
-      <button type="button" onClick={::this._handleMuteUnmute}>
-        {this.props.muted ? 'Unmute' : 'Mute'}
+    return (
+      <button type="button" onClick={this._handleMuteUnmute}>
+        {this.context.isMuted ? 'Unmute' : 'Mute'}
       </button>
     );
   }
 }
 
-export default MuteUnmute;
+export default MuteUnmute

@@ -51,6 +51,8 @@ class App extends Component {
                   <PlayPause/>
                   <Progress/>
                   <SeekBar/>
+                  <MuteUnmute/>
+                  <Volume/>
                 </nav>
               </div>
             }
@@ -71,14 +73,6 @@ class App extends Component {
           />*/}
         </div>
         <div className="media__controls">
-          <MuteUnmute
-            muted={muted}
-            onMuteUnmute={this._handleMuteUnmute}
-          />
-          <Volume
-            volume={volume}
-            onVolumeChange={this._handleVolumeChange}
-          />
           <Fullscreen
             fullscreen={fullscreen}
             onFullscreen={this._handleFullscreen}

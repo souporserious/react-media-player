@@ -13,6 +13,14 @@ class Video extends Component {
     this._player.currentTime = currentTime
   }
 
+  mute(muted) {
+    this._player.muted = muted
+  }
+
+  setVolume(volume) {
+    this._player.volume = volume
+  }
+
   _handlePlay = () => {
     this.props.onPlaying(true)
   }
@@ -39,6 +47,10 @@ class Video extends Component {
     this.props.onTimeUpdate(currentTime)
   }
 
+  _handleVolumeChange = ({ target: { volume, muted } }) => {
+    this.props.onVolumeChange(volume, muted)
+  }
+
   render() {
     return (
       <video
@@ -49,6 +61,7 @@ class Video extends Component {
         onProgress={this._handleProgress}
         onLoadedMetadata={this._handleDuration}
         onTimeUpdate={this._handleTimeUpdate}
+        onVolumeChange={this._handleVolumeChange}
       />
     )
   }
