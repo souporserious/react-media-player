@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
 import { Media, controls, utils } from '../src/react-media-player'
 
@@ -23,6 +23,30 @@ const playlist = [
   {src: 'http://www.noiseaddicts.com/samples_1w72b820/3890.mp3', label: 'Noise Addicts'}
 ]
 
+class MediaPlayer extends Component {
+  static contextTypes = {
+    playPause: PropTypes.func
+  }
+
+  render() {
+    const { Player } = this.props
+    return (
+      <div>
+        <div onClick={() => this.context.playPause()}>
+          {Player}
+        </div>
+        <nav className="media__controls">
+          <PlayPause/>
+          <Progress/>
+          <SeekBar/>
+          <MuteUnmute/>
+          <Volume/>
+        </nav>
+      </div>
+    )
+  }
+}
+
 class App extends Component {
   state = {
     currSrc: playlist[3].src
@@ -32,18 +56,7 @@ class App extends Component {
     return (
       <div>
         <Media src={this.state.currSrc}>
-          {Player =>
-            <div>
-              {Player}
-              <nav className="media__controls">
-                <PlayPause/>
-                <Progress/>
-                <SeekBar/>
-                <MuteUnmute/>
-                <Volume/>
-              </nav>
-            </div>
-          }
+          {Player => <MediaPlayer Player={Player} />}
         </Media>
         <aside className="playlist">
           <h3 className="playlist__title">Playlist</h3>
