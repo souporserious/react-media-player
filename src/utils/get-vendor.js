@@ -19,6 +19,7 @@ export default function getVendor(src) {
   } else if (AUDIO_EXTENSIONS.indexOf(ext) > -1) {
     return Audio
   } else {
-    throw new Error('Source could not be determined.')
+    console.warn('Warning: Player was not rendered. Source could not be determined.')
+    return null
   }
 }

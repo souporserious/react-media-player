@@ -34,7 +34,7 @@ class Media extends Component {
   render() {
     const Player = getVendor(this.props.src)
 
-    return this.props.children(
+    return Player && this.props.children(
       createElement(Player, {
         ref: c => this._player = c,
         onPlaying: isPlaying => this.setState({isPlaying})
