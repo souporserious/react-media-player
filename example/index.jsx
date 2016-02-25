@@ -25,20 +25,26 @@ const playlist = [
 
 class MediaPlayer extends Component {
   static contextTypes = {
-    playPause: PropTypes.func
+    playPause: PropTypes.func,
+    currentTime: PropTypes.number,
+    duration: PropTypes.number
   }
 
   render() {
     const { Player } = this.props
+    const { playPause, currentTime, duration } = this.context
+
     return (
       <div>
-        <div onClick={() => this.context.playPause()}>
+        <div onClick={() => playPause()}>
           {Player}
         </div>
         <nav className="media__controls">
           <PlayPause/>
+          {formatTime(currentTime)}
           <Progress/>
           <SeekBar/>
+          {formatTime(duration)}
           <MuteUnmute/>
           <Volume/>
         </nav>
@@ -49,7 +55,7 @@ class MediaPlayer extends Component {
 
 class App extends Component {
   state = {
-    currSrc: playlist[3].src
+    currSrc: playlist[4].src
   }
 
   render() {
