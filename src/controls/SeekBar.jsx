@@ -4,17 +4,17 @@ class SeekBar extends Component {
   static contextTypes = {
     currentTime: PropTypes.number,
     duration: PropTypes.number,
-    onPlay: PropTypes.func,
-    onPause: PropTypes.func,
+    play: PropTypes.func,
+    pause: PropTypes.func,
     seekTo: PropTypes.func
   }
 
   _handleMouseDown = () => {
-    this.context.onPause()
+    this.context.pause()
   }
 
   _handleMouseUp = () => {
-    this.context.onPlay()
+    this.context.play()
   }
 
   _handleChange = ({ target: { value } }) => {

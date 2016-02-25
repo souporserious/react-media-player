@@ -17,10 +17,10 @@ class Media extends Component {
     isFullscreen: PropTypes.bool,
 
     // Methods
-    onPlay: PropTypes.func,
-    onPause: PropTypes.func,
-    onPlayPause: PropTypes.func,
-    onStop: PropTypes.func,
+    play: PropTypes.func,
+    pause: PropTypes.func,
+    playPause: PropTypes.func,
+    stop: PropTypes.func,
     seekTo: PropTypes.func
   }
 
@@ -48,10 +48,10 @@ class Media extends Component {
       isFullscreen,
 
       // Methods
-      onPlay: this._handlePlay,
-      onPause: this._handlePause,
-      onPlayPause: this._handlePlayPause,
-      onStop: this._handleStop,
+      play: this._handlePlay,
+      pause: this._handlePause,
+      playPause: this._handlePlayPause,
+      stop: this._handleStop,
       seekTo: this._handleSeekTo
     }
   }

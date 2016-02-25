@@ -3,11 +3,11 @@ import React, { Component, PropTypes } from 'react'
 class PlayPause extends Component {
   static contextTypes = {
     isPlaying: PropTypes.bool,
-    onPlayPause: PropTypes.func
+    playPause: PropTypes.func
   }
 
   _handlePlayPause = () => {
-    this.context.onPlayPause()
+    this.context.playPause()
   }
 
   render() {
