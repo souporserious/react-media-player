@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
+import vendorPropTypes from './vendor-prop-types'
 
 class Video extends Component {
+  static propTypes = vendorPropTypes
+
   play() {
     this._player.play()
   }
