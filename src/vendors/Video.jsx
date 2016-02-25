@@ -51,7 +51,8 @@ class Video extends Component {
   }
 
   _handleVolumeChange = ({ target: { volume, muted } }) => {
-    this.props.onVolumeChange(volume, muted)
+    this.props.onMute(muted)
+    this.props.onVolumeChange(volume)
   }
 
   render() {

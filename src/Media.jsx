@@ -66,6 +66,17 @@ class Media extends Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    // clean state if the video has changed
+    if (this.props.src !== nextProps.src) {
+      this.setState({
+        currentTime: 0,
+        progress: 0,
+        duration: 0
+      })
+    }
+  }
+
   _handlePlay = () => {
     this._player.play()
   }
@@ -133,7 +144,8 @@ class Media extends Component {
         onDuration: duration => this.setState({duration}),
         onProgress: progress => this.setState({progress}),
         onTimeUpdate: currentTime => this.setState({currentTime}),
-        onVolumeChange: (volume, isMuted) => this.setState({volume, isMuted})
+        onMute: isMuted => this.setState({isMuted}),
+        onVolumeChange: volume => this.setState({volume})
       })
     )
   }

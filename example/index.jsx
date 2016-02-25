@@ -16,7 +16,6 @@ const playlist = [
   {src: 'https://vid4u.org/ninja/5/dev/assets/madmax-intro.mp4', label: 'Mad Max Intro'},
   {src: 'http://demosthenes.info/assets/videos/mountain.mp4', label: 'Mountain'},
   {src: 'http://www.w3schools.com/html/movie.mp4', label: 'Bear'},
-  {src: 'http://simplypx.com/images/Prometheus.mp4', label: 'Prometheus'},
   {src: 'http://jelmerdemaat.nl/online-demos/conexus/video/small.mp4', label: 'Lego Robot'},
   {src: 'http://shapeshed.com/examples/HTML5-video-element/video/320x240.m4v', label: 'iPod Help'},
   {src: 'http://html5demos.com/assets/dizzy.mp4', label: 'Dizzy Kitty'},
@@ -55,7 +54,7 @@ class MediaPlayer extends Component {
 
 class App extends Component {
   state = {
-    currSrc: playlist[4].src
+    currSrc: playlist[0].src
   }
 
   render() {
