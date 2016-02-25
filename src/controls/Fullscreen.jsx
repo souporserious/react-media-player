@@ -1,22 +1,22 @@
-import React, {Component} from 'react';
+import React, { Component, PropTypes } from 'react'
 
 class Fullscreen extends Component {
-
-  shouldComponentUpdate(nextProps) {
-    return this.props.fullscreen !== nextProps.fullscreen;
+  static contextTypes = {
+    fullscreen: PropTypes.func,
+    isFullscreen: PropTypes.bool
   }
 
-  _handleFullscreen() {
-    this.props.onFullscreen();
+  _handleFullscreen = () => {
+    this.context.fullscreen()
   }
 
   render() {
-    return(
-      <button type="button" onClick={::this._handleFullscreen}>
-        {this.props.fullscreen ? 'Exit Fullscreen' : 'Fullscreen'}
+    return (
+      <button type="button" onClick={this._handleFullscreen}>
+        {this.context.isFullscreen ? 'Exit Fullscreen' : 'Fullscreen'}
       </button>
-    );
+    )
   }
 }
 
-export default Fullscreen;
+export default Fullscreen
