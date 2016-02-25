@@ -31,54 +31,21 @@ class App extends Component {
     duration: 0,
     muted: false,
     volume: 1,
-    fullscreen: false
-  }
-
-  componentDidMount() {
-    this._player = this.refs['player']
-  }
-
-  _handlePlay = () => {
-    this._player.play()
-  }
-
-  _handlePause = () => {
-    this._player.pause()
-  }
-
-  _handlePlayPause = () => {
-    this._player.playPause()
-  }
-
-  _handleCurrentTimeChange = (time) => {
-    this._player.setCurrentTime(time)
-  }
-
-  _handleMuteUnmute = () => {
-    this._player.muteUnmute()
-  }
-
-  _handleVolumeChange = (volume) => {
-    this._player.setVolume(volume)
-  }
-
-  _handleFullscreen = () => {
-    this._player.toggleFullscreen()
-  }
-
-  _loadMedia = (src) => {
-    this.refs['player'].load(src)
+    fullscreen: false,
+    currSrc: playlist[0].src
   }
 
   render() {
-    const { playing, progress, current, duration, muted, volume, fullscreen } = this.state
+    const { currSrc, playing, progress, current, duration, muted, volume, fullscreen } = this.state
 
     return(
       <div>
         <div
           onClick={this._handlePlayPause}
         >
-          <Media
+          <Media src={currSrc}>
+          </Media>
+          {/*<Media
             ref="player"
             src={playlist[0].src}
             onPlaying={playing => this.setState({playing})}
@@ -91,7 +58,7 @@ class App extends Component {
             onChange={src => {
               // should fire when new media loaded
             }}
-          />
+          />*/}
         </div>
         <div className="media__controls">
           <PlayPause
@@ -130,7 +97,7 @@ class App extends Component {
               <li
                 key={link.label}
                 className="playlist__link"
-                onClick={this._loadMedia.bind(this, link.src)}
+                onClick={() => this.setState({currSrc: link.src})}
               >
                 {link.label}
               </li>
