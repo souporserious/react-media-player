@@ -23,21 +23,32 @@ class Media extends Component {
     }
   }
 
+  _handlePlay() {
+    this._player.play()
+    this.setState({isPlaying: true})
+  }
+
+  _handlePause() {
+    this._player.pause()
+    this.setState({isPlaying: false})
+  }
+
   _handlePlayPause = () => {
     if (this.state.isPlaying) {
-      this._player.pause()
+      this._handlePause()
     } else {
-      this._player.play()
+      this._handlePlay()
     }
   }
 
   render() {
-    const Player = getVendor(this.props.src)
+    const { src, children } = this.props
+    const Player = getVendor(src)
 
-    return Player && this.props.children(
+    return Player && children(
       createElement(Player, {
         ref: c => this._player = c,
-        onPlaying: isPlaying => this.setState({isPlaying})
+        src
       })
     )
   }

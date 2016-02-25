@@ -1,20 +1,21 @@
 import React, { Component } from 'react'
 
 class Video extends Component {
-  componentWillUnmount() {
-    this.props.onPlaying(false)
-  }
-  
   play() {
-    this.props.onPlaying(true)
+    this._player.play()
   }
 
   pause() {
-    this.props.onPlaying(false)
+    this._player.pause()
   }
 
   render() {
-    return <div>This is a native video</div>
+    return (
+      <video
+        ref={c => this._player = c}
+        src={this.props.src}
+      />
+    )
   }
 }
 
