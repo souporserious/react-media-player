@@ -32,7 +32,7 @@ class App extends Component {
     muted: false,
     volume: 1,
     fullscreen: false,
-    currSrc: playlist[0].src
+    currSrc: playlist[3].src
   }
 
   render() {
@@ -49,6 +49,8 @@ class App extends Component {
                 {Player}
                 <nav>
                   <PlayPause/>
+                  <Progress/>
+                  <SeekBar/>
                 </nav>
               </div>
             }
@@ -69,18 +71,6 @@ class App extends Component {
           />*/}
         </div>
         <div className="media__controls">
-          {formatTime(current)}
-          <Progress
-            progress={progress}
-          />
-          <SeekBar
-            duration={duration}
-            current={current}
-            play={this._handlePlay}
-            pause={this._handlePause}
-            onCurrentTimeChange={this._handleCurrentTimeChange}
-          />
-          {formatTime(duration)}
           <MuteUnmute
             muted={muted}
             onMuteUnmute={this._handleMuteUnmute}

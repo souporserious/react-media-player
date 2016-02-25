@@ -1,19 +1,18 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react'
 
 class Progress extends Component {
-
-  shouldComponentUpdate(nextProps) {
-    return this.props.progress !== nextProps.progress;
+  static contextTypes = {
+    progress: PropTypes.number
   }
 
   render() {
-    return(
+    return (
       <progress
         max={100}
-        value={this.props.progress * 100}
+        value={this.context.progress * 100}
       />
-    );
+    )
   }
 }
 
-export default Progress;
+export default Progress

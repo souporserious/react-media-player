@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react'
 
 class PlayPause extends Component {
   static contextTypes = {
@@ -11,12 +11,12 @@ class PlayPause extends Component {
   }
 
   render() {
-    return(
+    return (
       <button type="button" onClick={this._handlePlayPause}>
         {this.context.isPlaying ? 'Pause' : 'Play'}
       </button>
-    );
+    )
   }
 }
 
-export default PlayPause;
+export default PlayPause
