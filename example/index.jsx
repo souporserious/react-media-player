@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import { Media, controls, utils } from '../src/react-media-player'
-
+console.log(controls, utils)
 import './main.scss'
 
 const { PlayPause, Progress, SeekBar, MuteUnmute, Volume, Fullscreen } = controls
