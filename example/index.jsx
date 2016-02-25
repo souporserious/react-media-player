@@ -54,7 +54,7 @@ class MediaPlayer extends Component {
 
 class App extends Component {
   state = {
-    currSrc: playlist[0].src
+    currSrc: playlist[1].src
   }
 
   render() {
