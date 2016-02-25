@@ -1,5 +1,4 @@
 import React, { Component, PropTypes, createElement } from 'react'
-import ReactDOM from 'react-dom'
 import getVendor from './utils/get-vendor'
 
 class Media extends Component {
@@ -9,6 +8,8 @@ class Media extends Component {
 
   static childContextTypes = {
     isPlaying: PropTypes.bool,
+    onPlay: PropTypes.func,
+    onPause: PropTypes.func,
     onPlayPause: PropTypes.func
   }
 
@@ -18,7 +19,12 @@ class Media extends Component {
 
   getChildContext() {
     return {
+      // State
       isPlaying: this.state.isPlaying,
+
+      // Methods
+      onPlay: this._handlePlay,
+      onPause: this._handlePause,
       onPlayPause: this._handlePlayPause
     }
   }
@@ -34,10 +40,10 @@ class Media extends Component {
   }
 
   _handlePlayPause = () => {
-    if (this.state.isPlaying) {
-      this._handlePause()
-    } else {
+    if (!this.state.isPlaying) {
       this._handlePlay()
+    } else {
+      this._handlePause()
     }
   }
 
