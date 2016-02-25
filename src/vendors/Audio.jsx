@@ -1,14 +1,21 @@
 import React, { Component } from 'react'
+import Video from './Video'
+import vendorPropTypes from './vendor-prop-types'
 
-class Audio extends Component {
-  play() {
-  }
-
-  pause() {
-  }
-
+class Audio extends Video {
   render() {
-    return <div>This is a native audio file</div>
+    return (
+      <audio
+        ref={c => this._player = c}
+        src={this.props.src}
+        onPlay={this._handlePlay}
+        onPause={this._handlePause}
+        onProgress={this._handleProgress}
+        onLoadedMetadata={this._handleDuration}
+        onTimeUpdate={this._handleTimeUpdate}
+        onVolumeChange={this._handleVolumeChange}
+      />
+    )
   }
 }
 
