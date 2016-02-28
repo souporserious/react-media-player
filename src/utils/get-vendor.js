@@ -10,7 +10,7 @@ const AUDIO_EXTENSIONS = ['mp3', 'm4a', 'wav', 'ogg']
 export default function getVendor(src) {
   const ext = getFileExtension(src)
 
-  if (src.indexOf('youtube.com') > -1) {
+  if (src.indexOf('youtube.com') > -1 || src.indexOf('youtu.be') > -1) {
     return Youtube
   } else if (src.indexOf('vimeo.com') > -1) {
     return Vimeo
