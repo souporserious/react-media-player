@@ -24,6 +24,7 @@ const playlist = [
 
 class MediaPlayer extends Component {
   static contextTypes = {
+    isLoading: PropTypes.bool,
     playPause: PropTypes.func,
     currentTime: PropTypes.number,
     duration: PropTypes.number,
@@ -32,10 +33,11 @@ class MediaPlayer extends Component {
 
   render() {
     const { Player } = this.props
-    const { playPause, currentTime, duration, stop } = this.context
+    const { isLoading, playPause, currentTime, duration, stop } = this.context
 
     return (
       <div>
+        {isLoading && <span>Loading...</span>}
         <div onClick={() => playPause()}>
           {Player}
         </div>

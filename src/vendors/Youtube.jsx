@@ -56,10 +56,11 @@ class Youtube extends Component {
     return {
       onReady: () => {
         this.props.onDuration(this._player.getDuration())
+        this.props.onReady()
       },
       onStateChange: ({ data }) => {
         const isPlaying = (data === 1)
-
+        
         if (isPlaying) {
           this._timeUpdateId = requestAnimationFrame(this._handleTimeUpdate)
         } else {

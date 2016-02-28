@@ -7,6 +7,7 @@ class Audio extends HTML5 {
       <audio
         ref={c => this._player = c}
         src={this.props.src}
+        onCanPlay={this._handleCanPlay}
         onPlay={this._handlePlay}
         onPause={this._handlePause}
         onEnded={this._handleEnded}

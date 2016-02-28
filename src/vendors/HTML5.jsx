@@ -29,6 +29,10 @@ class HTML5 extends Component {
     this._player.volume = volume
   }
 
+  _handleCanPlay = () => {
+    this.props.onReady()
+  }
+
   _handlePlay = () => {
     this.props.onPlaying(true)
   }

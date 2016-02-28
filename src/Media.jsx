@@ -13,6 +13,7 @@ class Media extends Component {
     progress: PropTypes.number,
     duration: PropTypes.number,
     volume: PropTypes.number,
+    isLoading: PropTypes.bool,
     isPlaying: PropTypes.bool,
     isMuted: PropTypes.bool,
     isFullscreen: PropTypes.bool,
@@ -34,6 +35,7 @@ class Media extends Component {
     progress: 0,
     duration: 0,
     volume: 1,
+    isLoading: true,
     isPlaying: false,
     isMuted: false,
     isFullscreen: false
@@ -138,6 +140,7 @@ class Media extends Component {
       createElement(Player, {
         ref: c => this._player = c,
         src,
+        onReady: () => this.setState({isLoading: false}),
         onPlaying: isPlaying => this.setState({isPlaying}),
         onDuration: duration => this.setState({duration}),
         onProgress: progress => this.setState({progress}),

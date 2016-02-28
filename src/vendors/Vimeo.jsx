@@ -33,6 +33,7 @@ class Vimeo extends Component {
 
     switch (data.event) {
       case 'ready':
+        this.props.onReady()
         this._postMessages()
         break;
       case 'loadProgress':
