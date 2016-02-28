@@ -9,7 +9,9 @@ const { formatTime } = utils
 
 const playlist = [
   {src: 'http://www.youtube.com/embed/h3YVKTxTOgU', label: 'Brand New (Youtube)'},
-  {src: 'https://vimeo.com/76979871', label: 'Vimeo'},
+  {src: 'https://youtu.be/VOyYwzkQB98', label: 'Neck Deep (Youtube)'},
+  {src: 'https://player.vimeo.com/video/156147818', label: 'Pump (Vimeo)'},
+  {src: 'https://vimeo.com/channels/staffpicks/150734165', label: 'Lesley (Vimeo)'},
   {src: 'http://a1083.phobos.apple.com/us/r1000/014/Music/v4/4e/44/b7/4e44b7dc-aaa2-c63b-fb38-88e1635b5b29/mzaf_1844128138535731917.plus.aac.p.m4a', label: 'iTunes Preview'},
   {src: 'http://media.w3.org/2010/05/sintel/trailer.mp4', label: 'Sintel Trailer'},
   {src: 'http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4', label: 'Big Buck Bunny'},
@@ -57,7 +59,7 @@ class MediaPlayer extends Component {
 
 class App extends Component {
   state = {
-    currSrc: playlist[1].src
+    currSrc: playlist[0].src
   }
 
   render() {
