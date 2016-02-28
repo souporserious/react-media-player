@@ -1,8 +1,7 @@
-import React, { Component } from 'react'
-import Video from './Video'
-import vendorPropTypes from './vendor-prop-types'
+import React from 'react'
+import HTML5 from './HTML5'
 
-class Audio extends Video {
+class Audio extends HTML5 {
   render() {
     return (
       <audio
@@ -10,6 +9,7 @@ class Audio extends Video {
         src={this.props.src}
         onPlay={this._handlePlay}
         onPause={this._handlePause}
+        onStop={this._handleStop}
         onProgress={this._handleProgress}
         onLoadedMetadata={this._handleDuration}
         onTimeUpdate={this._handleTimeUpdate}
