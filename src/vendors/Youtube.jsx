@@ -80,6 +80,10 @@ class Youtube extends Component {
     this._player.pauseVideo()
   }
 
+  stop() {
+    this._player.stopVideo()
+  }
+
   seekTo(currentTime) {
     this._player.seekTo(currentTime)
   }

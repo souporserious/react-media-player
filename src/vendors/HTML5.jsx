@@ -12,6 +12,10 @@ class HTML5 extends Component {
     this._player.pause()
   }
 
+  stop() {
+    this._player.stop()
+  }
+
   seekTo(currentTime) {
     this._player.currentTime = currentTime
   }

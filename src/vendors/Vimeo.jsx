@@ -86,6 +86,10 @@ class Vimeo extends Component {
     this._postMessage('pause')
   }
 
+  stop() {
+    this._postMessage('unload')
+  }
+
   seekTo(currentTime) {
     this._postMessage('seekTo', currentTime)
   }
