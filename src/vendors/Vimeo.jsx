@@ -15,6 +15,13 @@ class Vimeo extends Component {
     window.addEventListener('message', this._onMessage)
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.src !== this.props.src) {
+      this.stop()
+      this._vimeoId = getVimeoId(nextProps.src)
+    }
+  }
+
   componentWillUnmount() {
     window.removeEventListener('message', this._onMessage)
   }
