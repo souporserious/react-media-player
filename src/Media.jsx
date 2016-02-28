@@ -1,5 +1,8 @@
 import React, { Component, PropTypes, createElement } from 'react'
+import ReactDOM from 'react-dom'
 import getVendor from './utils/get-vendor'
+import requestFullscreen from './utils/request-fullscreen'
+import exitFullscreen from './utils/exit-fullscreen'
 
 class Media extends Component {
   static propTypes = {
@@ -27,7 +30,7 @@ class Media extends Component {
     mute: PropTypes.func,
     muteUnmute: PropTypes.func,
     setVolume: PropTypes.func,
-    setFullscreen: PropTypes.func
+    fullscreen: PropTypes.func
   }
 
   state = {
@@ -54,7 +57,7 @@ class Media extends Component {
       mute: this._handleMute,
       muteUnmute: this._handleMuteUnmute,
       setVolume: this._handleSetVolume,
-      setFullscreen: () => null
+      fullscreen: this._handleFullscreen
     }
   }
 
@@ -130,6 +133,18 @@ class Media extends Component {
     }
 
     this._player.setVolume(volume)
+  }
+
+  _handleFullscreen = () => {
+    const { isFullscreen } = this.state
+
+    if (!isFullscreen) {
+      ReactDOM.findDOMNode(this._player)[requestFullscreen]()
+    } else {
+      document[exitFullscreen]()
+    }
+
+    this.setState({ isFullscreen: !isFullscreen })
   }
 
   render() {

@@ -7,7 +7,7 @@ class Fullscreen extends Component {
   }
 
   _handleFullscreen = () => {
-    this.context.setFullscreen()
+    this.context.fullscreen()
   }
 
   render() {
