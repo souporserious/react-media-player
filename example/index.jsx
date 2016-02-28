@@ -26,12 +26,13 @@ class MediaPlayer extends Component {
   static contextTypes = {
     playPause: PropTypes.func,
     currentTime: PropTypes.number,
-    duration: PropTypes.number
+    duration: PropTypes.number,
+    stop: PropTypes.func
   }
 
   render() {
     const { Player } = this.props
-    const { playPause, currentTime, duration } = this.context
+    const { playPause, currentTime, duration, stop } = this.context
 
     return (
       <div>
@@ -46,6 +47,7 @@ class MediaPlayer extends Component {
           {formatTime(duration)}
           <MuteUnmute/>
           <Volume/>
+          <div onClick={() => stop()}>Stop</div>
         </nav>
       </div>
     )
