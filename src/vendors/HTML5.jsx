@@ -37,6 +37,10 @@ class HTML5 extends Component {
     this.props.onPlaying(false)
   }
 
+  _handleEnded = () => {
+    this.props.onPlaying(false)
+  }
+
   _handleProgress = ({ target: { buffered, duration } }) => {
     let progress = 0
 
