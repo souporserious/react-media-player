@@ -24,6 +24,13 @@ class Youtube extends Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.src !== this.props.src) {
+      const videoId = getYoutubeId(nextProps.src)
+      this._player.cueVideoById(videoId)
+    }
+  }
+
   componentWillUnmount() {
     if (this._progressId) {
       cancelAnimationFrame(this._progressId)
@@ -60,7 +67,7 @@ class Youtube extends Component {
       },
       onStateChange: ({ data }) => {
         const isPlaying = (data === 1)
-        
+
         if (isPlaying) {
           this._timeUpdateId = requestAnimationFrame(this._handleTimeUpdate)
         } else {
@@ -112,7 +119,7 @@ class Youtube extends Component {
   }
 
   _handleProgress = () => {
-    const progress = this._player.getVideoLoadedFraction()
+    const progress = this._player.getVideoLoadedFraction() || 0
 
     this.props.onProgress(progress)
 
@@ -122,7 +129,7 @@ class Youtube extends Component {
   }
 
   _handleTimeUpdate = () => {
-    this.props.onTimeUpdate(this._player.getCurrentTime())
+    this.props.onTimeUpdate(this._player.getCurrentTime() || 0)
 
     if (this._timeUpdateId) {
       this._timeUpdateId = requestAnimationFrame(this._handleTimeUpdate)
