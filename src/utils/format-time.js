@@ -1,14 +1,15 @@
-export default function formatTime(current, pad = true) {
-  let minutes = Math.floor(current / 60)
-  let seconds = Math.floor(current % 60)
+export default function formatTime(current) {
+  let h = Math.floor(current / 3600)
+  let m = Math.floor(current / 60)
+  let s = Math.floor(current % 60)
 
-  if (pad || minutes >= 10) {
-    minutes = '0' + minutes
+  if (s < 10) {
+    s = '0' + s
   }
 
-  if (pad || seconds >= 10) {
-    seconds = '0' + seconds
+  if (h > 0) {
+    return h + ':' + m + ':' + s
+  } else {
+    return m + ':' + s
   }
-
-  return minutes + ':' + seconds
 }
