@@ -3,8 +3,6 @@ import loadAPI from '../utils/load-api'
 import getVimeoId from '../utils/get-vimeo-id'
 import vendorPropTypes from './vendor-prop-types'
 
-let isAPILoaded = false
-
 class Vimeo extends Component {
   static propTypes = vendorPropTypes
 
