@@ -20,3 +20,21 @@ video::-webkit-media-controls {
   position: relative;
   z-index: 2147483647;
 }
+
+.circle-progress {
+  fill: none;
+  stroke: #D7DBDC;
+  stroke-width: 3;
+}
+
+.circle-progress__foreground {
+  stroke: #4FC3E6;
+  transition: 350ms stroke-dashoffset;
+
+  // position the start of the circle at the top
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+}
+
+.circle-progress__background {
+}
