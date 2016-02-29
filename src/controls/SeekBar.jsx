@@ -6,15 +6,22 @@ class SeekBar extends Component {
     duration: PropTypes.number,
     play: PropTypes.func,
     pause: PropTypes.func,
-    seekTo: PropTypes.func
+    seekTo: PropTypes.func,
+    isPlaying: PropTypes.bool
   }
 
+  _playingOnMouseDown = false
+
   _handleMouseDown = () => {
+    this._playingOnMouseDown = this.context.isPlaying
     this.context.pause()
   }
 
   _handleMouseUp = () => {
-    this.context.play()
+    // only play if media was playing prior to mouseDown
+    if (this._playingOnMouseDown) {
+      this.context.play()
+    }
   }
 
   _handleChange = ({ target: { value } }) => {
