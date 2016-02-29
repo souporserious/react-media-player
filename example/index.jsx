@@ -1,11 +1,11 @@
 import React, { Component, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
 import { Media, controls, utils } from '../src/react-media-player'
-import CirclePlayer from './CirclePlayer'
+import CircleMediaPlayer from './CircleMediaPlayer'
 
 import './main.scss'
 
-const { PlayPause, Progress, SeekBar, MuteUnmute, Volume, Fullscreen } = controls
+const { PlayPause, CurrentTime, Progress, SeekBar, Duration, MuteUnmute, Volume, Fullscreen } = controls
 const { formatTime } = utils
 
 const playlist = [
@@ -28,9 +28,7 @@ const playlist = [
 class MediaPlayer extends Component {
   static contextTypes = {
     isLoading: PropTypes.bool,
-    playPause: PropTypes.func,
-    currentTime: PropTypes.number,
-    duration: PropTypes.number
+    playPause: PropTypes.func
   }
 
   render() {
@@ -45,10 +43,10 @@ class MediaPlayer extends Component {
         </div>
         <nav className="media__controls">
           <PlayPause />
-          {formatTime(currentTime)}
+          <CurrentTime />
           <Progress />
           <SeekBar />
-          {formatTime(duration)}
+          <Duration />
           <MuteUnmute />
           <Volume />
           <Fullscreen />
@@ -66,7 +64,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <CirclePlayer src="http://a1083.phobos.apple.com/us/r1000/014/Music/v4/4e/44/b7/4e44b7dc-aaa2-c63b-fb38-88e1635b5b29/mzaf_1844128138535731917.plus.aac.p.m4a" />
+        <CircleMediaPlayer src="http://a1083.phobos.apple.com/us/r1000/014/Music/v4/4e/44/b7/4e44b7dc-aaa2-c63b-fb38-88e1635b5b29/mzaf_1844128138535731917.plus.aac.p.m4a" />
         <Media src={this.state.currSrc}>
           {Player => <MediaPlayer Player={Player} />}
         </Media>

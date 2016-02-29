@@ -21,14 +21,25 @@ video::-webkit-media-controls {
   z-index: 2147483647;
 }
 
-.circle-progress {
+// Circle Media Player
+.circle-media-player {
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  line-height: 0;
+  background-color: transparent;
+
   fill: none;
   stroke: #D7DBDC;
   stroke-width: 3;
+
+  cursor: pointer;
+  outline: 0;
 }
 
-.circle-progress__foreground {
-  stroke: #4FC3E6;
+.circle-media-player__foreground {
+  stroke: #6e9541;
   transition: 350ms stroke-dashoffset;
 
   // position the start of the circle at the top
@@ -36,5 +47,11 @@ video::-webkit-media-controls {
   transform-origin: 50% 50%;
 }
 
-.circle-progress__background {
+.circle-media-player__background {
+}
+
+.circle-media-player__play,
+.circle-media-player__pause {
+  fill:  #6e9541;
+  stroke-width: 0;
 }
