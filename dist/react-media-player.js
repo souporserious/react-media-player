@@ -7,7 +7,7 @@
 		exports["ReactMediaPlayer"] = factory(require("React"), require("ReactDOM"));
 	else
 		root["ReactMediaPlayer"] = factory(root["React"], root["ReactDOM"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_4__, __WEBPACK_EXTERNAL_MODULE_5__) {
+})(this, function(__WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_3__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -56,953 +56,589 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	exports.utils = exports.controls = exports.Media = undefined;
 
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	var _formatTime = __webpack_require__(1);
-
-	var _formatTime2 = _interopRequireDefault(_formatTime);
-
-	var _Media2 = __webpack_require__(2);
+	var _Media2 = __webpack_require__(1);
 
 	var _Media3 = _interopRequireDefault(_Media2);
 
-	exports.Media = _Media3['default'];
+	var _exports = __webpack_require__(17);
 
-	var _controlsControlsJs = __webpack_require__(13);
+	var _controls = _interopRequireWildcard(_exports);
 
-	var _controls = _interopRequireWildcard(_controlsControlsJs);
+	var _exports2 = __webpack_require__(27);
 
+	var _utils = _interopRequireWildcard(_exports2);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.Media = _Media3.default;
 	exports.controls = _controls;
-	var utils = {
-	  formatTime: _formatTime2['default']
-	};
-	exports.utils = utils;
+	exports.utils = _utils;
 
 /***/ },
 /* 1 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-	exports['default'] = formatTime;
-
-	function formatTime(current) {
-	  var minutes = Math.floor(current / 60);
-	  var seconds = Math.floor(current % 60);
-
-	  seconds = seconds >= 10 ? seconds : '0' + seconds;
-	  minutes = minutes >= 10 ? minutes : minutes;
-
-	  return minutes + ':' + seconds;
-	}
-
-	module.exports = exports['default'];
-
-/***/ },
-/* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
-
-	var _react = __webpack_require__(4);
+	var _react = __webpack_require__(2);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactDom = __webpack_require__(5);
+	var _reactDom = __webpack_require__(3);
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _reactLibShallowCompare = __webpack_require__(6);
-
-	var _reactLibShallowCompare2 = _interopRequireDefault(_reactLibShallowCompare);
-
-	var _loadApi = __webpack_require__(8);
-
-	var _loadApi2 = _interopRequireDefault(_loadApi);
-
-	var _getVendor = __webpack_require__(3);
+	var _getVendor = __webpack_require__(4);
 
 	var _getVendor2 = _interopRequireDefault(_getVendor);
 
-	var _getYoutubeId = __webpack_require__(9);
+	var _requestFullscreen = __webpack_require__(15);
 
-	var _getYoutubeId2 = _interopRequireDefault(_getYoutubeId);
+	var _requestFullscreen2 = _interopRequireDefault(_requestFullscreen);
 
-	var _getVimeoId = __webpack_require__(10);
+	var _exitFullscreen = __webpack_require__(16);
 
-	var _getVimeoId2 = _interopRequireDefault(_getVimeoId);
+	var _exitFullscreen2 = _interopRequireDefault(_exitFullscreen);
 
-	var _Player = __webpack_require__(11);
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var _Player2 = _interopRequireDefault(_Player);
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	var apiFlags = {
-	  youtube: false,
-	  vimeo: false
-	};
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-	var Media = (function (_Component) {
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Media = function (_Component) {
 	  _inherits(Media, _Component);
 
 	  function Media() {
-	    var _this = this;
+	    var _Object$getPrototypeO;
+
+	    var _temp, _this, _ret;
 
 	    _classCallCheck(this, Media);
 
-	    _get(Object.getPrototypeOf(Media.prototype), 'constructor', this).apply(this, arguments);
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
 
-	    this.state = {
-	      player: null,
-	      vendor: null,
-	      playing: false,
-	      duration: 0,
-	      current: 0,
+	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(Media)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.state = {
+	      currentTime: 0,
 	      progress: 0,
-	      muted: false,
+	      duration: 0,
 	      volume: 1,
-	      fullscreen: false
-	    };
-	    this._src = null;
-	    this._currentProgressID = null;
-	    this._currentYTProgressID = null;
-	    this._currentTimeID = null;
-	    this._lastVolume = 0;
-
-	    this.play = function () {
-	      var _state = _this.state;
-	      var player = _state.player;
-	      var vendor = _state.vendor;
-
-	      switch (vendor) {
-	        case 'youtube':
-	          player.playVideo();
-	          _this._currentTimeID = requestAnimationFrame(_this._getCurrentTime);
-	          break;
-	        case 'vimeo':
-	          player.api('play');
-	          break;
-	        default:
-	          player.play();
-	      }
-	    };
-
-	    this.pause = function () {
-	      var _state2 = _this.state;
-	      var player = _state2.player;
-	      var vendor = _state2.vendor;
-
-	      switch (vendor) {
-	        case 'youtube':
-	          player.pauseVideo();
-	          cancelAnimationFrame(_this._currentTimeID);
-	          break;
-	        case 'vimeo':
-	          player.api('pause');
-	          break;
-	        default:
-	          player.pause();
-	      }
-	    };
-
-	    this.playPause = function () {
-	      var playing = _this.state.playing;
-
-	      if (!playing) {
-	        _this.play();
+	      isLoading: true,
+	      isPlaying: false,
+	      isMuted: false,
+	      isFullscreen: false
+	    }, _this._lastVolume = 0, _this._handlePlay = function () {
+	      _this._player.play();
+	    }, _this._handlePause = function () {
+	      _this._player.pause();
+	    }, _this._handlePlayPause = function () {
+	      if (!_this.state.isPlaying) {
+	        _this._player.play();
 	      } else {
-	        _this.pause();
+	        _this._player.pause();
 	      }
-	    };
-
-	    this.stop = function () {
-	      var player = _this.state.player;
-
-	      player.pause();
-	      player.currentTime = 0;
-	    };
-
-	    this.setCurrentTime = function (current) {
-	      var _state3 = _this.state;
-	      var player = _state3.player;
-	      var vendor = _state3.vendor;
-
-	      if (vendor === 'youtube') {
-	        player.seekTo(current);
-	      } else if (vendor === 'vimeo') {
-	        player.api('seekTo', current);
+	    }, _this._handleStop = function () {
+	      _this._player.stop();
+	    }, _this._handleSeekTo = function (currentTime) {
+	      _this._player.seekTo(currentTime);
+	    }, _this._handleMute = function (isMuted) {
+	      if (isMuted) {
+	        _this._lastVolume = _this.state.volume;
+	        _this._player.setVolume(0);
 	      } else {
-	        player.currentTime = current;
+	        var volume = _this._lastVolume > 0 ? _this._lastVolume : 0.1;
+	        _this._player.setVolume(volume);
 	      }
-
-	      _this._setCurrentTime(current);
-	    };
-
-	    this.muteUnmute = function () {
-	      var _state4 = _this.state;
-	      var player = _state4.player;
-	      var vendor = _state4.vendor;
-	      var muted = _state4.muted;
-	      var volume = _state4.volume;
-
-	      if (!muted) {
-	        switch (vendor) {
-	          case 'youtube':
-	            player.mute();
-	            break;
-	          default:
-	            player.muted = true;
-	        }
-
-	        // store volume for un-mute
-	        _this._lastVolume = volume;
-
-	        // if muted the volume should be set to 0
-	        _this.setVolume(0);
-
-	        _this._setMute(true);
-	      } else {
-
-	        switch (vendor) {
-	          case 'youtube':
-	            player.unMute();
-	            break;
-	          default:
-	            player.muted = false;
-	        }
-
-	        // if unmuted set to last volume
-	        _this.setVolume(_this._lastVolume);
-
-	        _this._setMute(false);
-	      }
-	    };
-
-	    this.setVolume = function (volume) {
-	      var _state5 = _this.state;
-	      var player = _state5.player;
-	      var vendor = _state5.vendor;
-
-	      var muted = false;
+	      _this._player.mute(isMuted);
+	    }, _this._handleMuteUnmute = function () {
+	      _this._handleMute(!_this.state.isMuted);
+	    }, _this._handleSetVolume = function (volume) {
+	      var isMuted = false;
 
 	      if (volume <= 0) {
-	        muted = true;
+	        isMuted = true;
 	      }
 
-	      if (vendor === 'youtube') {
-	        player.setVolume(volume * 100);
-	      } else if (vendor === 'vimeo') {
-	        player.api('setVolume', volume);
+	      if (isMuted !== _this.state.isMuted) {
+	        _this._handleMute(isMuted);
 	      } else {
-	        player.volume = volume;
+	        _this._lastVolume = volume;
 	      }
 
-	      _this._setVolume(volume);
-	      _this._setMute(muted);
+	      _this._player.setVolume(volume);
+	    }, _this._handleFullscreen = function () {
+	      var isFullscreen = _this.state.isFullscreen;
 
-	      if (muted) {
-	        switch (vendor) {
-	          case 'youtube':
-	            player.mute();
-	            break;
-	          default:
-	            player.muted = true;
-	        }
+
+	      if (!isFullscreen) {
+	        _reactDom2.default.findDOMNode(_this._player)[_requestFullscreen2.default]();
 	      } else {
-	        switch (vendor) {
-	          case 'youtube':
-	            player.unMute();
-	            break;
-	          default:
-	            player.muted = false;
-	        }
-	      }
-	    };
-
-	    this.toggleFullscreen = function () {
-	      if (!_this.state.fullscreen) {
-	        var n = _this.state.playerNode;
-
-	        if (n.requestFullscreen) {
-	          n.requestFullscreen();
-	        } else if (n.webkitRequestFullscreen) {
-	          n.webkitRequestFullscreen();
-	        } else if (n.mozRequestFullScreen) {
-	          n.mozRequestFullScreen();
-	        } else if (n.msRequestFullscreen) {
-	          n.msRequestFullscreen();
-	        }
-	      } else {
-	        var d = document;
-
-	        if (d.exitFullscreen) {
-	          d.exitFullscreen();
-	        } else if (d.webkitExitFullscreen) {
-	          d.webkitExitFullscreen();
-	        } else if (d.mozCancelFullScreen) {
-	          d.mozCancelFullScreen();
-	        } else if (d.msExitFullscreen) {
-	          d.msExitFullscreen();
-	        }
-	      }
-	    };
-
-	    this.load = function (src) {
-	      var player = _this.state.player;
-
-	      var vendor = (0, _getVendor2['default'])(src);
-
-	      if (['youtube', 'vimeo'].indexOf(vendor)) {
-	        console.log('fug');
+	        document[_exitFullscreen2.default]();
 	      }
 
-	      // pause player
-	      player.pause();
-
-	      // test support
-	      // !!!! need to check canPlayType on init
-	      if (player.canPlayType('video/mp4')) {
-	        player.setAttribute('src', src);
-	      } else if (player.canPlayType('video/webm')) {
-	        player.setAttribute('src', setupURL(src, 'webm'));
-	      } else if (player.canPlayType('video/ogg')) {
-	        player.setAttribute('src', setupURL(src, 'ogv'));
-	      }
-
-	      // load new media
-	      player.load();
-
-	      // play new media
-	      player.play();
-	    };
-
-	    this._getCurrentProgress = function () {
-	      var player = _this.state.player;
-
-	      var progress = 0;
-
-	      if (player.buffered.length > 0) {
-	        progress = player.buffered.end(0) / player.duration;
-	      }
-
-	      _this._setProgress(progress);
-
-	      if (progress < 1) {
-	        _this._currentProgressID = requestAnimationFrame(_this._getCurrentProgress);
-	      }
-	    };
-
-	    this._getCurrentYTProgress = function () {
-	      var player = _this.state.player;
-
-	      var progress = player.getVideoLoadedFraction();
-
-	      _this._setProgress(progress);
-
-	      if (progress < 1) {
-	        _this._currentYTProgressID = requestAnimationFrame(_this._getCurrentYTProgress);
-	      }
-	    };
-
-	    this._getCurrentTime = function () {
-	      var player = _this.state.player;
-
-	      _this._setCurrentTime(player.getCurrentTime());
-
-	      _this._currentTimeID = requestAnimationFrame(_this._getCurrentTime);
-	    };
+	      _this.setState({ isFullscreen: !isFullscreen });
+	    }, _temp), _possibleConstructorReturn(_this, _ret);
 	  }
 
 	  _createClass(Media, [{
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      this._setPlayer(this._setupAPI);
+	    key: 'getChildContext',
+	    value: function getChildContext() {
+	      return _extends({}, this.state, {
+	        play: this._handlePlay,
+	        pause: this._handlePause,
+	        playPause: this._handlePlayPause,
+	        stop: this._handleStop,
+	        seekTo: this._handleSeekTo,
+	        mute: this._handleMute,
+	        muteUnmute: this._handleMuteUnmute,
+	        setVolume: this._handleSetVolume,
+	        fullscreen: this._handleFullscreen
+	      });
 	    }
 	  }, {
-	    key: 'shouldComponentUpdate',
-	    value: function shouldComponentUpdate(nextProps, nextState) {
-	      return (0, _reactLibShallowCompare2['default'])(this, nextProps, nextState);
+	    key: 'componentWillUpdate',
+	    value: function componentWillUpdate(nextProps) {
+	      // clean state if the video has changed
+	      if (this.props.src !== nextProps.src) {
+	        this.setState({
+	          currentTime: 0,
+	          progress: 0,
+	          duration: 0,
+	          isPlaying: false,
+
+	          // TODO: figure out how to keep these settings
+	          // getting error because element isn't available when trying to set them
+	          // this occurs on componentDidUpdate
+	          volume: 1,
+	          isMuted: false,
+	          isFullscreen: false
+	        });
+	      }
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _this2 = this;
+
+	      var _props = this.props;
+	      var src = _props.src;
+	      var children = _props.children;
+
+	      var Player = (0, _getVendor2.default)(src);
+
+	      return Player && children((0, _react.createElement)(Player, {
+	        ref: function ref(c) {
+	          return _this2._player = c;
+	        },
+	        src: src,
+	        onReady: function onReady() {
+	          return _this2.setState({ isLoading: false });
+	        },
+	        onPlaying: function onPlaying(isPlaying) {
+	          return _this2.setState({ isPlaying: isPlaying });
+	        },
+	        onDuration: function onDuration(duration) {
+	          return _this2.setState({ duration: duration });
+	        },
+	        onProgress: function onProgress(progress) {
+	          return _this2.setState({ progress: progress });
+	        },
+	        onTimeUpdate: function onTimeUpdate(currentTime) {
+	          return _this2.setState({ currentTime: currentTime });
+	        },
+	        onMute: function onMute(isMuted) {
+	          return _this2.setState({ isMuted: isMuted });
+	        },
+	        onVolumeChange: function onVolumeChange(volume) {
+	          return _this2.setState({ volume: volume });
+	        }
+	      }));
+	    }
+	  }]);
+
+	  return Media;
+	}(_react.Component);
+
+	Media.propTypes = {
+	  src: _react.PropTypes.string,
+	  children: _react.PropTypes.func
+	};
+	Media.childContextTypes = {
+	  // State
+	  currentTime: _react.PropTypes.number,
+	  progress: _react.PropTypes.number,
+	  duration: _react.PropTypes.number,
+	  volume: _react.PropTypes.number,
+	  isLoading: _react.PropTypes.bool,
+	  isPlaying: _react.PropTypes.bool,
+	  isMuted: _react.PropTypes.bool,
+	  isFullscreen: _react.PropTypes.bool,
+
+	  // Methods
+	  play: _react.PropTypes.func,
+	  pause: _react.PropTypes.func,
+	  playPause: _react.PropTypes.func,
+	  stop: _react.PropTypes.func,
+	  seekTo: _react.PropTypes.func,
+	  mute: _react.PropTypes.func,
+	  muteUnmute: _react.PropTypes.func,
+	  setVolume: _react.PropTypes.func,
+	  fullscreen: _react.PropTypes.func
+	};
+	exports.default = Media;
+
+/***/ },
+/* 2 */
+/***/ function(module, exports) {
+
+	module.exports = __WEBPACK_EXTERNAL_MODULE_2__;
+
+/***/ },
+/* 3 */
+/***/ function(module, exports) {
+
+	module.exports = __WEBPACK_EXTERNAL_MODULE_3__;
+
+/***/ },
+/* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = getVendor;
+
+	var _getFileExtension = __webpack_require__(5);
+
+	var _getFileExtension2 = _interopRequireDefault(_getFileExtension);
+
+	var _Youtube = __webpack_require__(6);
+
+	var _Youtube2 = _interopRequireDefault(_Youtube);
+
+	var _Vimeo = __webpack_require__(10);
+
+	var _Vimeo2 = _interopRequireDefault(_Vimeo);
+
+	var _Video = __webpack_require__(12);
+
+	var _Video2 = _interopRequireDefault(_Video);
+
+	var _Audio = __webpack_require__(14);
+
+	var _Audio2 = _interopRequireDefault(_Audio);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var VIDEO_EXTENSIONS = ['mp4', 'm4v', 'webm', 'ogv'];
+	var AUDIO_EXTENSIONS = ['mp3', 'm4a', 'wav', 'ogg'];
+
+	function getVendor(src) {
+	  var ext = (0, _getFileExtension2.default)(src);
+
+	  if (src.indexOf('youtube.com') > -1 || src.indexOf('youtu.be') > -1) {
+	    return _Youtube2.default;
+	  } else if (src.indexOf('vimeo.com') > -1) {
+	    return _Vimeo2.default;
+	  } else if (VIDEO_EXTENSIONS.indexOf(ext) > -1) {
+	    return _Video2.default;
+	  } else if (AUDIO_EXTENSIONS.indexOf(ext) > -1) {
+	    return _Audio2.default;
+	  } else {
+	    console.warn('Warning: Player was not rendered. Source could not be determined.');
+	    return null;
+	  }
+	}
+
+/***/ },
+/* 5 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = getFileExtension;
+	// thanks to: http://stackoverflow.com/a/6997591/1461204
+	function getFileExtension(url) {
+	  var file = url.substr(url.lastIndexOf('/') + 1).split('?')[0];
+	  var extPos = file.lastIndexOf('.');
+	  return extPos > -1 && file.substr(extPos + 1);
+	}
+
+/***/ },
+/* 6 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _loadApi = __webpack_require__(7);
+
+	var _loadApi2 = _interopRequireDefault(_loadApi);
+
+	var _getYoutubeId = __webpack_require__(8);
+
+	var _getYoutubeId2 = _interopRequireDefault(_getYoutubeId);
+
+	var _vendorPropTypes = __webpack_require__(9);
+
+	var _vendorPropTypes2 = _interopRequireDefault(_vendorPropTypes);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var isAPILoaded = false;
+
+	var Youtube = function (_Component) {
+	  _inherits(Youtube, _Component);
+
+	  function Youtube() {
+	    var _Object$getPrototypeO;
+
+	    var _temp, _this, _ret;
+
+	    _classCallCheck(this, Youtube);
+
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(Youtube)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this._progressId = null, _this._timeUpdateId = null, _this._handleProgress = function () {
+	      var progress = _this._player.getVideoLoadedFraction() || 0;
+
+	      _this.props.onProgress(progress);
+
+	      if (_this._progressId && progress < 1) {
+	        _this._progressId = requestAnimationFrame(_this._handleProgress);
+	      }
+	    }, _this._handleTimeUpdate = function () {
+	      _this.props.onTimeUpdate(_this._player.getCurrentTime() || 0);
+
+	      if (_this._timeUpdateId) {
+	        _this._timeUpdateId = requestAnimationFrame(_this._handleTimeUpdate);
+	      }
+	    }, _temp), _possibleConstructorReturn(_this, _ret);
+	  }
+
+	  _createClass(Youtube, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var _this2 = this;
+
+	      if (!isAPILoaded) {
+	        (0, _loadApi2.default)('http://www.youtube.com/player_api');
+
+	        window.onYouTubeIframeAPIReady = function () {
+	          _this2._createPlayer();
+	          isAPILoaded = true;
+	        };
+	      } else {
+	        this._createPlayer();
+	      }
+	    }
+	  }, {
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(nextProps) {
+	      if (nextProps.src !== this.props.src) {
+	        var videoId = (0, _getYoutubeId2.default)(nextProps.src);
+	        this._player.cueVideoById(videoId);
+	      }
 	    }
 	  }, {
 	    key: 'componentWillUnmount',
-	    value: function componentWillUnmount() {}
-	  }, {
-	    key: '_setPlaying',
-
-	    // Props API
-	    value: function _setPlaying(playing) {
-	      var _this2 = this;
-
-	      if (playing === this.state.playing) return;
-	      this.setState({ playing: playing }, function () {
-	        _this2.props.onPlaying(playing);
-	      });
-	    }
-	  }, {
-	    key: '_setProgress',
-	    value: function _setProgress(progress) {
-	      var _this3 = this;
-
-	      if (progress === this.state.progress) return;
-	      this.setState({ progress: progress }, function () {
-	        _this3.props.getProgress(progress);
-	      });
-	    }
-	  }, {
-	    key: '_setCurrentTime',
-	    value: function _setCurrentTime(current) {
-	      var _this4 = this;
-
-	      if (current === this.state.current) return;
-	      this.setState({ current: current }, function () {
-	        _this4.props.getCurrentTime(current);
-	      });
-	    }
-	  }, {
-	    key: '_setDuration',
-	    value: function _setDuration(duration) {
-	      var _this5 = this;
-
-	      if (duration === this.state.duration) return;
-	      this.setState({ duration: duration }, function () {
-	        _this5.props.getDuration(duration);
-	      });
-	    }
-	  }, {
-	    key: '_setMute',
-	    value: function _setMute(muted) {
-	      var _this6 = this;
-
-	      if (muted === this.state.muted) return;
-	      this.setState({ muted: muted }, function () {
-	        _this6.props.onMute(muted);
-	      });
-	    }
-	  }, {
-	    key: '_setVolume',
-	    value: function _setVolume(volume) {
-	      var _this7 = this;
-
-	      if (volume === this.state.volume) return;
-	      this.setState({ volume: volume }, function () {
-	        _this7.props.onVolumeChange(volume);
-	      });
-	    }
-	  }, {
-	    key: '_setFullscreen',
-	    value: function _setFullscreen(fullscreen) {
-	      var _this8 = this;
-
-	      if (fullscreen === this.state.fullscreen) return;
-	      this.setState({ fullscreen: fullscreen }, function () {
-	        _this8.props.onFullscreen(fullscreen);
-	      });
-	    }
-	  }, {
-	    key: '_handleLoad',
-
-	    // need todo
-	    value: function _handleLoad(src) {
-	      var _this9 = this;
-
-	      this.setState({ src: src }, function () {
-	        _this9.props.onChange(src);
-	      });
-	    }
-	  }, {
-	    key: '_setupYoutubeAPI',
-
-	    // Private Methods
-	    value: function _setupYoutubeAPI() {
-	      var _this10 = this;
-
-	      var vendor = 'youtube';
-	      var api = 'http://www.youtube.com/player_api';
-
-	      // load the api if it hasn't been yet
-	      if (!apiFlags[vendor]) {
-	        (0, _loadApi2['default'])(api);
-
-	        // update flag
-	        apiFlags[vendor] = true;
+	    value: function componentWillUnmount() {
+	      if (this._progressId) {
+	        cancelAnimationFrame(this._progressId);
 	      }
 
-	      // create player when API is ready
-	      window.onYouTubeIframeAPIReady = function () {
-	        return _this10._createYoutubePlayer();
-	      };
+	      if (this._timeUpdateId) {
+	        cancelAnimationFrame(this._timeUpdateId);
+	      }
+
+	      if (this._player) {
+	        this._player.destroy();
+	      }
 	    }
 	  }, {
-	    key: '_createYoutubePlayer',
+	    key: '_createPlayer',
+	    value: function _createPlayer() {
+	      var videoId = (0, _getYoutubeId2.default)(this.props.src);
 
-	    // use youtube api to create player
-	    value: function _createYoutubePlayer() {
-	      var _this11 = this;
-
-	      var videoId = (0, _getYoutubeId2['default'])(this._src);
-	      var player = new YT.Player(this.state.player, {
+	      this._player = new YT.Player(this._node, {
 	        videoId: videoId,
+	        events: this._events(),
 	        playerVars: {
 	          controls: 0,
 	          showinfo: 0,
 	          modestbranding: 1
 	        }
 	      });
-
-	      this.setState({ player: player }, function () {
-	        _this11._init();
-	      });
 	    }
 	  }, {
-	    key: '_setupVimeoAPI',
-	    value: function _setupVimeoAPI() {
-	      var vendor = 'vimeo';
-	      var api = 'https://f.vimeocdn.com/js/froogaloop2.min.js';
+	    key: '_events',
+	    value: function _events() {
+	      var _this3 = this;
 
-	      // load the api if it hasn't been yet
-	      if (!apiFlags[vendor]) {
-	        (0, _loadApi2['default'])(api, vendor);
+	      return {
+	        onReady: function onReady() {
+	          _this3.props.onDuration(_this3._player.getDuration());
+	          _this3.props.onReady();
+	        },
+	        onStateChange: function onStateChange(_ref) {
+	          var data = _ref.data;
 
-	        // update flag
-	        apiFlags[vendor] = true;
-	      }
+	          var isPlaying = data === 1;
 
-	      // create player when API is ready
-	      this._createVimeoPlayer();
-	    }
-	  }, {
-	    key: '_getVimeoPlayer',
-	    value: function _getVimeoPlayer(id, cb) {
-	      var request = new XMLHttpRequest();
+	          if (isPlaying) {
+	            _this3._timeUpdateId = requestAnimationFrame(_this3._handleTimeUpdate);
+	          } else {
+	            cancelAnimationFrame(_this3._timeUpdateId);
+	            _this3._timeUpdateId = null;
 
-	      request.open('GET', 'https://vimeo.com/api/oembed.json?url=https%3A//vimeo.com/' + id, true);
+	            cancelAnimationFrame(_this3._progressId);
+	            _this3._progressId = null;
+	          }
 
-	      request.onload = function () {
-	        if (request.status >= 200 && request.status < 400) {
-	          cb(JSON.parse(request.responseText));
+	          // start fetching progress when playing or buffering
+	          if (isPlaying || data === 3) {
+	            _this3._progressId = requestAnimationFrame(_this3._handleProgress);
+	          }
+
+	          _this3.props.onPlaying(isPlaying);
 	        }
 	      };
-
-	      request.send();
 	    }
 	  }, {
-	    key: '_createVimeoPlayer',
-	    value: function _createVimeoPlayer() {
-	      var _this12 = this;
-
-	      var player = this.state.player;
-
-	      var videoId = (0, _getVimeoId2['default'])(this._src);
-
-	      this._getVimeoPlayer(videoId, function (data) {
-	        var parentNode = player.parentNode;
-
-	        // enable javascirpt API on the data html
-	        data.html = data.html.replace(/(<iframe *src=")(?!http:\/\/)(.*?)"/, '$1$2?api=1"');
-
-	        // replace video player with our Vimeo iframe
-	        player.outerHTML = unescape(data.html);
-
-	        _this12._setDuration(data.duration);
-
-	        _this12.setState({
-	          player: $f(parentNode.querySelector('iframe')),
-	          playerNode: parentNode.querySelector('iframe')
-	        }, function () {
-	          _this12._init();
-	        });
-	      });
+	    key: 'play',
+	    value: function play() {
+	      this._player.playVideo();
 	    }
 	  }, {
-	    key: '_setPlayer',
-	    value: function _setPlayer(cb) {
-	      var component = _reactDom2['default'].findDOMNode(this);
-	      var playerTags = ['iframe', 'audio', 'video'];
-	      var player = undefined,
-	          vendor = undefined;
-
-	      // loop through and find the correct tag to query for
-	      for (var i = playerTags.length; i--;) {
-	        // try to query for a tag
-	        player = document.querySelector(playerTags[i]);
-
-	        // if we've found a player break from the loop
-	        if (player) break;
-	      }
-
-	      // get the src passed in
-	      this._src = player.getAttribute('src');
-
-	      // determine if what type of vendor we are working with
-	      vendor = (0, _getVendor2['default'])(this._src);
-
-	      this.setState({
-	        player: player,
-	        vendor: vendor
-	      }, cb);
+	    key: 'pause',
+	    value: function pause() {
+	      this._player.pauseVideo();
 	    }
 	  }, {
-	    key: '_setupAPI',
-	    value: function _setupAPI() {
-	      var vendor = this.state.vendor;
-
-	      // determine how to handle video
-	      switch (vendor) {
-	        case 'youtube':
-	          this._setupYoutubeAPI();
-	          break;
-	        case 'vimeo':
-	          this._setupVimeoAPI();
-	          break;
-	        default:
-	          this._init();
-	      }
+	    key: 'stop',
+	    value: function stop() {
+	      this._player.stopVideo();
 	    }
 	  }, {
-	    key: '_init',
-	    value: function _init() {
-	      var _this13 = this;
-
-	      var _state6 = this.state;
-	      var player = _state6.player;
-	      var vendor = _state6.vendor;
-
-	      var playerNode = undefined;
-
-	      switch (vendor) {
-	        case 'youtube':
-	          playerNode = player.getIframe();
-	          break;
-	        case 'vimeo':
-	          playerNode = this.state.playerNode;
-	          break;
-	        default:
-	          playerNode = player;
-	      }
-
-	      this.setState({ playerNode: playerNode }, function () {
-	        return _this13._bindEvents();
-	      });
+	    key: 'seekTo',
+	    value: function seekTo(currentTime) {
+	      this._player.seekTo(currentTime);
 	    }
 	  }, {
-	    key: '_getCurrentVimeoProgress',
-
-	    // get the current progress of Vimeo videos
-	    value: function _getCurrentVimeoProgress(data) {
-	      this._setProgress(data.percent);
-	    }
-	  }, {
-	    key: '_bindEvents',
-	    value: function _bindEvents() {
-	      var _this14 = this;
-
-	      var _state7 = this.state;
-	      var player = _state7.player;
-	      var playerNode = _state7.playerNode;
-	      var vendor = _state7.vendor;
-
-	      if (vendor === 'youtube') {
-	        player.addEventListener('onStateChange', function (e) {
-	          _this14.setState({
-	            loading: e.data === 3 ? true : false
-	          });
-	          _this14._setPlaying(e.data === 1 ? true : false);
-	        });
-
-	        player.addEventListener('onReady', function () {
-	          _this14._currentYTProgressID = requestAnimationFrame(_this14._getCurrentYTProgress);
-	          _this14._setDuration(player.getDuration());
-	        });
-	      } else if (vendor === 'vimeo') {
-	        player.addEvent('ready', function () {
-	          player.addEvent('play', function () {
-	            return _this14._setPlaying(true);
-	          });
-
-	          player.addEvent('pause', function () {
-	            return _this14._setPlaying(false);
-	          });
-
-	          player.addEvent('finish', function () {
-	            return _this14._setPlaying(false);
-	          });
-
-	          player.addEvent('loadProgress', _this14._getCurrentVimeoProgress.bind(_this14));
-
-	          player.addEvent('playProgress', _this14._handleVimeoTimeUpdate.bind(_this14));
-	        });
+	    key: 'mute',
+	    value: function mute(muted) {
+	      if (muted) {
+	        this._player.mute();
 	      } else {
-	        player.addEventListener('loadedmetadata', this._handleLoadedMetaData.bind(this));
-
-	        player.addEventListener('canplay', function () {
-	          // http://stackoverflow.com/questions/9313697/html5-video-using-the-progress-event-with-dynamically-loaded-videos
-	          _this14._currentProgressID = requestAnimationFrame(_this14._getCurrentProgress);
-	        });
-
-	        player.addEventListener('timeupdate', this._handleTimeUpdate.bind(this));
-
-	        player.addEventListener('play', function () {
-	          return _this14._setPlaying(true);
-	        });
-
-	        player.addEventListener('pause', function () {
-	          return _this14._setPlaying(false);
-	        });
-
-	        player.addEventListener('ended', function () {
-	          return _this14._setPlaying(false);
-	        });
+	        this._player.unMute();
 	      }
-
-	      // check this http://codepen.io/ludviglindblom/pen/medXwN
-	      ['fullscreenchange', 'webkitfullscreenchange', 'mozfullscreenchange', 'MSFullscreenChange'].forEach(function (e) {
-	        return playerNode.addEventListener(e, _this14._handleFullscreenChange.bind(_this14));
-	      });
+	      this.props.onMute(muted);
 	    }
 	  }, {
-	    key: '_handleLoadedMetaData',
-
-	    // Events
-	    value: function _handleLoadedMetaData(e) {
-	      var duration = e.target.duration;
-
-	      this._setDuration(duration);
-	    }
-	  }, {
-	    key: '_handleVimeoTimeUpdate',
-	    value: function _handleVimeoTimeUpdate(data) {
-	      this._setCurrentTime(data.seconds);
-	    }
-	  }, {
-	    key: '_handleTimeUpdate',
-	    value: function _handleTimeUpdate() {
-	      var player = this.state.player;
-
-	      this._setCurrentTime(player.currentTime);
-	      this._setMute(player.muted);
-	    }
-	  }, {
-	    key: '_handleFullscreenChange',
-	    value: function _handleFullscreenChange() {
-	      var d = document;
-	      var f = d.fullscreenElement || d.webkitFullscreenElement || d.mozFullScreenElement || d.msFullscreenElement;
-	      this._setFullscreen(!!f);
+	    key: 'setVolume',
+	    value: function setVolume(volume) {
+	      this._player.setVolume(+volume * 100);
+	      this.props.onVolumeChange(+volume);
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      return _react2['default'].createElement(_Player2['default'], { src: this.props.src });
+	      var _this4 = this;
+
+	      return _react2.default.createElement('div', { ref: function ref(c) {
+	          return _this4._node = c;
+	        } });
 	    }
-	  }], [{
-	    key: 'displayName',
-	    value: 'Media',
-	    enumerable: true
 	  }]);
 
-	  return Media;
-	})(_react.Component);
+	  return Youtube;
+	}(_react.Component);
 
-	exports['default'] = Media;
-	module.exports = exports['default'];
-
-	// need to write this shiz
-	//this._unbindEvents();
-
-	// Public API
-
-	// TODO:
-	// check if a vendor file passed in, if so send to load properly
-	// if API's are loaded already need to switch the player for the proper iframe
-	// handle loading
-	//player.setAttribute('src', setupURL(src, 'mp4'))
-
-	// get the current progress of HTML5 videos
-
-	// get the current progress of Youtube videos
-
-	// get the current time of Youtube videos
-
-/***/ },
-/* 3 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-	exports['default'] = getVendor;
-
-	function getVendor(src) {
-	  if (src.indexOf('youtube') > -1) {
-	    return 'youtube';
-	  } else if (src.indexOf('vimeo') > -1) {
-	    return 'vimeo';
-	  } else {
-	    return 'html5';
-	  }
-	}
-
-	module.exports = exports['default'];
-
-/***/ },
-/* 4 */
-/***/ function(module, exports) {
-
-	module.exports = __WEBPACK_EXTERNAL_MODULE_4__;
-
-/***/ },
-/* 5 */
-/***/ function(module, exports) {
-
-	module.exports = __WEBPACK_EXTERNAL_MODULE_5__;
-
-/***/ },
-/* 6 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright 2013-2015, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	* @providesModule shallowCompare
-	*/
-
-	'use strict';
-
-	var shallowEqual = __webpack_require__(7);
-
-	/**
-	 * Does a shallow comparison for props and state.
-	 * See ReactComponentWithPureRenderMixin
-	 */
-	function shallowCompare(instance, nextProps, nextState) {
-	  return !shallowEqual(instance.props, nextProps) || !shallowEqual(instance.state, nextState);
-	}
-
-	module.exports = shallowCompare;
+	Youtube.propTypes = _vendorPropTypes2.default;
+	exports.default = Youtube;
 
 /***/ },
 /* 7 */
 /***/ function(module, exports) {
 
-	/**
-	 * Copyright 2013-2015, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule shallowEqual
-	 * @typechecks
-	 * 
-	 */
-
 	'use strict';
 
-	var hasOwnProperty = Object.prototype.hasOwnProperty;
-
-	/**
-	 * Performs equality by iterating through keys on an object and returning false
-	 * when any key has values which are not strictly equal between the arguments.
-	 * Returns true when the values of all keys are strictly equal.
-	 */
-	function shallowEqual(objA, objB) {
-	  if (objA === objB) {
-	    return true;
-	  }
-
-	  if (typeof objA !== 'object' || objA === null || typeof objB !== 'object' || objB === null) {
-	    return false;
-	  }
-
-	  var keysA = Object.keys(objA);
-	  var keysB = Object.keys(objB);
-
-	  if (keysA.length !== keysB.length) {
-	    return false;
-	  }
-
-	  // Test for A's keys different from B.
-	  var bHasOwnProperty = hasOwnProperty.bind(objB);
-	  for (var i = 0; i < keysA.length; i++) {
-	    if (!bHasOwnProperty(keysA[i]) || objA[keysA[i]] !== objB[keysA[i]]) {
-	      return false;
-	    }
-	  }
-
-	  return true;
-	}
-
-	module.exports = shallowEqual;
-
-/***/ },
-/* 8 */
-/***/ function(module, exports) {
-
-	// load api asynchronously
-	'use strict';
-
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports['default'] = loadAPI;
-
-	function loadAPI(src) {
+	exports.default = loadAPI;
+	// load api asynchronously
+	function loadAPI(url, cb) {
 	  // create script to be injected
 	  var api = document.createElement('script');
 
 	  // load async
 	  api.async = true;
 
-	  // set source to youtube's api
-	  api.src = src;
+	  // set source to vendors api
+	  api.src = url;
 
 	  // append script to document head
 	  document.head.appendChild(api);
+
+	  // callback after loaded
+	  if (typeof cb === 'function') {
+	    cb();
+	  }
 	}
 
-	module.exports = exports['default'];
-
 /***/ },
-/* 9 */
+/* 8 */
 /***/ function(module, exports) {
 
 	'use strict';
 
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports['default'] = getYoutubeID;
-
-	function getYoutubeID(url) {
+	exports.default = getYoutubeId;
+	function getYoutubeId(url) {
 	  var regExp = /.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#\&\?]*).*/;
 	  var match = url.match(regExp);
 
@@ -1013,92 +649,233 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	}
 
-	module.exports = exports['default'];
-
 /***/ },
-/* 10 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-	exports['default'] = getVimeoID;
-
-	function getVimeoID(url) {
-	  var regExp = /^.*(vimeo\.com\/)((channels\/[A-z]+\/)|(groups\/[A-z]+\/videos\/))?([0-9]+)/;
-	  var match = url.match(regExp);
-
-	  if (match) {
-	    return match[5];
-	  } else {
-	    throw 'Invalid Vimeo ID provided';
-	  }
-	}
-
-	module.exports = exports['default'];
-
-/***/ },
-/* 11 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	var _react = __webpack_require__(2);
 
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+	exports.default = {
+	  src: _react.PropTypes.string,
+	  onPlaying: _react.PropTypes.func,
+	  onProgress: _react.PropTypes.func,
+	  onDuration: _react.PropTypes.func,
+	  onTimeUpdate: _react.PropTypes.func,
+	  onVolumeChange: _react.PropTypes.func
+	};
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+/***/ },
+/* 10 */
+/***/ function(module, exports, __webpack_require__) {
 
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	'use strict';
 
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
 
-	var _react = __webpack_require__(4);
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _getMediaTag = __webpack_require__(12);
+	var _loadApi = __webpack_require__(7);
 
-	var _getMediaTag2 = _interopRequireDefault(_getMediaTag);
+	var _loadApi2 = _interopRequireDefault(_loadApi);
 
-	var Player = (function (_Component) {
-	  _inherits(Player, _Component);
+	var _getVimeoId = __webpack_require__(11);
 
-	  function Player() {
-	    _classCallCheck(this, Player);
+	var _getVimeoId2 = _interopRequireDefault(_getVimeoId);
 
-	    _get(Object.getPrototypeOf(Player.prototype), 'constructor', this).apply(this, arguments);
+	var _vendorPropTypes = __webpack_require__(9);
+
+	var _vendorPropTypes2 = _interopRequireDefault(_vendorPropTypes);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Vimeo = function (_Component) {
+	  _inherits(Vimeo, _Component);
+
+	  function Vimeo() {
+	    var _Object$getPrototypeO;
+
+	    var _temp, _this, _ret;
+
+	    _classCallCheck(this, Vimeo);
+
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(Vimeo)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this._vimeoId = (0, _getVimeoId2.default)(_this.props.src), _this._origin = '*', _this._onMessage = function (e) {
+	      // allow messages from the Vimeo player only
+	      if (!/^https?:\/\/player.vimeo.com/.test(e.origin)) {
+	        return false;
+	      }
+
+	      if (_this._origin === '*') {
+	        _this._origin = e.origin;
+	      }
+
+	      var data = JSON.parse(e.data);
+
+	      switch (data.event) {
+	        case 'ready':
+	          _this.props.onReady();
+	          _this._postMessages();
+	          break;
+	        case 'loadProgress':
+	          _this.props.onProgress(data.data.percent);
+	          break;
+	        case 'playProgress':
+	          _this.props.onTimeUpdate(data.data.seconds);
+	          break;
+	        case 'play':
+	          _this.props.onPlaying(true);
+	          break;
+	        case 'pause':
+	        case 'finish':
+	          _this.props.onPlaying(false);
+	          break;
+	      }
+
+	      if (data.method === 'getDuration') {
+	        _this.props.onDuration(data.value);
+	      }
+
+	      if (data.method === 'getVolume') {
+	        _this.setVolume(data.value);
+	      }
+	    }, _temp), _possibleConstructorReturn(_this, _ret);
 	  }
 
-	  _createClass(Player, [{
-	    key: 'shouldComponentUpdate',
-	    value: function shouldComponentUpdate(nextProps) {
-	      return this.props.src !== nextProps.src || this.props.children !== nextProps.children;
+	  _createClass(Vimeo, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      window.addEventListener('message', this._onMessage);
+	    }
+	  }, {
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(nextProps) {
+	      if (nextProps.src !== this.props.src) {
+	        this.stop();
+	        this._vimeoId = (0, _getVimeoId2.default)(nextProps.src);
+	      }
+	    }
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {
+	      window.removeEventListener('message', this._onMessage);
+	    }
+	  }, {
+	    key: '_postMessage',
+	    value: function _postMessage(method, value) {
+	      var data = { method: method };
+
+	      if (value) {
+	        data.value = value;
+	      }
+
+	      this._iframe.contentWindow.postMessage(JSON.stringify(data), this._origin);
+	    }
+	  }, {
+	    key: '_postMessages',
+	    value: function _postMessages() {
+	      var _this2 = this;
+
+	      ['loadProgress', 'playProgress', 'play', 'pause', 'finish'].forEach(function (listener) {
+	        return _this2._postMessage('addEventListener', listener);
+	      });
+
+	      this._postMessage('getDuration');
+	      this._postMessage('getVolume');
+	    }
+	  }, {
+	    key: 'play',
+	    value: function play() {
+	      this._postMessage('play');
+	    }
+	  }, {
+	    key: 'pause',
+	    value: function pause() {
+	      this._postMessage('pause');
+	    }
+	  }, {
+	    key: 'stop',
+	    value: function stop() {
+	      this._postMessage('unload');
+	    }
+	  }, {
+	    key: 'seekTo',
+	    value: function seekTo(currentTime) {
+	      this._postMessage('seekTo', currentTime);
+	    }
+	  }, {
+	    key: 'mute',
+	    value: function mute(muted) {
+	      this._postMessage('setVolume', muted ? '0' : '1');
+	      this.props.onMute(muted);
+	    }
+	  }, {
+	    key: 'setVolume',
+	    value: function setVolume(volume) {
+	      this._postMessage('setVolume', volume);
+	      this.props.onVolumeChange(+volume);
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _props = this.props;
-	      var src = _props.src;
-	      var children = _props.children;
+	      var _this3 = this;
 
-	      var tag = (0, _getMediaTag2['default'])(src);
-
-	      return _react2['default'].createElement(tag, { src: src }, children);
+	      return _react2.default.createElement('iframe', {
+	        ref: function ref(c) {
+	          return _this3._iframe = c;
+	        },
+	        src: 'https://player.vimeo.com/video/' + this._vimeoId + '?api=1'
+	      });
 	    }
 	  }]);
 
-	  return Player;
-	})(_react.Component);
+	  return Vimeo;
+	}(_react.Component);
 
-	exports['default'] = Player;
-	module.exports = exports['default'];
+	Vimeo.propTypes = _vendorPropTypes2.default;
+	exports.default = Vimeo;
+
+/***/ },
+/* 11 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = getVimeoId;
+	// Thanks to: http://stackoverflow.com/a/13286930/1461204
+	function getVimeoId(url) {
+	  var regExp = /https?:\/\/(?:www\.|player\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|video\/|)(\d+)(?:$|\/|\?)/;
+	  var match = url.match(regExp);
+
+	  if (match) {
+	    return match[3];
+	  } else {
+	    throw 'Invalid Vimeo ID provided';
+	  }
+	}
 
 /***/ },
 /* 12 */
@@ -1106,42 +883,63 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports['default'] = getMediaTag;
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _getVendor = __webpack_require__(3);
+	var _react = __webpack_require__(2);
 
-	var _getVendor2 = _interopRequireDefault(_getVendor);
+	var _react2 = _interopRequireDefault(_react);
 
-	// using youtube as a video type for now because it will load
-	// properly setting it to an iframe won't load right need to look
-	// into this so React stops complaining
-	var VIDEO_TYPES = ['mp4', 'webm', 'ogv', 'youtube'];
-	var AUDIO_TYPES = ['mp3', 'wav', 'ogg'];
-	var VENDOR_TYPES = ['vimeo'];
+	var _HTML2 = __webpack_require__(13);
 
-	// determine what type of HTML tag we need to use
+	var _HTML3 = _interopRequireDefault(_HTML2);
 
-	function getMediaTag(src) {
-	  var vendor = (0, _getVendor2['default'])(src);
-	  var type = vendor === 'html5' ? src.split('.').pop() : vendor;
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	  if (VIDEO_TYPES.indexOf(type) > -1) {
-	    return 'video';
-	  } else if (AUDIO_TYPES.indexOf(type) > -1) {
-	    return 'audio';
-	  } else if (VENDOR_TYPES.indexOf(type) > -1) {
-	    return 'iframe';
-	  } else {
-	    throw new Error('Source could not be determined.');
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Video = function (_HTML) {
+	  _inherits(Video, _HTML);
+
+	  function Video() {
+	    _classCallCheck(this, Video);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Video).apply(this, arguments));
 	  }
-	}
 
-	module.exports = exports['default'];
+	  _createClass(Video, [{
+	    key: 'render',
+	    value: function render() {
+	      var _this2 = this;
+
+	      return _react2.default.createElement('video', {
+	        ref: function ref(c) {
+	          return _this2._player = c;
+	        },
+	        src: this.props.src,
+	        onCanPlay: this._handleCanPlay,
+	        onPlay: this._handlePlay,
+	        onPause: this._handlePause,
+	        onEnded: this._handleEnded,
+	        onProgress: this._handleProgress,
+	        onLoadedMetadata: this._handleDuration,
+	        onTimeUpdate: this._handleTimeUpdate,
+	        onVolumeChange: this._handleVolumeChange
+	      });
+	    }
+	  }]);
+
+	  return Video;
+	}(_HTML3.default);
+
+	exports.default = Video;
 
 /***/ },
 /* 13 */
@@ -1149,47 +947,118 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _PlayPause2 = __webpack_require__(15);
+	var _react = __webpack_require__(2);
 
-	var _PlayPause3 = _interopRequireDefault(_PlayPause2);
+	var _react2 = _interopRequireDefault(_react);
 
-	exports.PlayPause = _PlayPause3['default'];
+	var _vendorPropTypes = __webpack_require__(9);
 
-	var _Progress2 = __webpack_require__(16);
+	var _vendorPropTypes2 = _interopRequireDefault(_vendorPropTypes);
 
-	var _Progress3 = _interopRequireDefault(_Progress2);
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	exports.Progress = _Progress3['default'];
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	var _SeekBar2 = __webpack_require__(17);
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-	var _SeekBar3 = _interopRequireDefault(_SeekBar2);
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	exports.SeekBar = _SeekBar3['default'];
+	var HTML5 = function (_Component) {
+	  _inherits(HTML5, _Component);
 
-	var _MuteUnmute2 = __webpack_require__(14);
+	  function HTML5() {
+	    var _Object$getPrototypeO;
 
-	var _MuteUnmute3 = _interopRequireDefault(_MuteUnmute2);
+	    var _temp, _this, _ret;
 
-	exports.MuteUnmute = _MuteUnmute3['default'];
+	    _classCallCheck(this, HTML5);
 
-	var _Volume2 = __webpack_require__(18);
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
 
-	var _Volume3 = _interopRequireDefault(_Volume2);
+	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(HTML5)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this._handleCanPlay = function () {
+	      _this.props.onReady();
+	    }, _this._handlePlay = function () {
+	      _this.props.onPlaying(true);
+	    }, _this._handlePause = function () {
+	      _this.props.onPlaying(false);
+	    }, _this._handleEnded = function () {
+	      _this.props.onPlaying(false);
+	    }, _this._handleProgress = function (_ref) {
+	      var _ref$target = _ref.target;
+	      var buffered = _ref$target.buffered;
+	      var duration = _ref$target.duration;
 
-	exports.Volume = _Volume3['default'];
+	      var progress = 0;
 
-	var _Fullscreen2 = __webpack_require__(19);
+	      if (buffered.length > 0) {
+	        progress = buffered.end(0) / duration;
+	      }
 
-	var _Fullscreen3 = _interopRequireDefault(_Fullscreen2);
+	      _this.props.onProgress(progress);
+	    }, _this._handleDuration = function (_ref2) {
+	      var duration = _ref2.target.duration;
 
-	exports.Fullscreen = _Fullscreen3['default'];
+	      _this.props.onDuration(duration);
+	    }, _this._handleTimeUpdate = function (_ref3) {
+	      var currentTime = _ref3.target.currentTime;
+
+	      _this.props.onTimeUpdate(currentTime);
+	    }, _this._handleVolumeChange = function (_ref4) {
+	      var _ref4$target = _ref4.target;
+	      var volume = _ref4$target.volume;
+	      var muted = _ref4$target.muted;
+
+	      _this.props.onMute(muted);
+	      _this.props.onVolumeChange(volume);
+	    }, _temp), _possibleConstructorReturn(_this, _ret);
+	  }
+
+	  _createClass(HTML5, [{
+	    key: 'play',
+	    value: function play() {
+	      this._player.play();
+	    }
+	  }, {
+	    key: 'pause',
+	    value: function pause() {
+	      this._player.pause();
+	    }
+	  }, {
+	    key: 'stop',
+	    value: function stop() {
+	      this._player.pause();
+	      this._player.currentTime = 0;
+	    }
+	  }, {
+	    key: 'seekTo',
+	    value: function seekTo(currentTime) {
+	      this._player.currentTime = currentTime;
+	    }
+	  }, {
+	    key: 'mute',
+	    value: function mute(muted) {
+	      this._player.muted = muted;
+	    }
+	  }, {
+	    key: 'setVolume',
+	    value: function setVolume(volume) {
+	      this._player.volume = volume;
+	    }
+	  }]);
+
+	  return HTML5;
+	}(_react.Component);
+
+	HTML5.propTypes = _vendorPropTypes2.default;
+	exports.default = HTML5;
 
 /***/ },
 /* 14 */
@@ -1197,305 +1066,219 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
-
-	var _react = __webpack_require__(4);
+	var _react = __webpack_require__(2);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var MuteUnmute = (function (_Component) {
-	  _inherits(MuteUnmute, _Component);
+	var _HTML2 = __webpack_require__(13);
 
-	  function MuteUnmute() {
-	    _classCallCheck(this, MuteUnmute);
+	var _HTML3 = _interopRequireDefault(_HTML2);
 
-	    _get(Object.getPrototypeOf(MuteUnmute.prototype), 'constructor', this).apply(this, arguments);
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Audio = function (_HTML) {
+	  _inherits(Audio, _HTML);
+
+	  function Audio() {
+	    _classCallCheck(this, Audio);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Audio).apply(this, arguments));
 	  }
 
-	  _createClass(MuteUnmute, [{
-	    key: 'shouldComponentUpdate',
-	    value: function shouldComponentUpdate(nextProps) {
-	      return this.props.muted !== nextProps.muted;
-	    }
-	  }, {
-	    key: '_handleMuteUnmute',
-	    value: function _handleMuteUnmute() {
-	      this.props.onMuteUnmute();
-	    }
-	  }, {
+	  _createClass(Audio, [{
 	    key: 'render',
 	    value: function render() {
-	      return _react2['default'].createElement(
-	        'button',
-	        { type: 'button', onClick: this._handleMuteUnmute.bind(this) },
-	        this.props.muted ? 'Unmute' : 'Mute'
-	      );
-	    }
-	  }]);
+	      var _this2 = this;
 
-	  return MuteUnmute;
-	})(_react.Component);
-
-	exports['default'] = MuteUnmute;
-	module.exports = exports['default'];
-
-/***/ },
-/* 15 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
-
-	var _react = __webpack_require__(4);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var PlayPause = (function (_Component) {
-	  _inherits(PlayPause, _Component);
-
-	  function PlayPause() {
-	    _classCallCheck(this, PlayPause);
-
-	    _get(Object.getPrototypeOf(PlayPause.prototype), 'constructor', this).apply(this, arguments);
-	  }
-
-	  _createClass(PlayPause, [{
-	    key: 'shouldComponentUpdate',
-	    value: function shouldComponentUpdate(nextProps) {
-	      return this.props.playing !== nextProps.playing;
-	    }
-	  }, {
-	    key: '_handlePlayPause',
-	    value: function _handlePlayPause() {
-	      this.props.onPlayPause();
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      return _react2['default'].createElement(
-	        'button',
-	        { type: 'button', onClick: this._handlePlayPause.bind(this) },
-	        this.props.playing ? 'Pause' : 'Play'
-	      );
-	    }
-	  }]);
-
-	  return PlayPause;
-	})(_react.Component);
-
-	exports['default'] = PlayPause;
-	module.exports = exports['default'];
-
-/***/ },
-/* 16 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
-
-	var _react = __webpack_require__(4);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var Progress = (function (_Component) {
-	  _inherits(Progress, _Component);
-
-	  function Progress() {
-	    _classCallCheck(this, Progress);
-
-	    _get(Object.getPrototypeOf(Progress.prototype), 'constructor', this).apply(this, arguments);
-	  }
-
-	  _createClass(Progress, [{
-	    key: 'shouldComponentUpdate',
-	    value: function shouldComponentUpdate(nextProps) {
-	      return this.props.progress !== nextProps.progress;
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      return _react2['default'].createElement('progress', {
-	        max: 100,
-	        value: this.props.progress * 100
+	      return _react2.default.createElement('audio', {
+	        ref: function ref(c) {
+	          return _this2._player = c;
+	        },
+	        src: this.props.src,
+	        onCanPlay: this._handleCanPlay,
+	        onPlay: this._handlePlay,
+	        onPause: this._handlePause,
+	        onEnded: this._handleEnded,
+	        onProgress: this._handleProgress,
+	        onLoadedMetadata: this._handleDuration,
+	        onTimeUpdate: this._handleTimeUpdate,
+	        onVolumeChange: this._handleVolumeChange
 	      });
 	    }
 	  }]);
 
-	  return Progress;
-	})(_react.Component);
+	  return Audio;
+	}(_HTML3.default);
 
-	exports['default'] = Progress;
-	module.exports = exports['default'];
+	exports.default = Audio;
+
+/***/ },
+/* 15 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function () {
+	  var names = ['requestFullscreen', 'mozRequestFullScreen', 'msRequestFullscreen', 'webkitRequestFullscreen'];
+	  return names.reduce(function (prev, curr) {
+	    return document.documentElement[curr] ? curr : prev;
+	  });
+	}();
+
+/***/ },
+/* 16 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function () {
+	  var names = ['exitFullscreen', 'mozCancelFullScreen', 'msExitFullscreen', 'webkitExitFullscreen'];
+	  return names.reduce(function (prev, curr) {
+	    return document[curr] ? curr : prev;
+	  });
+	}();
 
 /***/ },
 /* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	exports.Fullscreen = exports.Volume = exports.MuteUnmute = exports.Duration = exports.SeekBar = exports.Progress = exports.CurrentTime = exports.PlayPause = undefined;
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	var _PlayPause2 = __webpack_require__(18);
 
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+	var _PlayPause3 = _interopRequireDefault(_PlayPause2);
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+	var _CurrentTime2 = __webpack_require__(19);
 
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	var _CurrentTime3 = _interopRequireDefault(_CurrentTime2);
 
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+	var _Progress2 = __webpack_require__(21);
 
-	var _react = __webpack_require__(4);
+	var _Progress3 = _interopRequireDefault(_Progress2);
 
-	var _react2 = _interopRequireDefault(_react);
+	var _SeekBar2 = __webpack_require__(22);
 
-	var SeekBar = (function (_Component) {
-	  _inherits(SeekBar, _Component);
+	var _SeekBar3 = _interopRequireDefault(_SeekBar2);
 
-	  function SeekBar() {
-	    _classCallCheck(this, SeekBar);
+	var _Duration2 = __webpack_require__(23);
 
-	    _get(Object.getPrototypeOf(SeekBar.prototype), "constructor", this).apply(this, arguments);
-	  }
+	var _Duration3 = _interopRequireDefault(_Duration2);
 
-	  _createClass(SeekBar, [{
-	    key: "_handleChange",
-	    value: function _handleChange(e) {
-	      this.props.onCurrentTimeChange(+e.target.value);
-	    }
-	  }, {
-	    key: "_handleMouseDown",
-	    value: function _handleMouseDown() {
-	      this.props.pause();
-	    }
-	  }, {
-	    key: "_handleMouseUp",
-	    value: function _handleMouseUp() {
-	      this.props.play();
-	    }
-	  }, {
-	    key: "render",
-	    value: function render() {
-	      return _react2["default"].createElement("input", {
-	        type: "range",
-	        step: "any",
-	        max: this.props.duration.toFixed(4),
-	        value: this.props.current,
-	        onChange: this._handleChange.bind(this),
-	        onMouseDown: this._handleMouseDown.bind(this),
-	        onMouseUp: this._handleMouseUp.bind(this)
-	      });
-	    }
-	  }]);
+	var _MuteUnmute2 = __webpack_require__(24);
 
-	  return SeekBar;
-	})(_react.Component);
+	var _MuteUnmute3 = _interopRequireDefault(_MuteUnmute2);
 
-	exports["default"] = SeekBar;
-	module.exports = exports["default"];
+	var _Volume2 = __webpack_require__(25);
+
+	var _Volume3 = _interopRequireDefault(_Volume2);
+
+	var _Fullscreen2 = __webpack_require__(26);
+
+	var _Fullscreen3 = _interopRequireDefault(_Fullscreen2);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.PlayPause = _PlayPause3.default;
+	exports.CurrentTime = _CurrentTime3.default;
+	exports.Progress = _Progress3.default;
+	exports.SeekBar = _SeekBar3.default;
+	exports.Duration = _Duration3.default;
+	exports.MuteUnmute = _MuteUnmute3.default;
+	exports.Volume = _Volume3.default;
+	exports.Fullscreen = _Fullscreen3.default;
 
 /***/ },
 /* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
-
-	var _react = __webpack_require__(4);
+	var _react = __webpack_require__(2);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var Volume = (function (_Component) {
-	  _inherits(Volume, _Component);
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	  function Volume() {
-	    _classCallCheck(this, Volume);
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	    _get(Object.getPrototypeOf(Volume.prototype), "constructor", this).apply(this, arguments);
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var PlayPause = function (_Component) {
+	  _inherits(PlayPause, _Component);
+
+	  function PlayPause() {
+	    var _Object$getPrototypeO;
+
+	    var _temp, _this, _ret;
+
+	    _classCallCheck(this, PlayPause);
+
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(PlayPause)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this._handlePlayPause = function () {
+	      _this.context.playPause();
+	    }, _temp), _possibleConstructorReturn(_this, _ret);
 	  }
 
-	  _createClass(Volume, [{
-	    key: "shouldComponentUpdate",
-	    value: function shouldComponentUpdate(nextProps) {
-	      return this.props.volume !== nextProps.volume || this.props.muted !== nextProps.muted;
-	    }
-	  }, {
-	    key: "_handleChange",
-	    value: function _handleChange(e) {
-	      this.props.onVolumeChange((+e.target.value).toFixed(4));
-	    }
-	  }, {
-	    key: "render",
+	  _createClass(PlayPause, [{
+	    key: 'render',
 	    value: function render() {
-	      return _react2["default"].createElement("input", {
-	        type: "range",
-	        step: "any",
-	        min: 0,
-	        max: 1,
-	        value: this.props.volume,
-	        onChange: this._handleChange.bind(this)
-	      });
+	      return _react2.default.createElement(
+	        'button',
+	        {
+	          id: this.props.id,
+	          className: this.props.className,
+	          type: 'button',
+	          onClick: this._handlePlayPause
+	        },
+	        this.context.isPlaying ? 'Pause' : 'Play'
+	      );
 	    }
 	  }]);
 
-	  return Volume;
-	})(_react.Component);
+	  return PlayPause;
+	}(_react.Component);
 
-	exports["default"] = Volume;
-	module.exports = exports["default"];
+	PlayPause.contextTypes = {
+	  isPlaying: _react.PropTypes.bool,
+	  playPause: _react.PropTypes.func
+	};
+	exports.default = PlayPause;
 
 /***/ },
 /* 19 */
@@ -1503,59 +1286,504 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
-
-	var _react = __webpack_require__(4);
+	var _react = __webpack_require__(2);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var Fullscreen = (function (_Component) {
+	var _formatTime = __webpack_require__(20);
+
+	var _formatTime2 = _interopRequireDefault(_formatTime);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var CurrentTime = function (_Component) {
+	  _inherits(CurrentTime, _Component);
+
+	  function CurrentTime() {
+	    _classCallCheck(this, CurrentTime);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(CurrentTime).apply(this, arguments));
+	  }
+
+	  _createClass(CurrentTime, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'time',
+	        {
+	          id: this.props.id,
+	          className: this.props.className
+	        },
+	        (0, _formatTime2.default)(this.context.currentTime)
+	      );
+	    }
+	  }]);
+
+	  return CurrentTime;
+	}(_react.Component);
+
+	CurrentTime.contextTypes = {
+	  currentTime: _react.PropTypes.number
+	};
+	exports.default = CurrentTime;
+
+/***/ },
+/* 20 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = formatTime;
+	function formatTime(current) {
+	  var h = Math.floor(current / 3600);
+	  var m = Math.floor(current / 60);
+	  var s = Math.floor(current % 60);
+
+	  if (s < 10) {
+	    s = '0' + s;
+	  }
+
+	  if (h > 0) {
+	    return h + ':' + m + ':' + s;
+	  } else {
+	    return m + ':' + s;
+	  }
+	}
+
+/***/ },
+/* 21 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Progress = function (_Component) {
+	  _inherits(Progress, _Component);
+
+	  function Progress() {
+	    _classCallCheck(this, Progress);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Progress).apply(this, arguments));
+	  }
+
+	  _createClass(Progress, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement('progress', {
+	        id: this.props.id,
+	        className: this.props.className,
+	        max: 100,
+	        value: this.context.progress * 100
+	      });
+	    }
+	  }]);
+
+	  return Progress;
+	}(_react.Component);
+
+	Progress.contextTypes = {
+	  progress: _react.PropTypes.number
+	};
+	exports.default = Progress;
+
+/***/ },
+/* 22 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var SeekBar = function (_Component) {
+	  _inherits(SeekBar, _Component);
+
+	  function SeekBar() {
+	    var _Object$getPrototypeO;
+
+	    var _temp, _this, _ret;
+
+	    _classCallCheck(this, SeekBar);
+
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(SeekBar)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this._playingOnMouseDown = false, _this._handleMouseDown = function () {
+	      _this._playingOnMouseDown = _this.context.isPlaying;
+	      _this.context.pause();
+	    }, _this._handleMouseUp = function () {
+	      // only play if media was playing prior to mouseDown
+	      if (_this._playingOnMouseDown) {
+	        _this.context.play();
+	      }
+	    }, _this._handleChange = function (_ref) {
+	      var value = _ref.target.value;
+
+	      _this.context.seekTo(+value);
+	    }, _temp), _possibleConstructorReturn(_this, _ret);
+	  }
+
+	  _createClass(SeekBar, [{
+	    key: "render",
+	    value: function render() {
+	      return _react2.default.createElement("input", {
+	        id: this.props.id,
+	        className: this.props.className,
+	        type: "range",
+	        step: "any",
+	        max: this.context.duration.toFixed(4),
+	        value: this.context.currentTime,
+	        onMouseDown: this._handleMouseDown,
+	        onMouseUp: this._handleMouseUp,
+	        onChange: this._handleChange
+	      });
+	    }
+	  }]);
+
+	  return SeekBar;
+	}(_react.Component);
+
+	SeekBar.contextTypes = {
+	  currentTime: _react.PropTypes.number,
+	  duration: _react.PropTypes.number,
+	  play: _react.PropTypes.func,
+	  pause: _react.PropTypes.func,
+	  seekTo: _react.PropTypes.func,
+	  isPlaying: _react.PropTypes.bool
+	};
+	exports.default = SeekBar;
+
+/***/ },
+/* 23 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _formatTime = __webpack_require__(20);
+
+	var _formatTime2 = _interopRequireDefault(_formatTime);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Duration = function (_Component) {
+	  _inherits(Duration, _Component);
+
+	  function Duration() {
+	    _classCallCheck(this, Duration);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Duration).apply(this, arguments));
+	  }
+
+	  _createClass(Duration, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'time',
+	        {
+	          id: this.props.id,
+	          className: this.props.className
+	        },
+	        (0, _formatTime2.default)(this.context.duration)
+	      );
+	    }
+	  }]);
+
+	  return Duration;
+	}(_react.Component);
+
+	Duration.contextTypes = {
+	  duration: _react.PropTypes.number
+	};
+	exports.default = Duration;
+
+/***/ },
+/* 24 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var MuteUnmute = function (_Component) {
+	  _inherits(MuteUnmute, _Component);
+
+	  function MuteUnmute() {
+	    var _Object$getPrototypeO;
+
+	    var _temp, _this, _ret;
+
+	    _classCallCheck(this, MuteUnmute);
+
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(MuteUnmute)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this._handleMuteUnmute = function () {
+	      _this.context.muteUnmute();
+	    }, _temp), _possibleConstructorReturn(_this, _ret);
+	  }
+
+	  _createClass(MuteUnmute, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'button',
+	        {
+	          id: this.props.id,
+	          className: this.props.className,
+	          type: 'button',
+	          onClick: this._handleMuteUnmute
+	        },
+	        this.context.isMuted ? 'Unmute' : 'Mute'
+	      );
+	    }
+	  }]);
+
+	  return MuteUnmute;
+	}(_react.Component);
+
+	MuteUnmute.contextTypes = {
+	  muteUnmute: _react.PropTypes.func,
+	  isMuted: _react.PropTypes.bool
+	};
+	exports.default = MuteUnmute;
+
+/***/ },
+/* 25 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Volume = function (_Component) {
+	  _inherits(Volume, _Component);
+
+	  function Volume() {
+	    var _Object$getPrototypeO;
+
+	    var _temp, _this, _ret;
+
+	    _classCallCheck(this, Volume);
+
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(Volume)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this._handleChange = function (_ref) {
+	      var value = _ref.target.value;
+
+	      _this.context.setVolume((+value).toFixed(4));
+	    }, _temp), _possibleConstructorReturn(_this, _ret);
+	  }
+
+	  _createClass(Volume, [{
+	    key: "render",
+	    value: function render() {
+	      return _react2.default.createElement("input", {
+	        id: this.props.id,
+	        className: this.props.className,
+	        type: "range",
+	        step: "any",
+	        min: 0,
+	        max: 1,
+	        value: this.context.volume,
+	        onChange: this._handleChange
+	      });
+	    }
+	  }]);
+
+	  return Volume;
+	}(_react.Component);
+
+	Volume.contextTypes = {
+	  volume: _react.PropTypes.number,
+	  setVolume: _react.PropTypes.func
+	};
+	exports.default = Volume;
+
+/***/ },
+/* 26 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Fullscreen = function (_Component) {
 	  _inherits(Fullscreen, _Component);
 
 	  function Fullscreen() {
+	    var _Object$getPrototypeO;
+
+	    var _temp, _this, _ret;
+
 	    _classCallCheck(this, Fullscreen);
 
-	    _get(Object.getPrototypeOf(Fullscreen.prototype), 'constructor', this).apply(this, arguments);
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(Fullscreen)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this._handleFullscreen = function () {
+	      _this.context.fullscreen();
+	    }, _temp), _possibleConstructorReturn(_this, _ret);
 	  }
 
 	  _createClass(Fullscreen, [{
-	    key: 'shouldComponentUpdate',
-	    value: function shouldComponentUpdate(nextProps) {
-	      return this.props.fullscreen !== nextProps.fullscreen;
-	    }
-	  }, {
-	    key: '_handleFullscreen',
-	    value: function _handleFullscreen() {
-	      this.props.onFullscreen();
-	    }
-	  }, {
 	    key: 'render',
 	    value: function render() {
-	      return _react2['default'].createElement(
+	      return _react2.default.createElement(
 	        'button',
-	        { type: 'button', onClick: this._handleFullscreen.bind(this) },
-	        this.props.fullscreen ? 'Exit Fullscreen' : 'Fullscreen'
+	        {
+	          id: this.props.id,
+	          className: this.props.className,
+	          type: 'button',
+	          onClick: this._handleFullscreen
+	        },
+	        this.context.isFullscreen ? 'Exit Fullscreen' : 'Fullscreen'
 	      );
 	    }
 	  }]);
 
 	  return Fullscreen;
-	})(_react.Component);
+	}(_react.Component);
 
-	exports['default'] = Fullscreen;
-	module.exports = exports['default'];
+	Fullscreen.contextTypes = {
+	  fullscreen: _react.PropTypes.func,
+	  isFullscreen: _react.PropTypes.bool
+	};
+	exports.default = Fullscreen;
+
+/***/ },
+/* 27 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.formatTime = undefined;
+
+	var _formatTime2 = __webpack_require__(20);
+
+	var _formatTime3 = _interopRequireDefault(_formatTime2);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.formatTime = _formatTime3.default;
 
 /***/ }
 /******/ ])
