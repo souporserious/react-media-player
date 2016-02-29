@@ -31,6 +31,8 @@ class SeekBar extends Component {
   render() {
     return (
       <input
+        id={this.props.id}
+        className={this.props.className}
         type="range"
         step="any"
         max={(this.context.duration).toFixed(4)}

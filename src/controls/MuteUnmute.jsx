@@ -12,7 +12,12 @@ class MuteUnmute extends Component {
 
   render() {
     return (
-      <button type="button" onClick={this._handleMuteUnmute}>
+      <button
+        id={this.props.id}
+        className={this.props.className}
+        type="button"
+        onClick={this._handleMuteUnmute}
+      >
         {this.context.isMuted ? 'Unmute' : 'Mute'}
       </button>
     )

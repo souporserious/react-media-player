@@ -12,7 +12,12 @@ class Fullscreen extends Component {
 
   render() {
     return (
-      <button type="button" onClick={this._handleFullscreen}>
+      <button
+        id={this.props.id}
+        className={this.props.className}
+        type="button"
+        onClick={this._handleFullscreen}
+      >
         {this.context.isFullscreen ? 'Exit Fullscreen' : 'Fullscreen'}
       </button>
     )

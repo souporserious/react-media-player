@@ -13,6 +13,8 @@ class Volume extends Component {
   render() {
     return (
       <input
+        id={this.props.id}
+        className={this.props.className}
         type="range"
         step="any"
         min={0}

@@ -12,7 +12,12 @@ class PlayPause extends Component {
 
   render() {
     return (
-      <button type="button" onClick={this._handlePlayPause}>
+      <button
+        id={this.props.id}
+        className={this.props.className}
+        type="button"
+        onClick={this._handlePlayPause}
+      >
         {this.context.isPlaying ? 'Pause' : 'Play'}
       </button>
     )

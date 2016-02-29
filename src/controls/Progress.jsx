@@ -8,6 +8,8 @@ class Progress extends Component {
   render() {
     return (
       <progress
+        id={this.props.id}
+        className={this.props.className}
         max={100}
         value={this.context.progress * 100}
       />
