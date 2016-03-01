@@ -6,7 +6,7 @@ import exitFullscreen from './utils/exit-fullscreen'
 
 class Media extends Component {
   static propTypes = {
-    vendor: PropTypes.string,
+    vendor: PropTypes.oneOf(['youtube', 'vimeo', 'audio', 'video']),
     src: PropTypes.string.isRequired,
     children: PropTypes.func.isRequired
   }

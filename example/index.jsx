@@ -64,7 +64,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <CircleMediaPlayer vendor="audio" src="https://p.scdn.co/mp3-preview/f83458d6611ae9589420f71c447ac9d2e3047cb8" />
+        <CircleMediaPlayer src="https://p.scdn.co/mp3-preview/f83458d6611ae9589420f71c447ac9d2e3047cb8" />
         <Media src={this.state.currSrc}>
           {Player => <MediaPlayer Player={Player} />}
         </Media>
