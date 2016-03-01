@@ -65,11 +65,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _Media3 = _interopRequireDefault(_Media2);
 
-	var _exports = __webpack_require__(17);
+	var _exports = __webpack_require__(15);
 
 	var _controls = _interopRequireWildcard(_exports);
 
-	var _exports2 = __webpack_require__(27);
+	var _exports2 = __webpack_require__(25);
 
 	var _utils = _interopRequireWildcard(_exports2);
 
@@ -103,15 +103,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _getVendor = __webpack_require__(4);
+	var _getVendor2 = __webpack_require__(4);
 
-	var _getVendor2 = _interopRequireDefault(_getVendor);
+	var _getVendor3 = _interopRequireDefault(_getVendor2);
 
-	var _requestFullscreen = __webpack_require__(15);
+	var _requestFullscreen = __webpack_require__(13);
 
 	var _requestFullscreen2 = _interopRequireDefault(_requestFullscreen);
 
-	var _exitFullscreen = __webpack_require__(16);
+	var _exitFullscreen = __webpack_require__(14);
 
 	var _exitFullscreen2 = _interopRequireDefault(_exitFullscreen);
 
@@ -243,12 +243,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var src = _props.src;
 	      var children = _props.children;
 
-	      var Player = (0, _getVendor2.default)(src);
+	      var _getVendor = (0, _getVendor3.default)(src, this.props.vendor);
 
-	      return Player && children((0, _react.createElement)(Player, {
+	      var vendor = _getVendor.vendor;
+	      var component = _getVendor.component;
+
+
+	      return component && children((0, _react.createElement)(component, {
 	        ref: function ref(c) {
 	          return _this2._player = c;
 	        },
+	        vendor: vendor,
 	        src: src,
 	        onReady: function onReady() {
 	          return _this2.setState({ isLoading: false });
@@ -279,8 +284,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	}(_react.Component);
 
 	Media.propTypes = {
-	  src: _react.PropTypes.string,
-	  children: _react.PropTypes.func
+	  vendor: _react.PropTypes.oneOf(['youtube', 'vimeo', 'audio', 'video']),
+	  src: _react.PropTypes.string.isRequired,
+	  children: _react.PropTypes.func.isRequired
 	};
 	Media.childContextTypes = {
 	  // State
@@ -341,30 +347,26 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _Vimeo2 = _interopRequireDefault(_Vimeo);
 
-	var _Video = __webpack_require__(12);
+	var _HTML = __webpack_require__(12);
 
-	var _Video2 = _interopRequireDefault(_Video);
-
-	var _Audio = __webpack_require__(14);
-
-	var _Audio2 = _interopRequireDefault(_Audio);
+	var _HTML2 = _interopRequireDefault(_HTML);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var VIDEO_EXTENSIONS = ['mp4', 'm4v', 'webm', 'ogv'];
 	var AUDIO_EXTENSIONS = ['mp3', 'm4a', 'wav', 'ogg'];
 
-	function getVendor(src) {
+	function getVendor(src, vendor) {
 	  var ext = (0, _getFileExtension2.default)(src);
 
-	  if (src.indexOf('youtube.com') > -1 || src.indexOf('youtu.be') > -1) {
-	    return _Youtube2.default;
-	  } else if (src.indexOf('vimeo.com') > -1) {
-	    return _Vimeo2.default;
-	  } else if (VIDEO_EXTENSIONS.indexOf(ext) > -1) {
-	    return _Video2.default;
-	  } else if (AUDIO_EXTENSIONS.indexOf(ext) > -1) {
-	    return _Audio2.default;
+	  if (vendor === 'youtube' || src.indexOf('youtube.com') > -1 || src.indexOf('youtu.be') > -1) {
+	    return { vendor: 'youtube', component: _Youtube2.default };
+	  } else if (vendor === 'vimeo' || src.indexOf('vimeo.com') > -1) {
+	    return { vendor: 'vimeo', component: _Vimeo2.default };
+	  } else if (vendor === 'video' || VIDEO_EXTENSIONS.indexOf(ext) > -1) {
+	    return { vendor: 'video', component: _HTML2.default };
+	  } else if (vendor === 'audio' || AUDIO_EXTENSIONS.indexOf(ext) > -1) {
+	    return { vendor: 'audio', component: _HTML2.default };
 	  } else {
 	    console.warn('Warning: Player was not rendered. Source could not be determined.');
 	    return null;
@@ -893,70 +895,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _HTML2 = __webpack_require__(13);
-
-	var _HTML3 = _interopRequireDefault(_HTML2);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var Video = function (_HTML) {
-	  _inherits(Video, _HTML);
-
-	  function Video() {
-	    _classCallCheck(this, Video);
-
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Video).apply(this, arguments));
-	  }
-
-	  _createClass(Video, [{
-	    key: 'render',
-	    value: function render() {
-	      var _this2 = this;
-
-	      return _react2.default.createElement('video', {
-	        ref: function ref(c) {
-	          return _this2._player = c;
-	        },
-	        src: this.props.src,
-	        onCanPlay: this._handleCanPlay,
-	        onPlay: this._handlePlay,
-	        onPause: this._handlePause,
-	        onEnded: this._handleEnded,
-	        onProgress: this._handleProgress,
-	        onLoadedMetadata: this._handleDuration,
-	        onTimeUpdate: this._handleTimeUpdate,
-	        onVolumeChange: this._handleVolumeChange
-	      });
-	    }
-	  }]);
-
-	  return Video;
-	}(_HTML3.default);
-
-	exports.default = Video;
-
-/***/ },
-/* 13 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(2);
-
-	var _react2 = _interopRequireDefault(_react);
-
 	var _vendorPropTypes = __webpack_require__(9);
 
 	var _vendorPropTypes2 = _interopRequireDefault(_vendorPropTypes);
@@ -1052,57 +990,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function setVolume(volume) {
 	      this._player.volume = volume;
 	    }
-	  }]);
-
-	  return HTML5;
-	}(_react.Component);
-
-	HTML5.propTypes = _vendorPropTypes2.default;
-	exports.default = HTML5;
-
-/***/ },
-/* 14 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(2);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _HTML2 = __webpack_require__(13);
-
-	var _HTML3 = _interopRequireDefault(_HTML2);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var Audio = function (_HTML) {
-	  _inherits(Audio, _HTML);
-
-	  function Audio() {
-	    _classCallCheck(this, Audio);
-
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Audio).apply(this, arguments));
-	  }
-
-	  _createClass(Audio, [{
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var _this2 = this;
 
-	      return _react2.default.createElement('audio', {
+	      return _react2.default.createElement(this.props.vendor, {
 	        ref: function ref(c) {
 	          return _this2._player = c;
 	        },
@@ -1119,13 +1012,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  }]);
 
-	  return Audio;
-	}(_HTML3.default);
+	  return HTML5;
+	}(_react.Component);
 
-	exports.default = Audio;
+	HTML5.propTypes = _vendorPropTypes2.default;
+	exports.default = HTML5;
 
 /***/ },
-/* 15 */
+/* 13 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1142,7 +1036,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}();
 
 /***/ },
-/* 16 */
+/* 14 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1159,7 +1053,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}();
 
 /***/ },
-/* 17 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1169,35 +1063,35 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 	exports.Fullscreen = exports.Volume = exports.MuteUnmute = exports.Duration = exports.SeekBar = exports.Progress = exports.CurrentTime = exports.PlayPause = undefined;
 
-	var _PlayPause2 = __webpack_require__(18);
+	var _PlayPause2 = __webpack_require__(16);
 
 	var _PlayPause3 = _interopRequireDefault(_PlayPause2);
 
-	var _CurrentTime2 = __webpack_require__(19);
+	var _CurrentTime2 = __webpack_require__(17);
 
 	var _CurrentTime3 = _interopRequireDefault(_CurrentTime2);
 
-	var _Progress2 = __webpack_require__(21);
+	var _Progress2 = __webpack_require__(19);
 
 	var _Progress3 = _interopRequireDefault(_Progress2);
 
-	var _SeekBar2 = __webpack_require__(22);
+	var _SeekBar2 = __webpack_require__(20);
 
 	var _SeekBar3 = _interopRequireDefault(_SeekBar2);
 
-	var _Duration2 = __webpack_require__(23);
+	var _Duration2 = __webpack_require__(21);
 
 	var _Duration3 = _interopRequireDefault(_Duration2);
 
-	var _MuteUnmute2 = __webpack_require__(24);
+	var _MuteUnmute2 = __webpack_require__(22);
 
 	var _MuteUnmute3 = _interopRequireDefault(_MuteUnmute2);
 
-	var _Volume2 = __webpack_require__(25);
+	var _Volume2 = __webpack_require__(23);
 
 	var _Volume3 = _interopRequireDefault(_Volume2);
 
-	var _Fullscreen2 = __webpack_require__(26);
+	var _Fullscreen2 = __webpack_require__(24);
 
 	var _Fullscreen3 = _interopRequireDefault(_Fullscreen2);
 
@@ -1213,7 +1107,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.Fullscreen = _Fullscreen3.default;
 
 /***/ },
-/* 18 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1281,7 +1175,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = PlayPause;
 
 /***/ },
-/* 19 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1296,7 +1190,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _formatTime = __webpack_require__(20);
+	var _formatTime = __webpack_require__(18);
 
 	var _formatTime2 = _interopRequireDefault(_formatTime);
 
@@ -1340,7 +1234,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = CurrentTime;
 
 /***/ },
-/* 20 */
+/* 18 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1366,7 +1260,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 21 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1419,7 +1313,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = Progress;
 
 /***/ },
-/* 22 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1502,7 +1396,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = SeekBar;
 
 /***/ },
-/* 23 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1517,7 +1411,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _formatTime = __webpack_require__(20);
+	var _formatTime = __webpack_require__(18);
 
 	var _formatTime2 = _interopRequireDefault(_formatTime);
 
@@ -1561,7 +1455,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = Duration;
 
 /***/ },
-/* 24 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1629,7 +1523,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = MuteUnmute;
 
 /***/ },
-/* 25 */
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1699,7 +1593,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = Volume;
 
 /***/ },
-/* 26 */
+/* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1767,7 +1661,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = Fullscreen;
 
 /***/ },
-/* 27 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1777,7 +1671,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 	exports.formatTime = undefined;
 
-	var _formatTime2 = __webpack_require__(20);
+	var _formatTime2 = __webpack_require__(18);
 
 	var _formatTime3 = _interopRequireDefault(_formatTime2);
 
