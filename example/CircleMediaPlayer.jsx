@@ -61,7 +61,7 @@ class CirclePlayer extends Component {
 class CircleMediaPlayer extends Component {
   render() {
     return (
-      <Media src={this.props.src}>
+      <Media vendor="audio" src={this.props.src}>
         {Player => <CirclePlayer Player={Player} />}
       </Media>
     )

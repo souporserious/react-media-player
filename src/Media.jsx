@@ -6,8 +6,9 @@ import exitFullscreen from './utils/exit-fullscreen'
 
 class Media extends Component {
   static propTypes = {
-    src: PropTypes.string,
-    children: PropTypes.func
+    vendor: PropTypes.string,
+    src: PropTypes.string.isRequired,
+    children: PropTypes.func.isRequired
   }
 
   static childContextTypes = {
@@ -149,11 +150,12 @@ class Media extends Component {
 
   render() {
     const { src, children } = this.props
-    const Player = getVendor(src)
+    const { vendor, component } = getVendor(src, this.props.vendor)
 
-    return Player && children(
-      createElement(Player, {
+    return component && children(
+      createElement(component, {
         ref: c => this._player = c,
+        vendor,
         src,
         onReady: () => this.setState({isLoading: false}),
         onPlaying: isPlaying => this.setState({isPlaying}),
