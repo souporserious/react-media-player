@@ -1353,13 +1353,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(SeekBar)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this._playingOnMouseDown = false, _this._handleMouseDown = function () {
 	      _this._playingOnMouseDown = _this.context.isPlaying;
 	      _this.context.pause();
-	    }, _this._handleMouseUp = function () {
+	    }, _this._handleMouseUp = function (_ref) {
+	      var value = _ref.target.value;
+
+	      // seek on mouseUp as well because of this bug in <= IE11
+	      // https://github.com/facebook/react/issues/554
+	      _this.context.seekTo(+value);
+
 	      // only play if media was playing prior to mouseDown
 	      if (_this._playingOnMouseDown) {
 	        _this.context.play();
 	      }
-	    }, _this._handleChange = function (_ref) {
-	      var value = _ref.target.value;
+	    }, _this._handleChange = function (_ref2) {
+	      var value = _ref2.target.value;
 
 	      _this.context.seekTo(+value);
 	    }, _temp), _possibleConstructorReturn(_this, _ret);
@@ -1368,16 +1374,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	  _createClass(SeekBar, [{
 	    key: "render",
 	    value: function render() {
+	      var _context = this.context;
+	      var duration = _context.duration;
+	      var currentTime = _context.currentTime;
+
 	      return _react2.default.createElement("input", {
 	        id: this.props.id,
 	        className: this.props.className,
 	        type: "range",
 	        step: "any",
-	        max: this.context.duration.toFixed(4),
-	        value: this.context.currentTime,
+	        max: duration.toFixed(4),
+	        value: currentTime,
 	        onMouseDown: this._handleMouseDown,
 	        onMouseUp: this._handleMouseUp,
-	        onChange: this._handleChange
+	        onChange: this._handleChange,
+	        style: {
+	          backgroundSize: currentTime * 100 / duration + '% 100%'
+	        }
 	      });
 	    }
 	  }]);
@@ -1560,7 +1573,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      args[_key] = arguments[_key];
 	    }
 
-	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(Volume)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this._handleChange = function (_ref) {
+	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(Volume)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this._handleSetVolume = function (_ref) {
 	      var value = _ref.target.value;
 
 	      _this.context.setVolume((+value).toFixed(4));
@@ -1570,6 +1583,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  _createClass(Volume, [{
 	    key: "render",
 	    value: function render() {
+	      var volume = this.context.volume;
+
 	      return _react2.default.createElement("input", {
 	        id: this.props.id,
 	        className: this.props.className,
@@ -1577,8 +1592,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	        step: "any",
 	        min: 0,
 	        max: 1,
-	        value: this.context.volume,
-	        onChange: this._handleChange
+	        value: volume,
+	        onMouseUp: this._handleSetVolume,
+	        onChange: this._handleSetVolume,
+	        style: {
+	          backgroundSize: volume * 100 / 1 + '% 100%'
+	        }
 	      });
 	    }
 	  }]);

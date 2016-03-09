@@ -1,4 +1,4 @@
-## React Media Player 0.3.1
+## React Media Player
 
 React media container component to help build video & audio players.
 

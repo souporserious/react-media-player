@@ -1,4 +1,9 @@
 ## CHANGELOG
+### 0.3.2
+Allow better styling of `SeekBar` and `Volume` controls by passing background-size. Specifically for styling back fill color in Chrome
+
+Workaround for [know bug](https://github.com/facebook/react/issues/554) with input ranges in <= IE11
+
 ### 0.3.1
 Fixes bad reference to main file in package.json
 
