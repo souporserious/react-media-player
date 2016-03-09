@@ -83,7 +83,7 @@ class App extends Component {
             )}
           </ul>
         </aside>
-        <FullPlayer src={"http://a1083.phobos.apple.com/us/r1000/014/Music/v4/4e/44/b7/4e44b7dc-aaa2-c63b-fb38-88e1635b5b29/mzaf_1844128138535731917.plus.aac.p.m4a"} />
+        <FullPlayer src={"https://p.scdn.co/mp3-preview/f83458d6611ae9589420f71c447ac9d2e3047cb8"} />
       </div>
     )
   }

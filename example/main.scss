@@ -309,27 +309,33 @@ input[type="range"] {
   margin: 0;
   background-color: transparent;
 
-  // so we can style the lower progress
-  &::-webkit-slider-container {
-    background-size: inherit;
-  }
-
   @include -range-track(webkit, moz, ms) {
     width: 100%;
     height: $track-height;
     border: 0;
     cursor: pointer;
-
-    background: {
-      color: $track-upper-color;
-      image: linear-gradient(#86b350, #86b350);
-      size: inherit;
-      repeat: no-repeat;
-    }
+    background-color: $track-upper-color;
 
     &:active {
       cursor: grabbing;
     }
+  }
+
+  // so we can style the lower progress
+  &::-webkit-slider-container {
+    background-size: inherit;
+  }
+
+  @include -range-track(webkit) {
+    background: {
+      image: linear-gradient($track-lower-color, $track-lower-color);
+      size: inherit;
+      repeat: no-repeat;
+    }
+  }
+
+  @include -range-fill-lower(webkit, moz, ms) {
+    background-color: $track-lower-color;
   }
 
   @include -range-thumb(webkit, moz, ms) {

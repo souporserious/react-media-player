@@ -136,7 +136,7 @@ class FullMedia extends Component {
 class FullPlayer extends Component {
   render() {
     return (
-      <Media src={this.props.src}>
+      <Media vendor="audio" src={this.props.src}>
         {Player => <FullMedia Player={Player} />}
       </Media>
     )
