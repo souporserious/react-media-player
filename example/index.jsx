@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
 import { Media, controls, utils } from '../src/react-media-player'
 import CircleMediaPlayer from './CircleMediaPlayer'
+import FullPlayer from './FullPlayer'
 
 import './main.scss'
 
@@ -82,6 +83,7 @@ class App extends Component {
             )}
           </ul>
         </aside>
+        <FullPlayer src={"http://a1083.phobos.apple.com/us/r1000/014/Music/v4/4e/44/b7/4e44b7dc-aaa2-c63b-fb38-88e1635b5b29/mzaf_1844128138535731917.plus.aac.p.m4a"} />
       </div>
     )
   }
