@@ -6,7 +6,7 @@ class Volume extends Component {
     setVolume: PropTypes.func
   }
 
-  _handleChange = ({ target: { value } }) => {
+  _handleSetVolume = ({ target: { value } }) => {
     this.context.setVolume((+value).toFixed(4))
   }
 
@@ -21,7 +21,8 @@ class Volume extends Component {
         min={0}
         max={1}
         value={volume}
-        onChange={this._handleChange}
+        onMouseUp={this._handleSetVolume}
+        onChange={this._handleSetVolume}
         style={{
           backgroundSize: (volume * 100 / 1) + '% 100%'
         }}
