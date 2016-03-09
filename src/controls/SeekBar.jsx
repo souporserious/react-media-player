@@ -17,7 +17,11 @@ class SeekBar extends Component {
     this.context.pause()
   }
 
-  _handleMouseUp = () => {
+  _handleMouseUp = ({ target: { value } }) => {
+    // seek on mouseUp as well because of this bug in <= IE11
+    // https://github.com/facebook/react/issues/554
+    this.context.seekTo(+value)
+
     // only play if media was playing prior to mouseDown
     if (this._playingOnMouseDown) {
       this.context.play()
