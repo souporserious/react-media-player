@@ -11,6 +11,7 @@ class Volume extends Component {
   }
 
   render() {
+    const { volume } = this.context
     return (
       <input
         id={this.props.id}
@@ -19,8 +20,11 @@ class Volume extends Component {
         step="any"
         min={0}
         max={1}
-        value={this.context.volume}
+        value={volume}
         onChange={this._handleChange}
+        style={{
+          backgroundSize: (volume * 100 / 1) + '% 100%'
+        }}
       />
     )
   }
