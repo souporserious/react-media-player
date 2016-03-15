@@ -8,28 +8,30 @@ React media container component to help build video & audio players.
 
 `bower install react-media-player --save`
 
-## Example Usage
+## Example using Babel Stage 0
 
 ```js
 
-import { Media, controls, utils } from 'react-media-player'
+import React, { Component, PropTypes } from 'react'
+import { Media, controls } from 'react-media-player'
 const { PlayPause, CurrentTime, Progress, SeekBar, Duration, MuteUnmute, Volume, Fullscreen } = controls
 
-class MediaPlayer extends React.Component {
+class MediaPlayer extends Component {
   static contextTypes = {
-    playPause: PropTypes.func
+    playPause: PropTypes.func,
+    isLoading: PropTypes.bool
   }
 
   render() {
     const { Player } = this.props
-    const { isLoading, playPause, currentTime, duration } = this.context
+    const { isLoading, playPause } = this.context
 
     return (
-      <div>
-        <div onClick={() => playPause()}>
+      <div className="media">
+        <div className="media-player" onClick={() => playPause()}>
           {Player}
         </div>
-        <nav className="media__controls">
+        <nav className="media-controls">
           <PlayPause />
           <CurrentTime />
           <Progress />
@@ -46,12 +48,12 @@ class MediaPlayer extends React.Component {
 
 class App extends React.Component {
   state = {
-    currSrc: 'http://www.youtube.com/embed/h3YVKTxTOgU'
+    currentSource: 'http://www.youtube.com/embed/h3YVKTxTOgU'
   }
 
   render() {
     return (
-      <Media src={this.state.currSrc}>
+      <Media src={this.state.currentSource}>
         {Player => <MediaPlayer Player={Player} />}
       </Media>
     )

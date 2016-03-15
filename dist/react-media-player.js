@@ -140,7 +140,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(Media)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.state = {
 	      currentTime: 0,
 	      progress: 0,
-	      duration: 0,
+	      duration: 0.1,
 	      volume: 1,
 	      isLoading: true,
 	      isPlaying: false,
@@ -160,6 +160,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      _this._player.stop();
 	    }, _this._handleSeekTo = function (currentTime) {
 	      _this._player.seekTo(currentTime);
+	      _this.setState({ currentTime: currentTime });
 	    }, _this._handleMute = function (isMuted) {
 	      if (isMuted) {
 	        _this._lastVolume = _this.state.volume;
@@ -225,7 +226,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          duration: 0,
 	          isPlaying: false,
 
-	          // TODO: figure out how to keep these settings
+	          // TODO: figure out how to keep these settings when changing vendors
 	          // getting error because element isn't available when trying to set them
 	          // this occurs on componentDidUpdate
 	          volume: 1,
@@ -529,6 +530,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          var isPlaying = data === 1;
 
 	          if (isPlaying) {
+	            _this3.props.onDuration(_this3._player.getDuration());
 	            _this3._timeUpdateId = requestAnimationFrame(_this3._handleTimeUpdate);
 	          } else {
 	            cancelAnimationFrame(_this3._timeUpdateId);
@@ -541,6 +543,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	          // start fetching progress when playing or buffering
 	          if (isPlaying || data === 3) {
 	            _this3._progressId = requestAnimationFrame(_this3._handleProgress);
+	          }
+
+	          // reset duration if a new video was loaded
+	          if (data === 5) {
+	            _this3.props.onDuration(0.1);
 	          }
 
 	          _this3.props.onPlaying(isPlaying);
@@ -1350,24 +1357,27 @@ return /******/ (function(modules) { // webpackBootstrap
 	      args[_key] = arguments[_key];
 	    }
 
-	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(SeekBar)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this._playingOnMouseDown = false, _this._handleMouseDown = function () {
-	      _this._playingOnMouseDown = _this.context.isPlaying;
+	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(SeekBar)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this._isPlayingOnMouseDown = false, _this._onChangeUsed = false, _this._handleMouseDown = function () {
+	      _this._isPlayingOnMouseDown = _this.context.isPlaying;
 	      _this.context.pause();
 	    }, _this._handleMouseUp = function (_ref) {
 	      var value = _ref.target.value;
 
 	      // seek on mouseUp as well because of this bug in <= IE11
 	      // https://github.com/facebook/react/issues/554
-	      _this.context.seekTo(+value);
+	      if (!_this._onChangeUsed) {
+	        _this.context.seekTo(+value);
+	      }
 
 	      // only play if media was playing prior to mouseDown
-	      if (_this._playingOnMouseDown) {
+	      if (_this._isPlayingOnMouseDown) {
 	        _this.context.play();
 	      }
 	    }, _this._handleChange = function (_ref2) {
 	      var value = _ref2.target.value;
 
 	      _this.context.seekTo(+value);
+	      _this._onChangeUsed = true;
 	    }, _temp), _possibleConstructorReturn(_this, _ret);
 	  }
 
@@ -1388,9 +1398,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        onMouseDown: this._handleMouseDown,
 	        onMouseUp: this._handleMouseUp,
 	        onChange: this._handleChange,
-	        style: {
-	          backgroundSize: currentTime * 100 / duration + '% 100%'
-	        }
+	        style: { backgroundSize: currentTime * 100 / duration + '% 100%' }
 	      });
 	    }
 	  }]);
@@ -1573,10 +1581,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	      args[_key] = arguments[_key];
 	    }
 
-	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(Volume)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this._handleSetVolume = function (_ref) {
+	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(Volume)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this._onChangeUsed = false, _this._handleMouseUp = function (_ref) {
 	      var value = _ref.target.value;
 
+	      // set volume on mouseUp as well because of this bug in <= IE11
+	      // https://github.com/facebook/react/issues/554
+	      if (!_this._onChangeUsed) {
+	        _this.context.setVolume((+value).toFixed(4));
+	      }
+	    }, _this._handleChange = function (_ref2) {
+	      var value = _ref2.target.value;
+
 	      _this.context.setVolume((+value).toFixed(4));
+	      _this._onChangeUsed = true;
 	    }, _temp), _possibleConstructorReturn(_this, _ret);
 	  }
 
@@ -1593,11 +1610,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        min: 0,
 	        max: 1,
 	        value: volume,
-	        onMouseUp: this._handleSetVolume,
-	        onChange: this._handleSetVolume,
-	        style: {
-	          backgroundSize: volume * 100 / 1 + '% 100%'
-	        }
+	        onMouseUp: this._handleMouseUp,
+	        onChange: this._handleChange,
+	        style: { backgroundSize: volume * 100 / 1 + '% 100%' }
 	      });
 	    }
 	  }]);
