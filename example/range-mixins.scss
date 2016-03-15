@@ -1,0 +1,215 @@
+/* INPUT[type='range'] Shadow Elements Selectors *
+ * ============================================= */
+$defaultBrowserList : webkit, moz, ms;
+
+// this function will be used in all this script.
+@function _contains(/* List */ $haystack, /* Any */ $needle) {
+    @if index($haystack, $needle){
+      @return true;
+    }@else{
+      @return false;
+    }
+}
+
+// UGLY Browsers hacks here :
+// ( is there a better use for them ? ^_- )
+@mixin browser-restrict-to ( $browserList... ){
+  @if( length($browserList) == 0 ){
+    @content;
+  }
+  @else{
+    @if (  _contains($browserList, webkit)){
+      //
+      // http://browserhacks.com/#hack-f4ade0540d8e891e8190065f75acb186
+      &:not(*:root) {  @content; }
+    }
+    @if ( _contains($browserList, moz)){
+      //
+      // http://browserhacks.com/#hack-8e9b5504d9fda44ec75169381b3c3157
+      @supports (-moz-appearance:meterbar) { @content; }
+    }
+    @if ( _contains($browserList, ms)){
+      // http://browserhacks.com/#hack-f1070533535a12744a0381a75087a915
+      @at-root {
+        _:-ms-input-placeholder,
+        :root & { @content; }
+      }
+    }
+  }
+}
+
+
+@mixin -range-track ( $browserList... ) {
+  @if( length($browserList) == 0 ){ $browserList: $defaultBrowserList}
+
+  @if ( _contains($browserList, webkit)){
+    &::-webkit-slider-runnable-track {        @content; }
+  }
+  @if ( _contains($browserList, moz)){
+    &::-moz-range-track {                     @content; }
+  }
+  @if ( _contains($browserList, ms)){
+    &::-ms-track {                            @content; }
+  }
+
+}
+
+
+@mixin -range-thumb ( $browserList... ) {
+  @if( length($browserList) == 0 ){ $browserList: $defaultBrowserList}
+
+  @if ( _contains($browserList, webkit)){
+    &::-webkit-slider-thumb {                 @content; }
+  }
+  @if ( _contains($browserList, moz)){
+    &::-moz-range-thumb {                     @content; }
+  }
+  @if ( _contains($browserList, ms)){
+    &::-ms-thumb {                            @content; }
+  }
+}
+
+@mixin -range-fill-lower ( $browserList... ) {
+  @if( length($browserList) == 0 ){ $browserList: $defaultBrowserList}
+
+  @if ( _contains($browserList, webkit)){
+    &::-webkit-slider-thumb::before {          @content; }
+  }
+  @if ( _contains($browserList, moz)){
+    &::-moz-range-progress {                  @content; }
+  }
+  @if ( _contains($browserList, ms)){
+    &::-ms-fill-lower {                       @content; }
+  }
+}
+
+// Usefull only on webkit.
+@mixin -range-track-outline ( $browserList... ) {
+  @if( length($browserList) == 0 ){ $browserList: $defaultBrowserList}
+
+  @if ( _contains($browserList, webkit)){
+    &::-webkit-slider-runnable-track::after { @content; }
+  }
+}
+
+// I still didn't use them :
+@mixin -range-ticks ( $browserList... ) {
+  @if( length($browserList) == 0 ){ $browserList: $defaultBrowserList}
+
+  @if ( _contains($browserList, ms)){
+    &::-ms-ticks-before {                       @content; }
+    &::-ms-ticks-after {                        @content; }
+  }
+}
+
+@mixin -range-tooltip ( $browserList... ) {
+  @if( length($browserList) == 0 ){ $browserList: $defaultBrowserList}
+
+  @if ( _contains($browserList, ms)){
+    &::-ms-tooltip {                            @content; }
+  }
+}
+
+
+@mixin -range-thumb__margin-top($margin){
+  @include -range-thumb( 'webkit' ) {
+    margin-top: $margin;
+    &::before {
+      margin-top: ( $margin * -1 );
+    }
+  }
+}
+
+@mixin -range__reset ( $browserList... ) {
+
+  @include browser-restrict-to($browserList...){
+    $deep: "/deep/";
+    &, & #{unquote($deep)} * {
+      &, &::before, &::after {
+        box-sizing: border-box;
+      }
+    }
+    overflow: hidden;
+  }
+
+  @if( length($browserList) == 0 ){ $browserList: $defaultBrowserList}
+
+  @if ( _contains($browserList, webkit)) or ( _contains($browserList, moz)) {
+    // Webkit/Gecko :
+    @include browser-restrict-to($browserList...){
+      font-size: 1em;
+    }
+  }
+  @if ( _contains($browserList, webkit)) {
+  // Webkit reset :
+    @include browser-restrict-to(webkit){
+      -webkit-appearance: none;
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+
+  @include -range-track($browserList) {
+    overflow: visible;
+  }
+
+  @if ( _contains($browserList, webkit)) {
+    &::-webkit-slider-runnable-track {
+      -webkit-appearance: none;
+      position: relative;
+      z-index: 1;
+
+      &::after {
+        content: "";
+        display: block;
+        position: absolute;
+        top: 0; left: 0;
+        width: inherit; height: inherit;
+        border-radius: inherit;
+        z-index: -1;
+      }
+    }
+    &::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      position: relative;
+      z-index: -1;
+      &::before {
+        content: "";
+        transform: translateX(-100%);
+        display: block;
+        z-index: -1;
+      }
+    }
+  }
+
+  @if ( _contains($browserList, moz)) {
+    // Gecko reset :
+    &::-moz-range-track {
+      z-index: -1;
+    }
+
+    // remove dotted outline
+    &::-moz-focus-outer {
+      border: 0;
+    }
+  }
+
+  @if ( _contains($browserList, ms)) {
+    // IE reset :
+    &::-ms-track {
+      border: none;
+      color: transparent;
+    }
+
+    // hide lower color
+    &::-ms-fill-lower {
+      background: transparent;
+    }
+
+    // remove tooltip
+    &::-ms-tooltip {
+      display: none;
+    }
+  }
+}
