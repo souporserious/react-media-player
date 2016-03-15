@@ -84,6 +84,11 @@ class Youtube extends Component {
           this._progressId = requestAnimationFrame(this._handleProgress)
         }
 
+        // reset duration if a new video was loaded
+        if (data === 5) {
+          this.props.onDuration(0.1)
+        }
+
         this.props.onPlaying(isPlaying)
       }
     }
