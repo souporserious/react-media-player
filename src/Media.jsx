@@ -37,7 +37,7 @@ class Media extends Component {
   state = {
     currentTime: 0,
     progress: 0,
-    duration: 0,
+    duration: 0.1,
     volume: 1,
     isLoading: true,
     isPlaying: false,
@@ -71,7 +71,7 @@ class Media extends Component {
         duration: 0,
         isPlaying: false,
 
-        // TODO: figure out how to keep these settings
+        // TODO: figure out how to keep these settings when changing vendors
         // getting error because element isn't available when trying to set them
         // this occurs on componentDidUpdate
         volume: 1,
@@ -103,6 +103,7 @@ class Media extends Component {
 
   _handleSeekTo = (currentTime) => {
     this._player.seekTo(currentTime)
+    this.setState({currentTime})
   }
 
   _handleMute = (isMuted) => {
@@ -110,7 +111,7 @@ class Media extends Component {
       this._lastVolume = this.state.volume
       this._player.setVolume(0)
     } else {
-      let volume = this._lastVolume > 0 ? this._lastVolume : 0.1
+      const volume = (this._lastVolume > 0) ? this._lastVolume : 0.1
       this._player.setVolume(volume)
     }
     this._player.mute(isMuted)

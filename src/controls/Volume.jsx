@@ -6,8 +6,19 @@ class Volume extends Component {
     setVolume: PropTypes.func
   }
 
-  _handleSetVolume = ({ target: { value } }) => {
+  _onChangeUsed = false
+
+  _handleMouseUp = ({ target: { value } }) => {
+    // set volume on mouseUp as well because of this bug in <= IE11
+    // https://github.com/facebook/react/issues/554
+    if (!this._onChangeUsed) {
+      this.context.setVolume((+value).toFixed(4))
+    }
+  }
+
+  _handleChange = ({ target: { value } }) => {
     this.context.setVolume((+value).toFixed(4))
+    this._onChangeUsed = true
   }
 
   render() {
@@ -21,11 +32,9 @@ class Volume extends Component {
         min={0}
         max={1}
         value={volume}
-        onMouseUp={this._handleSetVolume}
-        onChange={this._handleSetVolume}
-        style={{
-          backgroundSize: (volume * 100 / 1) + '% 100%'
-        }}
+        onMouseUp={this._handleMouseUp}
+        onChange={this._handleChange}
+        style={{backgroundSize: (volume * 100 / 1) + '% 100%'}}
       />
     )
   }
