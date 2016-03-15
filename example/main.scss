@@ -1,26 +1,7 @@
 @import "./range-mixins.scss";
 
-.media__player {
-  max-width: 500px;
-
-  iframe {
-    width: 100%;
-  }
-}
-
-video {
-  width: 100%;
-}
-
-// hide native controls
-video::-webkit-media-controls {
-  display: none !important;
-}
-
-// push controls above fullscreen video
-.media__controls {
-  position: relative;
-  z-index: 2147483647;
+* {
+  box-sizing: border-box;
 }
 
 // Circle Media Player
@@ -58,6 +39,24 @@ video::-webkit-media-controls {
   stroke-width: 0;
 }
 
+.media-player {
+  width: 100%;
+  max-width: 640px;
+  position: relative;
+
+  // hide native controls
+  video::-webkit-media-controls {
+    display: none !important;
+  }
+
+  video,
+  iframe {
+    display: block;
+    width: 100%;
+    border: 0;
+  }
+}
+
 .media-controls {
   display: flex;
   align-items: center;
@@ -68,6 +67,16 @@ video::-webkit-media-controls {
   svg, path, polygon {
     transform-origin: 50% 50%;
   }
+
+  .media-player--fullscreen & {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+
+    // push controls above fullscreen video
+    z-index: 2147483647;
+  }
 }
 
 .media-control-group {
@@ -75,6 +84,10 @@ video::-webkit-media-controls {
   .media-control {
     margin: 0;
   }
+}
+
+.media-control-group--seek {
+  flex: 1;
 }
 
 .media-control {

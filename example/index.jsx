@@ -5,10 +5,11 @@ import CircleMediaPlayer from './CircleMediaPlayer'
 import FullPlayer from './FullPlayer'
 import PlayPause from './PlayPause'
 import MuteUnmute from './MuteUnmute'
+import Fullscreen from './Fullscreen'
 
 import './main.scss'
 
-const { CurrentTime, Progress, SeekBar, Duration, Volume, Fullscreen } = controls
+const { CurrentTime, Progress, SeekBar, Duration, Volume } = controls
 const { formatTime } = utils
 
 const playlist = [
@@ -30,24 +31,28 @@ const playlist = [
 
 class MediaPlayer extends Component {
   static contextTypes = {
-    isLoading: PropTypes.bool,
+    isFullscreen: PropTypes.bool,
     playPause: PropTypes.func
   }
 
   render() {
     const { Player } = this.props
-    const { isLoading, playPause, currentTime, duration } = this.context
+    const { isFullscreen, playPause } = this.context
+    let classes = 'media-player'
+
+    if (isFullscreen) {
+      classes += ' media-player--fullscreen'
+    }
 
     return (
-      <div>
-        {isLoading && <span>Loading...</span>}
+      <div className={classes}>
         <div onClick={() => playPause()}>
           {Player}
         </div>
         <nav className="media-controls">
           <PlayPause className="media-control media-control--play-pause" />
           <CurrentTime className="media-control media-control--current-time" />
-          <div className="media-control-group">
+          <div className="media-control-group media-control-group--seek">
             <Progress className="media-control media-control--progress" />
             <SeekBar className="media-control media-control--seekbar" />
           </div>
