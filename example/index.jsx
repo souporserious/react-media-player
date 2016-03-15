@@ -3,10 +3,12 @@ import ReactDOM from 'react-dom'
 import { Media, controls, utils } from '../src/react-media-player'
 import CircleMediaPlayer from './CircleMediaPlayer'
 import FullPlayer from './FullPlayer'
+import PlayPause from './PlayPause'
+import MuteUnmute from './MuteUnmute'
 
 import './main.scss'
 
-const { PlayPause, CurrentTime, Progress, SeekBar, Duration, MuteUnmute, Volume, Fullscreen } = controls
+const { CurrentTime, Progress, SeekBar, Duration, Volume, Fullscreen } = controls
 const { formatTime } = utils
 
 const playlist = [
@@ -42,15 +44,17 @@ class MediaPlayer extends Component {
         <div onClick={() => playPause()}>
           {Player}
         </div>
-        <nav className="media__controls">
-          <PlayPause />
-          <CurrentTime />
-          <Progress />
-          <SeekBar />
-          <Duration />
-          <MuteUnmute />
-          <Volume />
-          <Fullscreen />
+        <nav className="media-controls">
+          <PlayPause className="media-control media-control--play-pause" />
+          <CurrentTime className="media-control media-control--current-time" />
+          <div className="media-control-group">
+            <Progress className="media-control media-control--progress" />
+            <SeekBar className="media-control media-control--seekbar" />
+          </div>
+          <Duration className="media-control media-control--duration" />
+          <MuteUnmute className="media-control media-control--mute-unmute" />
+          <Volume className="media-control media-control--volume" />
+          <Fullscreen className="media-control media-control--fullscreen" />
         </nav>
       </div>
     )

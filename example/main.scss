@@ -70,8 +70,50 @@ video::-webkit-media-controls {
   }
 }
 
+.media-control-group {
+  position: relative;
+  .media-control {
+    margin: 0;
+  }
+}
+
 .media-control {
   margin: 0 12px;
+}
+
+.media-control--progress {
+  -webkit-appearance: none;
+  width: calc(100% - 24px);
+  height: 3px;
+  margin: 0 12px;
+  border: 0;
+  position: absolute;
+  top: 7px;
+  left: 12px;
+
+  // bar
+  background-color: #373d3f;
+  &::-webkit-progress-bar {
+    background-color: #373d3f;
+  }
+
+  // progress
+  color: lighten(#373d3f, 5%); // IE
+  &::-moz-progress-bar {
+    background-color: lighten(#373d3f, 5%);
+  }
+  &::-webkit-progress-value {
+    background-color: lighten(#373d3f, 5%);
+  }
+}
+
+.media-control--seekbar {
+  position: relative;
+  z-index: 5;
+
+  @include -range-track(webkit, moz, ms) {
+    background-color: transparent !important;
+  }
 }
 
 .media-control--volume {
@@ -92,7 +134,7 @@ input[type="range"] {
 
   width: 100%;
   height: 12px;
-  padding: 6px 12px;
+  padding: 0 12px;
   margin: 0;
   background-color: transparent;
 
