@@ -68,16 +68,24 @@ class MediaPlayer extends Component {
 
 class App extends Component {
   state = {
-    currSrc: playlist[0].src
+    currSrc: playlist[0].src,
+    showMediaPlayer: false
   }
 
   render() {
+    const { showMediaPlayer } = this.state
     return (
       <div>
-        <CircleMediaPlayer src="https://p.scdn.co/mp3-preview/f83458d6611ae9589420f71c447ac9d2e3047cb8" />
+        <button
+          onClick={() => this.setState({showMediaPlayer: !showMediaPlayer})}
+        >
+          Toggle Media Player
+        </button>
+        { showMediaPlayer &&
         <Media src={this.state.currSrc}>
           {Player => <MediaPlayer Player={Player} />}
         </Media>
+        }
         <aside className="playlist">
           <h3 className="playlist__title">Playlist</h3>
           <ul className="playlist__links">
@@ -92,6 +100,7 @@ class App extends Component {
             )}
           </ul>
         </aside>
+        <CircleMediaPlayer src="https://p.scdn.co/mp3-preview/f83458d6611ae9589420f71c447ac9d2e3047cb8" />
         <FullPlayer src={"https://p.scdn.co/mp3-preview/f83458d6611ae9589420f71c447ac9d2e3047cb8"} />
       </div>
     )
