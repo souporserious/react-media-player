@@ -8,10 +8,13 @@ let isAPILoaded = false
 class Youtube extends Component {
   static propTypes = vendorPropTypes
 
+  _isMounted = false
   _progressId = null
   _timeUpdateId = null
 
   componentDidMount() {
+    this._isMounted = true
+
     if (!isAPILoaded) {
       loadAPI('http://www.youtube.com/player_api')
 
@@ -32,6 +35,8 @@ class Youtube extends Component {
   }
 
   componentWillUnmount() {
+    this._isMounted = false
+
     if (this._progressId) {
       cancelAnimationFrame(this._progressId)
     }
@@ -125,6 +130,8 @@ class Youtube extends Component {
   }
 
   _handleProgress = () => {
+    if (!this._isMounted) return
+
     const progress = this._player.getVideoLoadedFraction() || 0
 
     this.props.onProgress(progress)
@@ -135,6 +142,8 @@ class Youtube extends Component {
   }
 
   _handleTimeUpdate = () => {
+    if (!this._isMounted) return
+
     this.props.onTimeUpdate(this._player.getCurrentTime() || 0)
 
     if (this._timeUpdateId) {
