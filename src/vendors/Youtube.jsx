@@ -16,7 +16,7 @@ class Youtube extends Component {
     this._isMounted = true
 
     if (!isAPILoaded) {
-      loadAPI('http://www.youtube.com/player_api')
+      loadAPI('//youtube.com/player_api')
 
       window.onYouTubeIframeAPIReady = () => {
         this._createPlayer()
