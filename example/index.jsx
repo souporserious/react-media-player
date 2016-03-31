@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component, PropTypes, createElement } from 'react'
 import ReactDOM from 'react-dom'
 import { Media, controls, utils } from '../src/react-media-player'
 import CircleMediaPlayer from './CircleMediaPlayer'
@@ -10,7 +10,7 @@ import Fullscreen from './Fullscreen'
 import './main.scss'
 
 const { CurrentTime, Progress, SeekBar, Duration, Volume } = controls
-const { formatTime } = utils
+const { formatTime, AddKeyboardControls } = utils
 
 const playlist = [
   {src: 'http://www.youtube.com/embed/h3YVKTxTOgU', label: 'Brand New (Youtube)'},
@@ -36,7 +36,7 @@ class MediaPlayer extends Component {
   }
 
   render() {
-    const { Player } = this.props
+    const { Player, onKeyDown } = this.props
     const { isFullscreen, playPause } = this.context
     let classes = 'media-player'
 
@@ -45,7 +45,7 @@ class MediaPlayer extends Component {
     }
 
     return (
-      <div className={classes}>
+      <div className={classes} onKeyDown={onKeyDown} tabIndex="-1">
         <div onClick={() => playPause()}>
           {Player}
         </div>
@@ -66,10 +66,12 @@ class MediaPlayer extends Component {
   }
 }
 
+MediaPlayer = AddKeyboardControls(MediaPlayer)
+
 class App extends Component {
   state = {
     currSrc: playlist[0].src,
-    showMediaPlayer: false
+    showMediaPlayer: true
   }
 
   render() {
