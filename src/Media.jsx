@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import getVendor from './utils/get-vendor'
 import requestFullscreen from './utils/request-fullscreen'
 import exitFullscreen from './utils/exit-fullscreen'
+import fullscreenChange from './utils/fullscreen-change'
 
 class Media extends Component {
   static propTypes = {
@@ -62,6 +63,10 @@ class Media extends Component {
     }
   }
 
+  componentDidMount() {
+    fullscreenChange('add', this._handleFullscreenChange)
+  }
+
   componentWillUpdate(nextProps) {
     // clean state if the video has changed
     if (this.props.src !== nextProps.src) {
@@ -79,6 +84,10 @@ class Media extends Component {
         isFullscreen: false
       })
     }
+  }
+
+  componentWillUnmount() {
+    fullscreenChange('remove', this._handleFullscreenChange)
   }
 
   _handlePlay = () => {
@@ -138,15 +147,17 @@ class Media extends Component {
   }
 
   _handleFullscreen = () => {
-    const { isFullscreen } = this.state
-
-    if (!isFullscreen) {
+    if (!this.state.isFullscreen) {
       ReactDOM.findDOMNode(this._player)[requestFullscreen]()
     } else {
       document[exitFullscreen]()
     }
+  }
 
-    this.setState({ isFullscreen: !isFullscreen })
+  _handleFullscreenChange = ({ target }) => {
+    if (target === ReactDOM.findDOMNode(this._player)) {
+      this.setState({ isFullscreen: !this.state.isFullscreen })
+    }
   }
 
   render() {
