@@ -1,23 +1,7 @@
 import React, { Component, PropTypes, createElement } from 'react'
+const MEDIA_KEYS = [0, 'f', 'j', 'k','l', ',', '.', ' ', 'Home', 'End', 'ArrowLeft', 'ArrowTop', 'ArrowRight', 'ArrowDown']
 
-const KEYS = {
-  ZERO: 48,
-  F: 70,
-  J: 74,
-  K: 75,
-  L: 76,
-  COMMA: 188,
-  PERIOD: 190,
-  SPACEBAR: 32,
-  END: 35,
-  HOME: 36,
-  LEFT_ARROW: 37,
-  UP_ARROW: 38,
-  RIGHT_ARROW: 39,
-  DOWN_ARROW: 40,
-}
-
-const AddKeyboardControls = ComposedComponent => class extends Component {
+const KeyboardControls = ComposedComponent => class extends Component {
   static contextTypes = {
     currentTime: PropTypes.number,
     duration: PropTypes.number,
@@ -28,7 +12,7 @@ const AddKeyboardControls = ComposedComponent => class extends Component {
     fullscreen: PropTypes.func
   }
 
-  _skipTime = (amount) => {
+  _skipTime(amount) {
     const { currentTime, duration, seekTo } = this.context
     let newTime = (currentTime + amount)
 
@@ -54,59 +38,59 @@ const AddKeyboardControls = ComposedComponent => class extends Component {
     setVolume(newVolume)
   }
 
-  _handleKeyDown = (e) => {
-    const { keyCode, ctrlKey, shiftKey } = e
+  _handlekeyboardControls = (e) => {
     const { playPause, duration, seekTo, fullscreen } = this.context
+    const { key, shiftKey } = e
 
     // prevent default on any media keys
-    Object.keys(KEYS).forEach(key =>
-      (KEYS[key] === keyCode) && e.preventDefault()
-    )
+    MEDIA_KEYS.some(_key => (_key === key) && e.preventDefault())
 
-    switch (keyCode) {
+    switch (key) {
       // Play/Pause
-      case KEYS.SPACEBAR:
-      case KEYS.K:
+      case ' ':
+      case 'k':
         playPause()
         break;
 
-      // Seeking
-      case KEYS.LEFT_ARROW:
+      // Seeking Backwards
+      case 'ArrowLeft':
         this._skipTime(shiftKey ? -10 : -5)
         break;
-      case KEYS.J:
+      case 'j':
         this._skipTime(shiftKey ? -10 : -5)
         break;
-      case KEYS.COMMA:
+      case ',':
         this._skipTime(-1)
         break;
-      case KEYS.RIGHT_ARROW:
+
+      // Seeking Forwards
+      case 'ArrowRight':
         this._skipTime(shiftKey ? 10 : 5)
         break;
-      case KEYS.L:
+      case 'l':
         this._skipTime(shiftKey ? 10 : 5)
         break;
-      case KEYS.PERIOD:
+      case '.':
         this._skipTime(1)
         break;
-      case KEYS.ZERO:
-      case KEYS.HOME:
+      case 0:
+      case 'Home':
         seekTo(0)
         break;
-      case KEYS.END:
+      case 'End':
         seekTo(duration)
         break;
 
       // Volume
-      case KEYS.UP_ARROW:
+      case 'ArrowUp':
         this._addVolume(shiftKey ? 10 : 5)
         break;
-      case KEYS.DOWN_ARROW:
+      case 'ArrowDown':
         this._addVolume(shiftKey ? -10 : -5)
         break;
 
       // Fullscreen
-      case KEYS.F:
+      case 'f':
         fullscreen()
         break;
     }
@@ -115,9 +99,9 @@ const AddKeyboardControls = ComposedComponent => class extends Component {
   render() {
     return createElement(ComposedComponent, {
       ...this.props,
-      onKeyDown: this._handleKeyDown
+      keyboardControls: this._handlekeyboardControls
     })
   }
 }
 
-export default AddKeyboardControls
+export default KeyboardControls

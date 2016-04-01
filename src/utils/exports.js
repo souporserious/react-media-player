@@ -1,2 +1,2 @@
 export formatTime from './format-time'
-export AddKeyboardControls from './AddKeyboardControls'
+export KeyboardControls from './KeyboardControls'

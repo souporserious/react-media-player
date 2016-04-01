@@ -10,7 +10,7 @@ import Fullscreen from './Fullscreen'
 import './main.scss'
 
 const { CurrentTime, Progress, SeekBar, Duration, Volume } = controls
-const { formatTime, AddKeyboardControls } = utils
+const { formatTime, KeyboardControls } = utils
 
 const playlist = [
   {src: 'http://www.youtube.com/embed/h3YVKTxTOgU', label: 'Brand New (Youtube)'},
@@ -36,7 +36,7 @@ class MediaPlayer extends Component {
   }
 
   render() {
-    const { Player, onKeyDown } = this.props
+    const { Player, keyboardControls } = this.props
     const { isFullscreen, playPause } = this.context
     let classes = 'media-player'
 
@@ -45,7 +45,7 @@ class MediaPlayer extends Component {
     }
 
     return (
-      <div className={classes} onKeyDown={onKeyDown} tabIndex="-1">
+      <div className={classes} onKeyDown={keyboardControls} tabIndex="-1">
         <div onClick={() => playPause()}>
           {Player}
         </div>
@@ -66,7 +66,7 @@ class MediaPlayer extends Component {
   }
 }
 
-MediaPlayer = AddKeyboardControls(MediaPlayer)
+MediaPlayer = KeyboardControls(MediaPlayer)
 
 class App extends Component {
   state = {
@@ -84,9 +84,9 @@ class App extends Component {
           Toggle Media Player
         </button>
         { showMediaPlayer &&
-        <Media src={this.state.currSrc}>
-          {Player => <MediaPlayer Player={Player} />}
-        </Media>
+          <Media src={this.state.currSrc}>
+            {Player => <MediaPlayer Player={Player} />}
+          </Media>
         }
         <aside className="playlist">
           <h3 className="playlist__title">Playlist</h3>

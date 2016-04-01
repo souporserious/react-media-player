@@ -54,6 +54,8 @@
     display: block;
     width: 100%;
     border: 0;
+    // prevent native controls so keyboard events work
+    pointer-events: none;
   }
 }
 
