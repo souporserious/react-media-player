@@ -1,27 +1,28 @@
 import React, { Component, PropTypes } from 'react'
+import withMedia from '../decorators/with-media'
 
 class MuteUnmute extends Component {
-  static contextTypes = {
-    muteUnmute: PropTypes.func,
-    isMuted: PropTypes.bool
+  shouldComponentUpdate({ isMuted }) {
+    return this.props.isMuted !== isMuted
   }
 
   _handleMuteUnmute = () => {
-    this.context.muteUnmute()
+    this.props.muteUnmute()
   }
 
   render() {
+    const { className, style, isMuted } = this.props
     return (
       <button
-        id={this.props.id}
-        className={this.props.className}
         type="button"
+        className={className}
+        style={style}
         onClick={this._handleMuteUnmute}
       >
-        {this.context.isMuted ? 'Unmute' : 'Mute'}
+        { isMuted ? 'Unmute' : 'Mute' }
       </button>
     )
   }
 }
 
-export default MuteUnmute
+export default withMedia(MuteUnmute)

@@ -1,27 +1,28 @@
 import React, { Component, PropTypes } from 'react'
+import withMedia from '../decorators/with-media'
 
 class Fullscreen extends Component {
-  static contextTypes = {
-    fullscreen: PropTypes.func,
-    isFullscreen: PropTypes.bool
+  shouldComponentUpdate({ isFullscreen }) {
+    return this.props.isFullscreen !== isFullscreen
   }
 
   _handleFullscreen = () => {
-    this.context.fullscreen()
+    this.props.fullscreen()
   }
 
   render() {
+    const { className, style, isFullscreen } = this.props
     return (
       <button
-        id={this.props.id}
-        className={this.props.className}
         type="button"
+        className={className}
+        style={style}
         onClick={this._handleFullscreen}
       >
-        {this.context.isFullscreen ? 'Exit Fullscreen' : 'Fullscreen'}
+        { isFullscreen ? 'Exit Fullscreen' : 'Fullscreen' }
       </button>
     )
   }
 }
 
-export default Fullscreen
+export default withMedia(Fullscreen)

@@ -1,47 +1,42 @@
 import React, { Component, PropTypes } from 'react'
+import withMedia from '../decorators/with-media'
 
 class SeekBar extends Component {
-  static contextTypes = {
-    currentTime: PropTypes.number,
-    duration: PropTypes.number,
-    play: PropTypes.func,
-    pause: PropTypes.func,
-    seekTo: PropTypes.func,
-    isPlaying: PropTypes.bool
-  }
-
   _isPlayingOnMouseDown = false
   _onChangeUsed = false
 
+  shouldComponentUpdate({ currentTime, duration }) {
+    return this.props.currentTime !== currentTime ||
+           this.props.duration !== duration
+  }
+
   _handleMouseDown = () => {
-    this._isPlayingOnMouseDown = this.context.isPlaying
-    this.context.pause()
+    this._isPlayingOnMouseDown = this.props.isPlaying
+    this.props.pause()
   }
 
   _handleMouseUp = ({ target: { value } }) => {
     // seek on mouseUp as well because of this bug in <= IE11
     // https://github.com/facebook/react/issues/554
     if (!this._onChangeUsed) {
-      this.context.seekTo(+value)
+      this.props.seekTo(+value)
     }
 
     // only play if media was playing prior to mouseDown
     if (this._isPlayingOnMouseDown) {
-      this.context.play()
+      this.props.play()
     }
   }
 
   _handleChange = ({ target: { value } }) => {
-    this.context.seekTo(+value)
+    this.props.seekTo(+value)
     this._onChangeUsed = true
   }
 
   render() {
-    const { duration, currentTime } = this.context
+    const { duration, currentTime, className, style } = this.props
     return (
       <input
-        id={this.props.id}
-        className={this.props.className}
         type="range"
         step="any"
         max={(duration).toFixed(4)}
@@ -49,10 +44,14 @@ class SeekBar extends Component {
         onMouseDown={this._handleMouseDown}
         onMouseUp={this._handleMouseUp}
         onChange={this._handleChange}
-        style={{backgroundSize: (currentTime * 100 / duration) + '% 100%'}}
+        className={className}
+        style={{
+          backgroundSize: (currentTime * 100 / duration) + '% 100%',
+          ...style
+        }}
       />
     )
   }
 }
 
-export default SeekBar
+export default withMedia(SeekBar)

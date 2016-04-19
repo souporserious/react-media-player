@@ -1,6 +1,6 @@
 import React, { Component, PropTypes, createElement } from 'react'
 import ReactDOM from 'react-dom'
-import { Media, controls, utils } from '../src/react-media-player'
+import { media, withMedia, keyboardControls, controls } from '../src/react-media-player'
 import CircleMediaPlayer from './CircleMediaPlayer'
 import FullPlayer from './FullPlayer'
 import PlayPause from './PlayPause'
@@ -10,7 +10,6 @@ import Fullscreen from './Fullscreen'
 import './main.scss'
 
 const { CurrentTime, Progress, SeekBar, Duration, Volume } = controls
-const { formatTime, KeyboardControls } = utils
 
 const playlist = [
   {src: 'http://www.youtube.com/embed/h3YVKTxTOgU', label: 'Brand New (Youtube)'},
@@ -30,14 +29,8 @@ const playlist = [
 ]
 
 class MediaPlayer extends Component {
-  static contextTypes = {
-    isFullscreen: PropTypes.bool,
-    playPause: PropTypes.func
-  }
-
   render() {
-    const { Player, keyboardControls } = this.props
-    const { isFullscreen, playPause } = this.context
+    const { Player, keyboardControls, isFullscreen, playPause } = this.props
     let classes = 'media-player'
 
     if (isFullscreen) {
@@ -45,7 +38,7 @@ class MediaPlayer extends Component {
     }
 
     return (
-      <div className={classes} onKeyDown={keyboardControls} tabIndex="-1">
+      <div className={classes} onKeyDown={keyboardControls} tabIndex="0">
         <div onClick={() => playPause()}>
           {Player}
         </div>
@@ -65,8 +58,7 @@ class MediaPlayer extends Component {
     )
   }
 }
-
-MediaPlayer = KeyboardControls(MediaPlayer)
+MediaPlayer = media(withMedia(keyboardControls(MediaPlayer)))
 
 class App extends Component {
   state = {
@@ -84,9 +76,7 @@ class App extends Component {
           Toggle Media Player
         </button>
         { showMediaPlayer &&
-          <Media src={this.state.currSrc}>
-            {Player => <MediaPlayer Player={Player} />}
-          </Media>
+          <MediaPlayer src={this.state.currSrc}/>
         }
         <aside className="playlist">
           <h3 className="playlist__title">Playlist</h3>

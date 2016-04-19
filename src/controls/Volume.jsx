@@ -1,32 +1,30 @@
 import React, { Component, PropTypes } from 'react'
+import withMedia from '../decorators/with-media'
 
 class Volume extends Component {
-  static contextTypes = {
-    volume: PropTypes.number,
-    setVolume: PropTypes.func
-  }
-
   _onChangeUsed = false
+
+  shouldComponentUpdate({ volume }) {
+    return this.props.volume !== volume
+  }
 
   _handleMouseUp = ({ target: { value } }) => {
     // set volume on mouseUp as well because of this bug in <= IE11
     // https://github.com/facebook/react/issues/554
     if (!this._onChangeUsed) {
-      this.context.setVolume((+value).toFixed(4))
+      this.props.setVolume((+value).toFixed(4))
     }
   }
 
   _handleChange = ({ target: { value } }) => {
-    this.context.setVolume((+value).toFixed(4))
+    this.props.setVolume((+value).toFixed(4))
     this._onChangeUsed = true
   }
 
   render() {
-    const { volume } = this.context
+    const { volume, className, style } = this.props
     return (
       <input
-        id={this.props.id}
-        className={this.props.className}
         type="range"
         step="any"
         min={0}
@@ -34,10 +32,14 @@ class Volume extends Component {
         value={volume}
         onMouseUp={this._handleMouseUp}
         onChange={this._handleChange}
-        style={{backgroundSize: (volume * 100 / 1) + '% 100%'}}
+        className={className}
+        style={{
+          backgroundSize: (volume * 100 / 1) + '% 100%',
+          ...style
+        }}
       />
     )
   }
 }
 
-export default Volume
+export default withMedia(Volume)

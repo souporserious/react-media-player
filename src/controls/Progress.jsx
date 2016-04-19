@@ -1,20 +1,22 @@
 import React, { Component, PropTypes } from 'react'
+import withMedia from '../decorators/with-media'
 
 class Progress extends Component {
-  static contextTypes = {
-    progress: PropTypes.number
+  shouldComponentUpdate({ progress }) {
+    return this.props.progress !== progress
   }
 
   render() {
+    const { className, style, progress } = this.props
     return (
       <progress
-        id={this.props.id}
-        className={this.props.className}
+        className={className}
+        style={style}
         max={100}
-        value={this.context.progress * 100}
+        value={progress * 100}
       />
     )
   }
 }
 
-export default Progress
+export default withMedia(Progress)
