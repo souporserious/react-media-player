@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import contextTypes from '../contextTypes'
+import contextTypes from '../context-types'
 
 export default function withMedia(MediaComponent) {
   return class extends Component {

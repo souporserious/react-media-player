@@ -1,6 +1,6 @@
 import React, { Component, PropTypes, createElement } from 'react'
 import ReactDOM from 'react-dom'
-import contextTypes from './contextTypes'
+import contextTypes from './context-types'
 import getVendor from './utils/get-vendor'
 import requestFullscreen from './utils/request-fullscreen'
 import exitFullscreen from './utils/exit-fullscreen'
