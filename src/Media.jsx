@@ -1,5 +1,6 @@
 import React, { Component, PropTypes, createElement } from 'react'
 import ReactDOM from 'react-dom'
+import contextTypes from './contextTypes'
 import getVendor from './utils/get-vendor'
 import requestFullscreen from './utils/request-fullscreen'
 import exitFullscreen from './utils/exit-fullscreen'
@@ -12,28 +13,7 @@ class Media extends Component {
     children: PropTypes.func.isRequired
   }
 
-  static childContextTypes = {
-    // State
-    currentTime: PropTypes.number,
-    progress: PropTypes.number,
-    duration: PropTypes.number,
-    volume: PropTypes.number,
-    isLoading: PropTypes.bool,
-    isPlaying: PropTypes.bool,
-    isMuted: PropTypes.bool,
-    isFullscreen: PropTypes.bool,
-
-    // Methods
-    play: PropTypes.func,
-    pause: PropTypes.func,
-    playPause: PropTypes.func,
-    stop: PropTypes.func,
-    seekTo: PropTypes.func,
-    mute: PropTypes.func,
-    muteUnmute: PropTypes.func,
-    setVolume: PropTypes.func,
-    fullscreen: PropTypes.func
-  }
+  static childContextTypes = contextTypes
 
   state = {
     currentTime: 0,
