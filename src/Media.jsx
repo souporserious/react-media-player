@@ -54,20 +54,22 @@ class Media extends Component {
         currentTime: 0,
         progress: 0,
         duration: 0,
-        isPlaying: false,
-
-        // TODO: figure out how to keep these settings when changing vendors
-        // getting error because element isn't available when trying to set them
-        // this occurs on componentDidUpdate
-        volume: 1,
-        isMuted: false,
-        isFullscreen: false
+        isPlaying: false
       })
     }
   }
 
   componentWillUnmount() {
     fullscreenChange('remove', this._handleFullscreenChange)
+  }
+
+  _handleOnReady = () => {
+    const { volume, isMuted } = this.state
+
+    this._handleSetVolume(volume)
+    this._handleMute(isMuted)
+
+    this.setState({ isLoading: false })
   }
 
   _handlePlay = () => {
@@ -149,13 +151,13 @@ class Media extends Component {
         ref: c => this._player = c,
         vendor,
         src,
-        onReady: () => this.setState({isLoading: false}),
-        onPlaying: isPlaying => this.setState({isPlaying}),
-        onDuration: duration => this.setState({duration}),
-        onProgress: progress => this.setState({progress}),
-        onTimeUpdate: currentTime => this.setState({currentTime}),
-        onMute: isMuted => this.setState({isMuted}),
-        onVolumeChange: volume => this.setState({volume})
+        onReady: this._handleOnReady,
+        onPlaying: isPlaying => this.setState({ isPlaying }),
+        onDuration: duration => this.setState({ duration }),
+        onProgress: progress => this.setState({ progress }),
+        onTimeUpdate: currentTime => this.setState({ currentTime }),
+        onMute: isMuted => this.setState({ isMuted }),
+        onVolumeChange: volume => this.setState({ volume })
       })
     )
   }
