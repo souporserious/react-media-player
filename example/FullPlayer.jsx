@@ -1,12 +1,12 @@
 import React, { Component, PropTypes } from 'react'
-import { Media, controls, utils } from '../src/react-media-player'
+import { media, withMedia, controls, utils } from '../src/react-media-player'
 import PlayPause from './PlayPause'
 import MuteUnmute from './MuteUnmute'
 
 const { CurrentTime, Progress, SeekBar, Duration, Volume, Fullscreen } = controls
 const { formatTime } = utils
 
-class FullMedia extends Component {
+class FullPlayer extends Component {
   static contextTypes = {
     isLoading: PropTypes.bool,
     playPause: PropTypes.func
@@ -35,14 +35,4 @@ class FullMedia extends Component {
   }
 }
 
-class FullPlayer extends Component {
-  render() {
-    return (
-      <Media vendor="audio" src={this.props.src}>
-        {Player => <FullMedia Player={Player} />}
-      </Media>
-    )
-  }
-}
-
-export default FullPlayer
+export default media(withMedia(FullPlayer), 'audio')

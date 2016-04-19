@@ -1,15 +1,8 @@
 import React, { Component, PropTypes } from 'react'
 import CircleProgress from './CircleProgress'
-import { Media, controls, utils } from '../src/react-media-player'
+import { media, withMedia, controls } from '../src/react-media-player'
 
-class CirclePlayer extends Component {
-  static contextTypes = {
-    isPlaying: PropTypes.bool,
-    playPause: PropTypes.func,
-    currentTime: PropTypes.number,
-    duration: PropTypes.number
-  }
-
+class CircleMediaPlayer extends Component {
   componentDidMount() {
     this._circle = new CircleProgress(this._svg)
   }
@@ -38,8 +31,7 @@ class CirclePlayer extends Component {
   }
 
   render() {
-    const { Player } = this.props
-    const { playPause, isPlaying } = this.context
+    const { Player, playPause, isPlaying } = this.props
 
     return (
       <button className="circle-media-player" onClick={() => playPause()}>
@@ -58,14 +50,4 @@ class CirclePlayer extends Component {
   }
 }
 
-class CircleMediaPlayer extends Component {
-  render() {
-    return (
-      <Media vendor="audio" src={this.props.src}>
-        {Player => <CirclePlayer Player={Player} />}
-      </Media>
-    )
-  }
-}
-
-export default CircleMediaPlayer
+export default media(withMedia(CircleMediaPlayer), 'audio')
