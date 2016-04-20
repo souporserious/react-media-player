@@ -1,4 +1,4 @@
-import React, { Component, PropTypes, createElement } from 'react'
+import React, { Component } from 'react'
 import withMediaProps from './with-media-props'
 
 const MEDIA_KEYS = [0, 'f', 'j', 'k','l', ',', '.', ' ', 'Home', 'End', 'ArrowLeft', 'ArrowTop', 'ArrowRight', 'ArrowDown']
@@ -90,10 +90,12 @@ export default function withKeyboardControls(MediaPlayer) {
     }
 
     render() {
-      return createElement(MediaPlayer, {
-        ...this.props,
-        keyboardControls: this._handlekeyboardControls
-      })
+      return (
+        <MediaPlayer
+          {...this.props}
+          keyboardControls={this._handlekeyboardControls}
+        />
+      )
     }
   })
 }

@@ -7,7 +7,7 @@ export default function withMediaProps(MediaComponent) {
 
     render() {
       return (
-        <MediaComponent media={{...this.context}} {...this.props}/>
+        <MediaComponent {...this.props} media={{...this.context}}/>
       )
     }
   }
