@@ -1,17 +1,17 @@
 import React, { Component, PropTypes } from 'react'
-import withMedia from '../decorators/with-media'
+import withMediaProps from '../decorators/with-media-props'
 
 class PlayPause extends Component {
-  shouldComponentUpdate({ isPlaying }) {
-    return this.props.isPlaying !== isPlaying
+  shouldComponentUpdate({ media }) {
+    return this.props.media.isPlaying !== media.isPlaying
   }
 
   _handlePlayPause = () => {
-    this.props.playPause()
+    this.props.media.playPause()
   }
 
   render() {
-    const { className, style, isPlaying } = this.props
+    const { className, style, media } = this.props
     return (
       <button
         type="button"
@@ -19,10 +19,10 @@ class PlayPause extends Component {
         style={style}
         onClick={this._handlePlayPause}
       >
-        { isPlaying ? 'Pause' : 'Play' }
+        { media.isPlaying ? 'Pause' : 'Play' }
       </button>
     )
   }
 }
 
-export default withMedia(PlayPause)
+export default withMediaProps(PlayPause)

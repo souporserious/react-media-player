@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import { media, withMedia, controls, utils } from '../src/react-media-player'
+import { media, withMediaProps, controls, utils } from '../src/react-media-player'
 import PlayPause from './PlayPause'
 import MuteUnmute from './MuteUnmute'
 
@@ -7,14 +7,9 @@ const { CurrentTime, Progress, SeekBar, Duration, Volume, Fullscreen } = control
 const { formatTime } = utils
 
 class FullPlayer extends Component {
-  static contextTypes = {
-    isLoading: PropTypes.bool,
-    playPause: PropTypes.func
-  }
-
   render() {
-    const { Player } = this.props
-    const { isLoading, playPause, currentTime, duration } = this.context
+    const { Player, media } = this.props
+    const { isLoading, playPause, currentTime, duration } = media
 
     return (
       <div>
@@ -35,4 +30,4 @@ class FullPlayer extends Component {
   }
 }
 
-export default media(withMedia(FullPlayer), 'audio')
+export default media(withMediaProps(FullPlayer), 'audio')

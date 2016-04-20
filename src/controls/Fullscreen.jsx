@@ -1,17 +1,17 @@
 import React, { Component, PropTypes } from 'react'
-import withMedia from '../decorators/with-media'
+import withMediaProps from '../decorators/with-media-props'
 
 class Fullscreen extends Component {
-  shouldComponentUpdate({ isFullscreen }) {
-    return this.props.isFullscreen !== isFullscreen
+  shouldComponentUpdate({ media }) {
+    return this.props.media.isFullscreen !== media.isFullscreen
   }
 
   _handleFullscreen = () => {
-    this.props.fullscreen()
+    this.props.media.fullscreen()
   }
 
   render() {
-    const { className, style, isFullscreen } = this.props
+    const { className, style, media } = this.props
     return (
       <button
         type="button"
@@ -19,10 +19,10 @@ class Fullscreen extends Component {
         style={style}
         onClick={this._handleFullscreen}
       >
-        { isFullscreen ? 'Exit Fullscreen' : 'Fullscreen' }
+        { media.isFullscreen ? 'Exit Fullscreen' : 'Fullscreen' }
       </button>
     )
   }
 }
 
-export default withMedia(Fullscreen)
+export default withMediaProps(Fullscreen)

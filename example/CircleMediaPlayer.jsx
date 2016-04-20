@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import CircleProgress from './CircleProgress'
-import { media, withMedia, controls } from '../src/react-media-player'
+import { media, withMediaProps, controls } from '../src/react-media-player'
 
 class CircleMediaPlayer extends Component {
   componentDidMount() {
@@ -8,7 +8,7 @@ class CircleMediaPlayer extends Component {
   }
 
   componentDidUpdate() {
-    const { currentTime, duration } = this.context
+    const { currentTime, duration } = this.props.media
     this._circle.setProgress(currentTime / duration * 100)
   }
 
@@ -31,7 +31,8 @@ class CircleMediaPlayer extends Component {
   }
 
   render() {
-    const { Player, playPause, isPlaying } = this.props
+    const { Player, media } = this.props
+    const { playPause, isPlaying } = media
 
     return (
       <button className="circle-media-player" onClick={() => playPause()}>
@@ -50,4 +51,4 @@ class CircleMediaPlayer extends Component {
   }
 }
 
-export default media(withMedia(CircleMediaPlayer), 'audio')
+export default media(withMediaProps(CircleMediaPlayer), 'audio')

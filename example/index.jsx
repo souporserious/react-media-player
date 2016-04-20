@@ -1,6 +1,6 @@
 import React, { Component, PropTypes, createElement } from 'react'
 import ReactDOM from 'react-dom'
-import { media, withMedia, keyboardControls, controls } from '../src/react-media-player'
+import { media, withMediaProps, keyboardControls, controls } from '../src/react-media-player'
 import CircleMediaPlayer from './CircleMediaPlayer'
 import FullPlayer from './FullPlayer'
 import PlayPause from './PlayPause'
@@ -30,7 +30,8 @@ const playlist = [
 
 class MediaPlayer extends Component {
   render() {
-    const { Player, keyboardControls, isFullscreen, playPause } = this.props
+    const { Player, keyboardControls, media } = this.props
+    const { isFullscreen, playPause } = media
     let classes = 'media-player'
 
     if (isFullscreen) {
@@ -58,7 +59,7 @@ class MediaPlayer extends Component {
     )
   }
 }
-MediaPlayer = media(withMedia(keyboardControls(MediaPlayer)))
+MediaPlayer = media(withMediaProps(keyboardControls(MediaPlayer)))
 
 class App extends Component {
   state = {

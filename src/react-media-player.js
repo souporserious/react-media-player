@@ -1,6 +1,6 @@
 export Media from './Media'
 export keyboardControls from './decorators/keyboard-controls'
 export media from './decorators/media'
-export withMedia from './decorators/with-media'
+export withMediaProps from './decorators/with-media-props'
 export * as controls from './controls/exports'
 export * as utils from './utils/exports'

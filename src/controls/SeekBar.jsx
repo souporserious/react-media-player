@@ -1,40 +1,41 @@
 import React, { Component, PropTypes } from 'react'
-import withMedia from '../decorators/with-media'
+import withMediaProps from '../decorators/with-media-props'
 
 class SeekBar extends Component {
   _isPlayingOnMouseDown = false
   _onChangeUsed = false
 
-  shouldComponentUpdate({ currentTime, duration }) {
-    return this.props.currentTime !== currentTime ||
-           this.props.duration !== duration
+  shouldComponentUpdate({ media }) {
+    return this.props.media.currentTime !== media.currentTime ||
+           this.props.media.duration !== media.duration
   }
 
   _handleMouseDown = () => {
-    this._isPlayingOnMouseDown = this.props.isPlaying
-    this.props.pause()
+    this._isPlayingOnMouseDown = this.props.media.isPlaying
+    this.props.media.pause()
   }
 
   _handleMouseUp = ({ target: { value } }) => {
     // seek on mouseUp as well because of this bug in <= IE11
     // https://github.com/facebook/react/issues/554
     if (!this._onChangeUsed) {
-      this.props.seekTo(+value)
+      this.props.media.seekTo(+value)
     }
 
     // only play if media was playing prior to mouseDown
     if (this._isPlayingOnMouseDown) {
-      this.props.play()
+      this.props.media.play()
     }
   }
 
   _handleChange = ({ target: { value } }) => {
-    this.props.seekTo(+value)
+    this.props.media.seekTo(+value)
     this._onChangeUsed = true
   }
 
   render() {
-    const { duration, currentTime, className, style } = this.props
+    const { className, style, media } = this.props
+    const { duration, currentTime } = media
     return (
       <input
         type="range"
@@ -54,4 +55,4 @@ class SeekBar extends Component {
   }
 }
 
-export default withMedia(SeekBar)
+export default withMediaProps(SeekBar)
