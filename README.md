@@ -1,6 +1,6 @@
 ## React Media Player
 
-React media container component to help build video & audio players.
+React media decorators to help build video & audio players.
 
 ## Install
 
@@ -8,54 +8,48 @@ React media container component to help build video & audio players.
 
 `bower install react-media-player --save`
 
-## Example using Babel Stage 0
+## Example
 
 ```js
 
 import React, { Component, PropTypes } from 'react'
-import { Media, controls } from 'react-media-player'
+import { withMediaPlayer, withMediaProps, controls } from 'react-media-player'
 const { PlayPause, CurrentTime, Progress, SeekBar, Duration, MuteUnmute, Volume, Fullscreen } = controls
 
 class MediaPlayer extends Component {
-  static contextTypes = {
-    playPause: PropTypes.func,
-    isLoading: PropTypes.bool
-  }
-
   render() {
-    const { Player } = this.props
-    const { isLoading, playPause } = this.context
+    const { Player, media } = this.props
+    const { playPause } = media
 
     return (
       <div className="media">
         <div className="media-player" onClick={() => playPause()}>
-          {Player}
+          { Player }
         </div>
         <nav className="media-controls">
-          <PlayPause />
-          <CurrentTime />
-          <Progress />
-          <SeekBar />
-          <Duration />
-          <MuteUnmute />
-          <Volume />
-          <Fullscreen />
+          <PlayPause/>
+          <CurrentTime/>
+          <Progress/>
+          <SeekBar/>
+          <Duration/>
+          <MuteUnmute/>
+          <Volume/>
+          <Fullscreen/>
         </nav>
       </div>
     )
   }
 }
+MediaPlayer = withMediaPlayer(withMediaProps(MediaPlayer))
 
-class App extends React.Component {
+class App extends Component {
   state = {
     currentSource: 'http://www.youtube.com/embed/h3YVKTxTOgU'
   }
 
   render() {
     return (
-      <Media src={this.state.currentSource}>
-        {Player => <MediaPlayer Player={Player} />}
-      </Media>
+      <MediaPlayer src={this.state.currentSource}/>
     )
   }
 }
@@ -65,21 +59,21 @@ class App extends React.Component {
 
 [Demo](http://codepen.io/souporserious/pen/bpGyoy/)
 
-## Props
+<br/>
+
+## `withMediaPlayer` decorator props
 
 #### `src`: PropTypes.string.isRequired
 
-The source of the media you want to play. Currently supporting Youtube, Vimeo, and any HTML5 compatible video or audio.
+Pass the source into the decorated component. This is the source of the media you want to play. Currently supporting Youtube, Vimeo, and any HTML5 compatible video or audio.
 
 #### `vendor`: PropTypes.oneOf(['youtube', 'vimeo', 'audio', 'video'])
 
-Explicitly choose which component to render for the player. If not set, the library does its best to determine what player to render based on the source.
+Pass the vendor into the decorated component. Explicitly choose which component to render for the player. If not set, the library does its best to determine what player to render based on the source.
 
-#### `children`: PropTypes.func.isRequired
+<br/>
 
-Passes in the `Player` to be rendered.
-
-## Contexts
+## `withMediaProps` decorator props exposed under `this.props.media`
 
 #### `currentTime`: PropTypes.number
 
@@ -115,9 +109,7 @@ Passes in the `Player` to be rendered.
 
 #### `fullscreen`: PropTypes.func
 
-## Warning
-
-This library makes heavy use of [context](https://facebook.github.io/react/docs/context.html), please be advised that with new releases of React the way context is handled in this library is subject to change.
+<br/>
 
 ## Running Locally
 
