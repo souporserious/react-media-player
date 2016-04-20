@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import CircleProgress from './CircleProgress'
-import { media, withMediaProps, controls } from '../src/react-media-player'
+import { withMediaPlayer, withMediaProps, controls } from '../src/react-media-player'
 
 class CircleMediaPlayer extends Component {
   componentDidMount() {
@@ -51,4 +51,4 @@ class CircleMediaPlayer extends Component {
   }
 }
 
-export default media(withMediaProps(CircleMediaPlayer), 'audio')
+export default withMediaPlayer(withMediaProps(CircleMediaPlayer), 'audio')

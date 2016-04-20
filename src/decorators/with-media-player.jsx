@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import Media from '../Media'
 
-export default function media(MediaPlayer, vendor) {
+export default function withMediaPlayer(MediaPlayer, vendor) {
   return class extends Component {
     static propTypes = {
       vendor: PropTypes.oneOf(['youtube', 'vimeo', 'audio', 'video']),

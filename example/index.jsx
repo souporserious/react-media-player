@@ -1,6 +1,6 @@
 import React, { Component, PropTypes, createElement } from 'react'
 import ReactDOM from 'react-dom'
-import { media, withMediaProps, keyboardControls, controls } from '../src/react-media-player'
+import { withMediaPlayer, withMediaProps, keyboardControls, controls } from '../src/react-media-player'
 import CircleMediaPlayer from './CircleMediaPlayer'
 import FullPlayer from './FullPlayer'
 import PlayPause from './PlayPause'
@@ -59,7 +59,7 @@ class MediaPlayer extends Component {
     )
   }
 }
-MediaPlayer = media(withMediaProps(keyboardControls(MediaPlayer)))
+MediaPlayer = withMediaPlayer(withMediaProps(keyboardControls(MediaPlayer)))
 
 class App extends Component {
   state = {

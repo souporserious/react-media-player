@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import { media, withMediaProps, controls, utils } from '../src/react-media-player'
+import { withMediaPlayer, withMediaProps, controls, utils } from '../src/react-media-player'
 import PlayPause from './PlayPause'
 import MuteUnmute from './MuteUnmute'
 
@@ -30,4 +30,4 @@ class FullPlayer extends Component {
   }
 }
 
-export default media(withMediaProps(FullPlayer), 'audio')
+export default withMediaPlayer(withMediaProps(FullPlayer), 'audio')
