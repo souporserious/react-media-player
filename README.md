@@ -71,6 +71,10 @@ Pass the source into the decorated component. This is the source of the media yo
 
 Pass the vendor into the decorated component. Explicitly choose which component to render for the player. If not set, the library does its best to determine what player to render based on the source.
 
+#### `Player`: PropTypes.node
+
+The actual media player component that gets passed into the decorated component to allow you to place it wherever you want.
+
 <br/>
 
 ## `withMediaProps` decorator props exposed under `this.props.media`
