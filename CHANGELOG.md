@@ -1,4 +1,11 @@
 ## CHANGELOG
+### 0.4.0
+Renamed `KeyboardControls` -> `withKeyboardControls`
+
+`withKeyboardControls` exposed on `ReactMediaPlayer` rather than utils
+
+Context not meant to be used publicly now, everything should be ran through decorator functions
+
 ### 0.3.3
 Fixed seekbar not updating while scrubbing
 
