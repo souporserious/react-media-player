@@ -1,8 +1,26 @@
-import React, { Component } from 'react'
+import React, { Component, createElement } from 'react'
 import vendorPropTypes from './vendor-prop-types'
 
 class HTML5 extends Component {
   static propTypes = vendorPropTypes
+
+  componentWillMount() {
+    if (this.props.vendor === 'audio') {
+      const playerEvents = this._getPlayerEvents()
+      this._player = new Audio(this.props.src)
+
+      Object.keys(playerEvents).forEach(key => {
+        this._player[key.toLowerCase()] = playerEvents[key]
+      })
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.vendor === 'audio' && nextProps.vendor === 'audio' &&
+        this.props.src !== nextProps.src) {
+      this._player.src = nextProps.src
+    }
+  }
 
   play() {
     this._player.play()
@@ -68,21 +86,31 @@ class HTML5 extends Component {
     this.props.onVolumeChange(volume)
   }
 
+  _getPlayerEvents() {
+    return {
+      onCanPlay: this._handleCanPlay,
+      onPlay: this._handlePlay,
+      onPause: this._handlePause,
+      onEnded: this._handleEnded,
+      onProgress: this._handleProgress,
+      onLoadedMetadata: this._handleDuration,
+      onTimeUpdate: this._handleTimeUpdate,
+      onVolumeChange: this._handleVolumeChange
+    }
+  }
+
   render() {
-    return (
-      <this.props.vendor
-        ref={c => this._player = c}
-        src={this.props.src}
-        onCanPlay={this._handleCanPlay}
-        onPlay={this._handlePlay}
-        onPause={this._handlePause}
-        onEnded={this._handleEnded}
-        onProgress={this._handleProgress}
-        onLoadedMetadata={this._handleDuration}
-        onTimeUpdate={this._handleTimeUpdate}
-        onVolumeChange={this._handleVolumeChange}
-      />
-    )
+    const { vendor, src } = this.props
+
+    if (vendor === 'video') {
+      return createElement('video', {
+        ref: c => this._player = c,
+        src,
+        ...this._getPlayerEvents()
+      })
+    } else {
+      return null
+    }
   }
 }
 
