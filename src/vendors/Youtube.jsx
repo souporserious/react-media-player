@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
-import loadAPI from '../utils/load-api'
+import YoutubeAPILoader from '../utils/youtube-api-loader'
 import getYoutubeId from '../utils/get-youtube-id'
 import vendorPropTypes from './vendor-prop-types'
-
-let isAPILoaded = false
 
 class Youtube extends Component {
   static propTypes = vendorPropTypes
@@ -14,17 +12,7 @@ class Youtube extends Component {
 
   componentDidMount() {
     this._isMounted = true
-
-    if (!isAPILoaded) {
-      loadAPI('//youtube.com/player_api')
-
-      window.onYouTubeIframeAPIReady = () => {
-        this._createPlayer()
-        isAPILoaded = true
-      }
-    } else {
-      this._createPlayer()
-    }
+    YoutubeAPILoader.load(this)
   }
 
   componentWillReceiveProps(nextProps) {
