@@ -5,6 +5,8 @@ const MEDIA_KEYS = [0, 'f', 'j', 'k','l', ',', '.', ' ', 'Home', 'End', 'ArrowLe
 
 export default function withKeyboardControls(MediaPlayer) {
   return withMediaProps(class extends Component {
+    static displayName = 'withKeyboardControls'
+
     _skipTime(amount) {
       const { currentTime, duration, seekTo } = this.props.media
       let newTime = (currentTime + amount)

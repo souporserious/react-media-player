@@ -3,9 +3,11 @@ import Media from '../Media'
 
 export default function withMediaPlayer(MediaPlayer, vendor) {
   return class extends Component {
+    static displayName = 'withMediaPlayer'
+
     static propTypes = {
       vendor: PropTypes.oneOf(['youtube', 'vimeo', 'audio', 'video']),
-      src: PropTypes.string
+      src: PropTypes.string.isRequired
     }
 
     static defaultProps = {
