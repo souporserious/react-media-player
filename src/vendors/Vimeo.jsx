@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import loadAPI from '../utils/load-api'
 import getVimeoId from '../utils/get-vimeo-id'
 import vendorPropTypes from './vendor-prop-types'
 
@@ -15,7 +14,6 @@ class Vimeo extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.src !== this.props.src) {
-      this.stop()
       this._vimeoId = getVimeoId(nextProps.src)
     }
   }
@@ -25,6 +23,8 @@ class Vimeo extends Component {
   }
 
   _onMessage = (e) => {
+    let data
+
     // allow messages from the Vimeo player only
     if (!(/^https?:\/\/player.vimeo.com/).test(e.origin)) {
       return false
@@ -34,7 +34,11 @@ class Vimeo extends Component {
       this._origin = e.origin
     }
 
-    const data = JSON.parse(e.data)
+    try {
+      data = JSON.parse(e.data)
+    } catch (err) {
+      this.props.onError(err)
+    }
 
     switch (data.event) {
       case 'ready':
@@ -48,19 +52,19 @@ class Vimeo extends Component {
         this.props.onTimeUpdate(data.data.seconds)
         break;
       case 'play':
-        this.props.onPlaying(true)
+        this.props.onPlay(true)
         break;
       case 'pause':
+        this.props.onPause(false)
+        break;
       case 'finish':
-        this.props.onPlaying(false)
+        this.props.onEnded(false)
         break;
     }
 
     if (data.method === 'getDuration') {
       this.props.onDuration(data.value)
-    }
-
-    if (data.method === 'getVolume') {
+    } else if (data.method === 'getVolume') {
       this.setVolume(data.value)
     }
   }

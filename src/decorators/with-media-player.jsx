@@ -15,9 +15,8 @@ export default function withMediaPlayer(MediaPlayer, vendor) {
     }
 
     render() {
-      const { vendor, src } = this.props
       return (
-        <Media vendor={vendor} src={src}>
+        <Media {...this.props}>
           { Player =>
             <MediaPlayer {...this.props} Player={Player}/>
           }

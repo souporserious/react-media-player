@@ -6,11 +6,30 @@ import requestFullscreen from './utils/request-fullscreen'
 import exitFullscreen from './utils/exit-fullscreen'
 import fullscreenChange from './utils/fullscreen-change'
 
+const MEDIA_EVENTS = {
+  onPlay: 'isPlaying',
+  onPause: 'isPlaying',
+  onError: null,
+  onDuration: 'duration',
+  onProgress: 'progress',
+  onTimeUpdate: 'currentTime',
+  onMute: 'isMuted',
+  onVolumeChange: 'volume'
+}
+const MEDIA_EVENTS_KEYS = Object.keys(MEDIA_EVENTS)
+
 class Media extends Component {
   static propTypes = {
     vendor: PropTypes.oneOf(['youtube', 'vimeo', 'audio', 'video']),
     src: PropTypes.string.isRequired,
-    children: PropTypes.func.isRequired
+    children: PropTypes.func.isRequired,
+    autoPlay: PropTypes.bool,
+    loop: PropTypes.bool
+  }
+
+  static defaultProps = {
+    autoPlay: false,
+    loop: false
   }
 
   static childContextTypes = contextTypes
@@ -63,13 +82,51 @@ class Media extends Component {
     fullscreenChange('remove', this._handleFullscreenChange)
   }
 
+  get _mediaEvents() {
+    const events = {}
+
+    MEDIA_EVENTS_KEYS.forEach(key => {
+      const stateKey = MEDIA_EVENTS[key]
+      const propCallback = this.props[key]
+
+      events[key] = (val) => {
+        if (stateKey) {
+          this.setState({ [stateKey]: val })
+        }
+        if (typeof propCallback === 'function') {
+          propCallback(val)
+        }
+      }
+    })
+    return events
+  }
+
   _handleOnReady = () => {
     const { volume, isMuted } = this.state
 
     this._handleSetVolume(volume)
     this._handleMute(isMuted)
 
+    if (this.props.autoPlay) {
+      this._player.play()
+    }
+
     this.setState({ isLoading: false })
+  }
+
+  _handleOnEnded = () => {
+    const { loop, onEnded } = this.props
+
+    if (loop) {
+      this._handleSeekTo(0)
+      this._player.play()
+    } else {
+      this.setState({ isPlaying: false })
+    }
+
+    if (typeof onEnded === 'function') {
+      onEnded()
+    }
   }
 
   _handlePlay = () => {
@@ -143,7 +200,7 @@ class Media extends Component {
   }
 
   render() {
-    const { src, children } = this.props
+    const { src, children, autoPlay } = this.props
     const { vendor, component } = getVendor(src, this.props.vendor)
 
     return component && children(
@@ -151,13 +208,10 @@ class Media extends Component {
         ref: c => this._player = c,
         vendor,
         src,
+        autoPlay,
         onReady: this._handleOnReady,
-        onPlaying: isPlaying => this.setState({ isPlaying }),
-        onDuration: duration => this.setState({ duration }),
-        onProgress: progress => this.setState({ progress }),
-        onTimeUpdate: currentTime => this.setState({ currentTime }),
-        onMute: isMuted => this.setState({ isMuted }),
-        onVolumeChange: volume => this.setState({ volume })
+        onEnded: this._handleOnEnded,
+        ...this._mediaEvents
       })
     )
   }
