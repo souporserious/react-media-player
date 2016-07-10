@@ -1,4 +1,11 @@
 ## CHANGELOG
+### 0.5.0
+Media component now accepts prop callbacks
+
+Removed `get-file-extension` in favor of using a regex and test
+
+Fixed API loader to not call callback until script is loaded
+
 ### 0.4.0
 Renamed `KeyboardControls` -> `withKeyboardControls`
 
