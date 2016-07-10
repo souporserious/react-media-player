@@ -6,7 +6,7 @@ import MuteUnmute from './MuteUnmute'
 const { CurrentTime, Progress, SeekBar, Duration, Volume, Fullscreen } = controls
 const { formatTime } = utils
 
-class FullPlayer extends Component {
+class AudioPlayer extends Component {
   render() {
     const { Player, media } = this.props
     const { isLoading, playPause, currentTime, duration } = media
@@ -30,4 +30,4 @@ class FullPlayer extends Component {
   }
 }
 
-export default withMediaPlayer(withMediaProps(FullPlayer), 'audio')
+export default withMediaPlayer(withMediaProps(AudioPlayer), 'audio')

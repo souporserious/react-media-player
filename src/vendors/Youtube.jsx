@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
-import loadAPI from '../utils/load-api'
+import YoutubeAPILoader from '../utils/youtube-api-loader'
 import getYoutubeId from '../utils/get-youtube-id'
 import vendorPropTypes from './vendor-prop-types'
-
-let isAPILoaded = false
 
 class Youtube extends Component {
   static propTypes = vendorPropTypes
@@ -14,23 +12,17 @@ class Youtube extends Component {
 
   componentDidMount() {
     this._isMounted = true
-
-    if (!isAPILoaded) {
-      loadAPI('//youtube.com/player_api')
-
-      window.onYouTubeIframeAPIReady = () => {
-        this._createPlayer()
-        isAPILoaded = true
-      }
-    } else {
-      this._createPlayer()
-    }
+    YoutubeAPILoader.load(this)
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.src !== this.props.src) {
       const videoId = getYoutubeId(nextProps.src)
-      this._player.cueVideoById(videoId)
+      if (nextProps.autoPlay) {
+        this._player.loadVideoById(videoId)
+      } else {
+        this._player.cueVideoById(videoId)
+      }
     }
   }
 
@@ -71,9 +63,11 @@ class Youtube extends Component {
         this.props.onReady()
       },
       onStateChange: ({ data }) => {
-        const isPlaying = (data === 1)
+        const { PLAYING, PAUSED, ENDED, BUFFERING, CUED } = window.YT.PlayerState
+        const isPlaying = (data === PLAYING)
 
         if (isPlaying) {
+          this.props.onPlay(true)
           this.props.onDuration(this._player.getDuration())
           this._timeUpdateId = requestAnimationFrame(this._handleTimeUpdate)
         } else {
@@ -84,17 +78,26 @@ class Youtube extends Component {
           this._progressId = null
         }
 
+        if (data === PAUSED) {
+          this.props.onPause(false)
+        }
+
+        if (data === ENDED) {
+          this.props.onEnded(false)
+        }
+
         // start fetching progress when playing or buffering
-        if (isPlaying || data === 3) {
+        if (isPlaying || data === BUFFERING) {
           this._progressId = requestAnimationFrame(this._handleProgress)
         }
 
         // reset duration if a new video was loaded
-        if (data === 5) {
+        if (data === CUED) {
           this.props.onDuration(0.1)
         }
-
-        this.props.onPlaying(isPlaying)
+      },
+      onError: (e) => {
+        this.props.onError(e.data)
       }
     }
   }

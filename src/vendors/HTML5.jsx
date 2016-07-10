@@ -52,25 +52,29 @@ class HTML5 extends Component {
   }
 
   _handlePlay = () => {
-    this.props.onPlaying(true)
+    this.props.onPlay(true)
   }
 
   _handlePause = () => {
-    this.props.onPlaying(false)
+    this.props.onPause(false)
   }
 
   _handleEnded = () => {
-    this.props.onPlaying(false)
+    this.props.onEnded(false)
+  }
+
+  _handleError = (e) => {
+    this.props.onError(e)
   }
 
   _handleProgress = ({ target: { buffered, duration } }) => {
     let progress = 0
 
     if (buffered.length > 0) {
-      progress = buffered.end(0)/duration
+      progress = (buffered.end(0) / duration)
     }
 
-    this.props.onProgress(progress)
+    this.props.onProgress(isNaN(progress) ? 0 : progress)
   }
 
   _handleDuration = ({ target: { duration }}) => {
@@ -92,6 +96,7 @@ class HTML5 extends Component {
       onPlay: this._handlePlay,
       onPause: this._handlePause,
       onEnded: this._handleEnded,
+      onError: this._handleError,
       onProgress: this._handleProgress,
       onLoadedMetadata: this._handleDuration,
       onTimeUpdate: this._handleTimeUpdate,

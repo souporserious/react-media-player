@@ -1,19 +1,17 @@
 // load api asynchronously
 export default function loadAPI(url, cb) {
   // create script to be injected
-  const api = document.createElement('script')
+  const script = document.createElement('script')
 
   // load async
-  api.async = true
+  script.async = true
 
   // set source to vendors api
-  api.src = url
+  script.src = url
+
+  // callback after load
+  script.onload = () => (typeof cb === 'function') && cb()
 
   // append script to document head
-  document.head.appendChild(api)
-
-  // callback after loaded
-  if (typeof cb === 'function') {
-    cb()
-  }
+  document.head.appendChild(script)
 }

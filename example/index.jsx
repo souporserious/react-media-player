@@ -1,23 +1,19 @@
 import React, { Component, PropTypes, createElement } from 'react'
 import ReactDOM from 'react-dom'
-import { withMediaPlayer, withMediaProps, withKeyboardControls, controls } from '../src/react-media-player'
-import CircleMediaPlayer from './CircleMediaPlayer'
-import FullPlayer from './FullPlayer'
-import PlayPause from './PlayPause'
-import MuteUnmute from './MuteUnmute'
-import Fullscreen from './Fullscreen'
+import MediaPlayer from './MediaPlayer'
+import VideoPlayer from './VideoPlayer'
+import AudioPlayer from './AudioPlayer'
+import CirclePlayer from './CirclePlayer'
 
 import './main.scss'
 
-const { CurrentTime, Progress, SeekBar, Duration, Volume } = controls
-
+const mod = (num, max) => ((num % max) + max) % max
 const playlist = [
   {src: 'http://www.youtube.com/embed/h3YVKTxTOgU', label: 'Brand New (Youtube)'},
   {src: 'https://youtu.be/VOyYwzkQB98', label: 'Neck Deep (Youtube)'},
   {src: 'https://player.vimeo.com/video/156147818', label: 'Pump (Vimeo)'},
   {src: 'https://vimeo.com/channels/staffpicks/150734165', label: 'Lesley (Vimeo)'},
   {src: 'http://a1083.phobos.apple.com/us/r1000/014/Music/v4/4e/44/b7/4e44b7dc-aaa2-c63b-fb38-88e1635b5b29/mzaf_1844128138535731917.plus.aac.p.m4a', label: 'iTunes Preview'},
-  {src: 'http://media.w3.org/2010/05/sintel/trailer.mp4', label: 'Sintel Trailer'},
   {src: 'http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4', label: 'Big Buck Bunny'},
   {src: 'https://vid4u.org/ninja/5/dev/assets/madmax-intro.mp4', label: 'Mad Max Intro'},
   {src: 'http://demosthenes.info/assets/videos/mountain.mp4', label: 'Mountain'},
@@ -28,73 +24,86 @@ const playlist = [
   {src: 'http://www.noiseaddicts.com/samples_1w72b820/3890.mp3', label: 'Noise Addicts'}
 ]
 
-class MediaPlayer extends Component {
+class Playlist extends Component {
+  _handleTrackClick(track) {
+    this.props.onTrackClick(track)
+  }
+
   render() {
-    const { Player, keyboardControls, media } = this.props
-    const { isFullscreen, playPause } = media
-    let classes = 'media-player'
-
-    if (isFullscreen) {
-      classes += ' media-player--fullscreen'
-    }
-
+    const { tracks, currentTrack } = this.props
     return (
-      <div className={classes} onKeyDown={keyboardControls} tabIndex="0">
-        <div onClick={() => playPause()}>
-          {Player}
-        </div>
-        <nav className="media-controls">
-          <PlayPause className="media-control media-control--play-pause" />
-          <CurrentTime className="media-control media-control--current-time" />
-          <div className="media-control-group media-control-group--seek">
-            <Progress className="media-control media-control--progress" />
-            <SeekBar className="media-control media-control--seekbar" />
-          </div>
-          <Duration className="media-control media-control--duration" />
-          <MuteUnmute className="media-control media-control--mute-unmute" />
-          <Volume className="media-control media-control--volume" />
-          <Fullscreen className="media-control media-control--fullscreen" />
-        </nav>
-      </div>
+      <aside className="media-playlist">
+        <header className="media-playlist-header">
+          <h3 className="media-playlist-title">Playlist</h3>
+        </header>
+        <ul className="media-playlist-tracks">
+          {tracks.map(track =>
+            <li
+              key={track.label}
+              className={`media-playlist-track ${track === currentTrack ? 'is-active' : ''}`}
+              onClick={this._handleTrackClick.bind(this, track)}
+            >
+              {track.label}
+            </li>
+          )}
+        </ul>
+      </aside>
     )
   }
 }
-MediaPlayer = withMediaPlayer(withMediaProps(withKeyboardControls(MediaPlayer)))
 
 class App extends Component {
   state = {
-    currSrc: playlist[0].src,
-    showMediaPlayer: true
+    currentTrack: playlist[5],
+    showMediaPlayer: true,
+    repeatTrack: false,
+    autoPlay: false
+  }
+
+  _handleTrackClick = (track) => {
+    this.setState({ currentTrack: track })
+  }
+
+  _navigatePlaylist = (direction) => {
+    const newIndex = mod(playlist.indexOf(this.state.currentTrack) + direction, playlist.length)
+    this.setState({ currentTrack: playlist[newIndex] })
   }
 
   render() {
-    const { showMediaPlayer } = this.state
+    const { showMediaPlayer, currentTrack, repeatTrack, autoPlay } = this.state
     return (
       <div>
         <button
-          onClick={() => this.setState({showMediaPlayer: !showMediaPlayer})}
+          onClick={() => this.setState({ showMediaPlayer: !showMediaPlayer })}
         >
           Toggle Media Player
         </button>
         { showMediaPlayer &&
-          <MediaPlayer src={this.state.currSrc}/>
+          <div className="media-player-wrapper">
+            <MediaPlayer
+              ref={c => this._mediaPlayer = c}
+              src={currentTrack.src}
+              autoPlay={autoPlay}
+              loop={repeatTrack}
+              currentTrack={currentTrack.label}
+              repeatTrack={repeatTrack}
+              onPrevTrack={() => this._navigatePlaylist(-1)}
+              onNextTrack={() => this._navigatePlaylist(1)}
+              onRepeatTrack={() => { this.setState({ repeatTrack: !repeatTrack }) }}
+              onPlay={() => !autoPlay && this.setState({ autoPlay: true })}
+              onPause={() => this.setState({ autoPlay: false })}
+              onEnded={() => !repeatTrack && this._navigatePlaylist(1)}
+            />
+            <Playlist
+              tracks={playlist}
+              currentTrack={currentTrack}
+              onTrackClick={this._handleTrackClick}
+            />
+          </div>
         }
-        <aside className="playlist">
-          <h3 className="playlist__title">Playlist</h3>
-          <ul className="playlist__links">
-            {playlist.map(link =>
-              <li
-                key={link.label}
-                className="playlist__link"
-                onClick={() => this.setState({currSrc: link.src})}
-              >
-                {link.label}
-              </li>
-            )}
-          </ul>
-        </aside>
-        <CircleMediaPlayer src="https://p.scdn.co/mp3-preview/f83458d6611ae9589420f71c447ac9d2e3047cb8" />
-        <FullPlayer src={"https://p.scdn.co/mp3-preview/f83458d6611ae9589420f71c447ac9d2e3047cb8"} />
+        <VideoPlayer src="http://www.youtube.com/embed/h3YVKTxTOgU"/>
+        <AudioPlayer src="http://www.noiseaddicts.com/samples_1w72b820/3890.mp3" />
+        <CirclePlayer src="https://p.scdn.co/mp3-preview/f83458d6611ae9589420f71c447ac9d2e3047cb8" />
       </div>
     )
   }

@@ -4,6 +4,10 @@
   box-sizing: border-box;
 }
 
+body {
+  font-family: 'Lato', sans-serif;
+}
+
 // Circle Media Player
 .circle-media-player {
   display: inline-block;
@@ -37,6 +41,14 @@
 .circle-media-player__pause {
   fill: #6e9541;
   stroke-width: 0;
+}
+
+.media-player-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 640px;
+  margin-bottom: 24px;
 }
 
 .media-player {
@@ -81,11 +93,25 @@
   }
 }
 
-.media-control-group {
-  position: relative;
-  .media-control {
-    margin: 0;
+.media-controls--full {
+  flex-direction: column;
+
+  .media-control-group--seek {
+    width: 100%;
+    margin: 12px 0;
   }
+}
+
+.media-row {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.media-control-group {
+  display: flex;
+  align-items: center;
+  position: relative;
 }
 
 .media-control-group--seek {
@@ -133,6 +159,14 @@
 
 .media-control--volume {
   max-width: 120px;
+}
+
+.media-control--prev-track {
+  margin-right: 6px;
+}
+
+.media-control--next-track {
+  margin-left: 6px;
 }
 
 input[type="range"] {
@@ -208,5 +242,40 @@ input[type="range"] {
   @include -range-thumb(webkit) {
     position: relative;
     top: -2.5px;
+  }
+}
+
+.media-playlist-header {
+  padding: 2px;
+  background-color: #373d3f;
+}
+
+.media-playlist-title {
+  font-size: 14px;
+  text-align: center;
+}
+
+.media-playlist {
+  background-color: #282F31;
+  color: #fff;
+}
+
+.media-playlist-tracks {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  border: 1px solid #373d3f;
+}
+
+.media-playlist-track {
+  padding: 12px;
+  cursor: pointer;
+
+  & + & {
+    border-top: 1px solid #373d3f;
+  }
+
+  &.is-active {
+    color: #8bb955
   }
 }

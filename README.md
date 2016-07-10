@@ -1,6 +1,6 @@
 ## React Media Player
 
-React media decorators to help build video & audio players.
+Components and decorators to help build video & audio players in React. Supports HTML5, Youtube, and Vimeo media types.
 
 ## Install
 
@@ -8,22 +8,80 @@ React media decorators to help build video & audio players.
 
 `bower install react-media-player --save`
 
-## Example
+<br/>
+
+## `Media` component
+
+#### `src`: PropTypes.string.isRequired
+
+Pass the source into the decorated component. This is the source of the media you want to play. Currently supporting Youtube, Vimeo, and any HTML5 compatible video or audio.
+
+#### `vendor`: PropTypes.oneOf(['youtube', 'vimeo', 'audio', 'video'])
+
+Pass the vendor into the decorated component. Explicitly choose which component to render for the player. If not set, the library does its best to determine what player to render based on the source.
+
+#### `onPlay`: PropTypes.func
+
+#### `onPause`: PropTypes.func
+
+#### `onError`:PropTypes.func
+
+#### `onDuration`: PropTypes.func
+
+#### `onProgress`: PropTypes.func
+
+#### `onTimeUpdate`: PropTypes.func
+
+#### `onMute`: PropTypes.func
+
+#### `onVolumeChange`: PropTypes.func
 
 ```js
 
-import React, { Component, PropTypes } from 'react'
-import { withMediaPlayer, withMediaProps, controls } from 'react-media-player'
+import React, { Component } from 'react'
+import { Media, controls } from 'react-media-player'
+const { PlayPause, MuteUnmute, } = controls
+
+class MediaPlayer extends Component {
+  render() {
+    return (
+      <Media src="http://www.youtube.com/embed/h3YVKTxTOgU">
+        {Player =>
+          <div className="media">
+            <div className="media-player">
+              {Player}
+            </div>
+            <div className="media-controls">
+              <PlayPause/>
+              <MuteUnmute/>
+            </div>
+          </div>
+        }
+      </Media>
+    )
+  }
+}
+```
+
+<br/>
+
+## `withMediaPlayer` decorator
+
+Convenience component that uses the `Media` component internally to pass down `Player` as a prop.
+
+```js
+
+import React, { Component } from 'react'
+import { withMediaPlayer, controls } from 'react-media-player'
 const { PlayPause, CurrentTime, Progress, SeekBar, Duration, MuteUnmute, Volume, Fullscreen } = controls
 
 class MediaPlayer extends Component {
   render() {
     const { Player, media } = this.props
-    const { playPause } = media
 
     return (
       <div className="media">
-        <div className="media-player" onClick={() => playPause()}>
+        <div className="media-player">
           { Player }
         </div>
         <nav className="media-controls">
@@ -40,7 +98,7 @@ class MediaPlayer extends Component {
     )
   }
 }
-MediaPlayer = withMediaPlayer(withMediaProps(MediaPlayer))
+MediaPlayer = withMediaPlayer(MediaPlayer)
 
 class App extends Component {
   state = {
@@ -55,29 +113,11 @@ class App extends Component {
 }
 ```
 
-## Live Codepen Demo
-
-[Demo](http://codepen.io/souporserious/pen/bpGyoy/)
-
-<br/>
-
-## `withMediaPlayer` decorator props
-
-#### `src`: PropTypes.string.isRequired
-
-Pass the source into the decorated component. This is the source of the media you want to play. Currently supporting Youtube, Vimeo, and any HTML5 compatible video or audio.
-
-#### `vendor`: PropTypes.oneOf(['youtube', 'vimeo', 'audio', 'video'])
-
-Pass the vendor into the decorated component. Explicitly choose which component to render for the player. If not set, the library does its best to determine what player to render based on the source.
-
-#### `Player`: PropTypes.node
-
-The actual media player component that gets passed into the decorated component to allow you to place it wherever you want.
-
 <br/>
 
 ## `withMediaProps` decorator props exposed under `this.props.media`
+
+Passes down helpful state information and methods to build custom media player controls.
 
 #### `currentTime`: PropTypes.number
 
@@ -112,6 +152,75 @@ The actual media player component that gets passed into the decorated component 
 #### `setVolume`: PropTypes.func
 
 #### `fullscreen`: PropTypes.func
+
+```js
+
+import React, { Component } from 'react'
+import { withMediaProps } from 'react-media-player'
+
+class CustomPlayPause extends Component {
+  shouldComponentUpdate({ media }) {
+    return this.props.media.isPlaying !== media.isPlaying
+  }
+
+  _handlePlayPause = () => {
+    this.props.media.playPause()
+  }
+
+  render() {
+    const { className, style, media } = this.props
+    return (
+      <button
+        type="button"
+        className={className}
+        style={style}
+        onClick={this._handlePlayPause}
+      >
+        { media.isPlaying ? 'Pause' : 'Play' }
+      </button>
+    )
+  }
+}
+
+export default withMediaProps(CustomPlayPause)
+```
+
+<br/>
+
+## `withKeyboardControls` decorator props exposed under `this.props.keyboardControls`
+
+Provides a prop with keyboard functionality to control the `Media` component.
+
+```js
+
+import React, { Component } from 'react'
+import { withMediaPlayer, withKeyboardControls, controls } from 'react-media-player'
+const { PlayPause, CurrentTime, Progress, SeekBar, Duration, MuteUnmute, Volume, Fullscreen } = controls
+
+class MediaPlayer extends Component {
+  render() {
+    const { Player, keyboardControls } = this.props
+    return (
+      <div className="media" onKeyDown={keyboardControls}>
+        <div className="media-player">
+          { Player }
+        </div>
+        <nav className="media-controls">
+          <PlayPause/>
+          <CurrentTime/>
+          <Progress/>
+          <SeekBar/>
+          <Duration/>
+          <MuteUnmute/>
+          <Volume/>
+          <Fullscreen/>
+        </nav>
+      </div>
+    )
+  }
+}
+MediaPlayer = withMediaPlayer(withKeyboardControls(MediaPlayer))
+```
 
 <br/>
 
