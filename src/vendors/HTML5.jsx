@@ -6,19 +6,32 @@ class HTML5 extends Component {
 
   componentWillMount() {
     if (this.props.vendor === 'audio') {
-      const playerEvents = this._getPlayerEvents()
-      this._player = new Audio(this.props.src)
-
-      Object.keys(playerEvents).forEach(key => {
-        this._player[key.toLowerCase()] = playerEvents[key]
-      })
+      this._bindAudioPlayerEvents(true)
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.vendor === 'audio' && nextProps.vendor === 'audio' &&
-        this.props.src !== nextProps.src) {
-      this._player.src = nextProps.src
+    if (this.props.vendor === 'audio' && nextProps.vendor === 'video') {
+      this.pause()
+    }
+  }
+
+  componentDidUpdate(lastProps) {
+    if (lastProps.vendor === 'audio' && this.props.vendor === 'video') {
+      this._bindAudioPlayerEvents(false)
+
+      if (this.props.autoPlay) {
+        this.play()
+      }
+    }
+    if (lastProps.vendor === 'video' && this.props.vendor === 'audio') {
+      this._bindAudioPlayerEvents(true)
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.props.vendor === 'audio') {
+      this._bindAudioPlayerEvents(false)
     }
   }
 
@@ -88,6 +101,18 @@ class HTML5 extends Component {
   _handleVolumeChange = ({ target: { volume, muted } }) => {
     this.props.onMute(muted)
     this.props.onVolumeChange(volume)
+  }
+
+  _bindAudioPlayerEvents(bind) {
+    const playerEvents = this._getPlayerEvents()
+
+    if (bind) {
+      this._player = new Audio(this.props.src)
+    }
+
+    Object.keys(playerEvents).forEach(key => {
+      this._player[key.toLowerCase()] = bind ? playerEvents[key] : null
+    })
   }
 
   _getPlayerEvents() {

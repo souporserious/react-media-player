@@ -1110,24 +1110,36 @@ return /******/ (function(modules) { // webpackBootstrap
 	  _createClass(HTML5, [{
 	    key: 'componentWillMount',
 	    value: function componentWillMount() {
-	      var _this2 = this;
-
 	      if (this.props.vendor === 'audio') {
-	        (function () {
-	          var playerEvents = _this2._getPlayerEvents();
-	          _this2._player = new Audio(_this2.props.src);
-
-	          Object.keys(playerEvents).forEach(function (key) {
-	            _this2._player[key.toLowerCase()] = playerEvents[key];
-	          });
-	        })();
+	        this._bindAudioPlayerEvents(true);
 	      }
 	    }
 	  }, {
 	    key: 'componentWillReceiveProps',
 	    value: function componentWillReceiveProps(nextProps) {
-	      if (this.props.vendor === 'audio' && nextProps.vendor === 'audio' && this.props.src !== nextProps.src) {
-	        this._player.src = nextProps.src;
+	      if (this.props.vendor === 'audio' && nextProps.vendor === 'video') {
+	        this.pause();
+	      }
+	    }
+	  }, {
+	    key: 'componentDidUpdate',
+	    value: function componentDidUpdate(lastProps) {
+	      if (lastProps.vendor === 'audio' && this.props.vendor === 'video') {
+	        this._bindAudioPlayerEvents(false);
+
+	        if (this.props.autoPlay) {
+	          this.play();
+	        }
+	      }
+	      if (lastProps.vendor === 'video' && this.props.vendor === 'audio') {
+	        this._bindAudioPlayerEvents(true);
+	      }
+	    }
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {
+	      if (this.props.vendor === 'audio') {
+	        this._bindAudioPlayerEvents(false);
 	      }
 	    }
 	  }, {
@@ -1160,6 +1172,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: 'setVolume',
 	    value: function setVolume(volume) {
 	      this._player.volume = volume;
+	    }
+	  }, {
+	    key: '_bindAudioPlayerEvents',
+	    value: function _bindAudioPlayerEvents(bind) {
+	      var _this2 = this;
+
+	      var playerEvents = this._getPlayerEvents();
+
+	      if (bind) {
+	        this._player = new Audio(this.props.src);
+	      }
+
+	      Object.keys(playerEvents).forEach(function (key) {
+	        _this2._player[key.toLowerCase()] = bind ? playerEvents[key] : null;
+	      });
 	    }
 	  }, {
 	    key: '_getPlayerEvents',
