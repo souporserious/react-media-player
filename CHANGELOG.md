@@ -1,6 +1,9 @@
 ## CHANGELOG
+### 0.5.1
+Makes sure Youtube player is loaded before switching sources
+
 ### 0.5.0
-Media component now accepts prop callbacks
+Media component now accepts `autoPlay`, `loop`, and event callback props
 
 Removed `get-file-extension` in favor of using a regex and test
 
