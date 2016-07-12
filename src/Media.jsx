@@ -212,7 +212,8 @@ class Media extends Component {
         onReady: this._handleOnReady,
         onEnded: this._handleOnEnded,
         ...this._mediaEvents
-      })
+      }),
+      vendor
     )
   }
 }

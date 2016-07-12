@@ -32,7 +32,7 @@ class MediaPlayer extends Component {
   }
 
   render() {
-    const { Player, keyboardControls, media, currentTrack, repeatTrack } = this.props
+    const { Player, vendor, keyboardControls, media, currentTrack, repeatTrack } = this.props
     const { isFullscreen, playPause } = media
     let classes = 'media-player'
 
