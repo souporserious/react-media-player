@@ -42,7 +42,7 @@ class MediaPlayer extends Component {
 
     return (
       <div className={classes} onKeyDown={keyboardControls} tabIndex="0">
-        <div onClick={() => playPause()}>
+        <div className="media-player-element" onClick={() => playPause()}>
           {Player}
         </div>
         <div className="media-controls media-controls--full">
