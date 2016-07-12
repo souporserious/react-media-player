@@ -12,17 +12,14 @@ class HTML5 extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.vendor === 'audio' && nextProps.vendor === 'video') {
-      this.pause()
+      this.stop()
+      this._bindAudioPlayerEvents(false)
     }
   }
 
   componentDidUpdate(lastProps) {
-    if (lastProps.vendor === 'audio' && this.props.vendor === 'video') {
-      this._bindAudioPlayerEvents(false)
-
-      if (this.props.autoPlay) {
-        this.play()
-      }
+    if (lastProps.vendor === 'audio' && this.props.vendor === 'video' && this.props.autoPlay) {
+      this.play()
     }
     if (lastProps.vendor === 'video' && this.props.vendor === 'audio') {
       this._bindAudioPlayerEvents(true)
@@ -31,6 +28,7 @@ class HTML5 extends Component {
 
   componentWillUnmount() {
     if (this.props.vendor === 'audio') {
+      this.stop()
       this._bindAudioPlayerEvents(false)
     }
   }
