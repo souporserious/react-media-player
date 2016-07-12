@@ -20,6 +20,10 @@ Pass the source into the decorated component. This is the source of the media yo
 
 Pass the vendor into the decorated component. Explicitly choose which component to render for the player. If not set, the library does its best to determine what player to render based on the source.
 
+#### `autoPlay`: PropTypes.bool
+
+#### `loop`: PropTypes.bool
+
 #### `onPlay`: PropTypes.func
 
 #### `onPause`: PropTypes.func
