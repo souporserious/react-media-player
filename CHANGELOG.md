@@ -1,5 +1,7 @@
 ## CHANGELOG
 ### 0.5.1
+Pass `vendor` to `Media` child function
+
 Makes sure Youtube player is loaded before switching sources
 
 ### 0.5.0
