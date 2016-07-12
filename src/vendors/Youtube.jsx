@@ -6,6 +6,9 @@ import vendorPropTypes from './vendor-prop-types'
 class Youtube extends Component {
   static propTypes = vendorPropTypes
 
+  _videoId = getYoutubeId(this.props.src)
+  _lastVideoId = this._videoId
+  _isReady = false
   _isMounted = false
   _progressId = null
   _timeUpdateId = null
@@ -17,11 +20,15 @@ class Youtube extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.src !== this.props.src) {
-      const videoId = getYoutubeId(nextProps.src)
-      if (nextProps.autoPlay) {
-        this._player.loadVideoById(videoId)
-      } else {
-        this._player.cueVideoById(videoId)
+      this._lastVideoId = this._videoId
+      this._videoId = getYoutubeId(nextProps.src)
+
+      if (this._isReady) {
+        if (nextProps.autoPlay) {
+          this._player.loadVideoById(this._videoId)
+        } else {
+          this._player.cueVideoById(this._videoId)
+        }
       }
     }
   }
@@ -43,10 +50,8 @@ class Youtube extends Component {
   }
 
   _createPlayer() {
-    const videoId = getYoutubeId(this.props.src)
-
     this._player = new YT.Player(this._node, {
-      videoId,
+      videoId: this._videoId,
       events: this._events(),
       playerVars: {
         controls: 0,
@@ -59,6 +64,11 @@ class Youtube extends Component {
   _events() {
     return {
       onReady: () => {
+        // if id changed before the player was ready we need to load the new one
+        if (this._videoId !== this._lastVideoId) {
+          this._player.loadVideoById(this._videoId)
+        }
+        this._isReady = true
         this.props.onDuration(this._player.getDuration())
         this.props.onReady()
       },
