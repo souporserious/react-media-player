@@ -60,13 +60,27 @@ body {
   video::-webkit-media-controls {
     display: none !important;
   }
+}
+
+.media-player-element {
+  max-width: 100%;
+  height: 0;
+  padding-bottom: 56.25%; // 16:9
+  position: relative;
+  overflow: hidden;
+  background-color: #d4d4d4;
 
   video,
-  iframe {
+  iframe,
+  object,
+  embed {
     display: block;
     width: 100%;
+    height: 300%;
     border: 0;
-    // prevent native controls so keyboard events work
+    position: absolute;
+    top: -100%;
+    left: 0;
     pointer-events: none;
   }
 }
