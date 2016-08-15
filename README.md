@@ -81,7 +81,7 @@ const { PlayPause, CurrentTime, Progress, SeekBar, Duration, MuteUnmute, Volume,
 
 class MediaPlayer extends Component {
   render() {
-    const { Player, media } = this.props
+    const { Player } = this.props
 
     return (
       <div className="media">
