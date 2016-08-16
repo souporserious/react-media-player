@@ -8,6 +8,11 @@ Components and decorators to help build video & audio players in React. Supports
 
 `bower install react-media-player --save`
 
+```html
+<script src="https://npmcdn.com/react-media-player/dist/react-media-player.js"></script>
+(UMD library exposed as `ReactMediaPlayer`)
+```
+
 <br/>
 
 ## `Media` component
@@ -81,7 +86,7 @@ const { PlayPause, CurrentTime, Progress, SeekBar, Duration, MuteUnmute, Volume,
 
 class MediaPlayer extends Component {
   render() {
-    const { Player, media } = this.props
+    const { Player } = this.props
 
     return (
       <div className="media">
