@@ -4,6 +4,17 @@ import vendorPropTypes from './vendor-prop-types'
 class HTML5 extends Component {
   static propTypes = vendorPropTypes
 
+  _isMounted = false
+  _timeUpdateId = null
+  
+  componentDidMount() {
+    this._isMounted = true
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false
+  }
+  
   play() {
     this._player.play()
   }
@@ -34,10 +45,14 @@ class HTML5 extends Component {
   }
 
   _handlePlay = () => {
+    this._timeUpdateId = requestAnimationFrame(this._handleTimeUpdate)
     this.props.onPlay(true)
   }
 
   _handlePause = () => {
+    cancelAnimationFrame(this._timeUpdateId)
+    this._timeUpdateId = null
+    
     this.props.onPause(false)
   }
 
@@ -63,8 +78,14 @@ class HTML5 extends Component {
     this.props.onDuration(duration)
   }
 
-  _handleTimeUpdate = ({ target: { currentTime } }) => {
-    this.props.onTimeUpdate(currentTime)
+  _handleTimeUpdate = () => {
+    if (!this._isMounted) return
+
+    this.props.onTimeUpdate(this._player.currentTime || 0)
+
+    if (this._timeUpdateId) {
+      this._timeUpdateId = requestAnimationFrame(this._handleTimeUpdate)
+    }
   }
 
   _handleVolumeChange = ({ target: { volume, muted } }) => {
@@ -84,7 +105,6 @@ class HTML5 extends Component {
         onError={this._handleError}
         onProgress={this._handleProgress}
         onLoadedMetadata={this._handleDuration}
-        onTimeUpdate={this._handleTimeUpdate}
         onVolumeChange={this._handleVolumeChange}
       />
     )
