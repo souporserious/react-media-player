@@ -11,9 +11,14 @@ class HTML5 extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.vendor === 'audio' && nextProps.vendor === 'video') {
+    if (this.props.src !== nextProps.src) {
       this.stop()
-      this._bindAudioPlayerEvents(false)
+      this._bindAudioPlayerEvents(true, nextProps)
+
+      // allow the new media to load and then play
+      setTimeout(() => {
+        this.play()
+      })
     }
   }
 
@@ -101,11 +106,11 @@ class HTML5 extends Component {
     this.props.onVolumeChange(volume)
   }
 
-  _bindAudioPlayerEvents(bind) {
+  _bindAudioPlayerEvents(bind, props = this.props) {
     const playerEvents = this._getPlayerEvents()
 
     if (bind) {
-      this._player = new Audio(this.props.src)
+      this._player = new Audio(props.src)
     }
 
     Object.keys(playerEvents).forEach(key => {
