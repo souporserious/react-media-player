@@ -45,7 +45,9 @@ class HTML5 extends Component {
   }
 
   _handlePlay = () => {
-    this._timeUpdateId = requestAnimationFrame(this._handleTimeUpdate)
+    if (this._timeUpdateId !== null) {
+      this._timeUpdateId = requestAnimationFrame(this._handleTimeUpdate)
+    }
     this.props.onPlay(true)
   }
 
