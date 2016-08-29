@@ -52,7 +52,9 @@ class HTML5 extends Component {
   }
 
   _handlePause = () => {
-    cancelAnimationFrame(this._timeUpdateId)
+    if (this._timeUpdateId !== null) {
+      cancelAnimationFrame(this._timeUpdateId)
+    }
     this._timeUpdateId = null
     
     this.props.onPause(false)
