@@ -9,7 +9,7 @@ Components and decorators to help build video & audio players in React. Supports
 `bower install react-media-player --save`
 
 ```html
-<script src="https://npmcdn.com/react-media-player/dist/react-media-player.js"></script>
+<script src="https://unpkg.com/react-media-player/dist/react-media-player.js"></script>
 (UMD library exposed as `ReactMediaPlayer`)
 ```
 
