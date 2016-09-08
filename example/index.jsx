@@ -52,6 +52,13 @@ class Playlist extends Component {
   }
 }
 
+const audioContext = new (window.AudioContext || window.webkitAudioContext)()
+const panner = audioContext.createPanner()
+
+panner.setPosition(0, 0, 1)
+panner.panningModel = 'equalpower'
+panner.connect(audioContext.destination)
+
 class App extends Component {
   state = {
     currentTrack: playlist[5],
@@ -69,6 +76,20 @@ class App extends Component {
     this.setState({ currentTrack: playlist[newIndex] })
   }
 
+  _handleAudioRef(component) {
+    const { player } = component
+    const source = audioContext.createMediaElementSource(player)
+    source.connect(panner)
+    panner.connect(audioContext.destination)
+  }
+
+  _handlePannerChange = ({ target }) => {
+    const x = +target.value
+    const y = 0
+    const z = 1 - Math.abs(x)
+    panner.setPosition(x, y, z)
+  }
+
   render() {
     const { showMediaPlayer, currentTrack, repeatTrack, autoPlay } = this.state
     return (
@@ -81,7 +102,6 @@ class App extends Component {
         { showMediaPlayer &&
           <div className="media-player-wrapper">
             <MediaPlayer
-              ref={c => this._mediaPlayer = c}
               src={currentTrack.src}
               autoPlay={autoPlay}
               loop={repeatTrack}
@@ -102,8 +122,9 @@ class App extends Component {
           </div>
         }
         <VideoPlayer src="http://www.youtube.com/embed/h3YVKTxTOgU"/>
-        <AudioPlayer src="http://www.noiseaddicts.com/samples_1w72b820/3890.mp3" />
-        <CirclePlayer src="https://p.scdn.co/mp3-preview/f83458d6611ae9589420f71c447ac9d2e3047cb8" />
+        <AudioPlayer mediaRef={this._handleAudioRef} src="/TheParty.mp3"/>
+        <input type="range" defaultValue="0" min="-1" max="1" step="any" onChange={this._handlePannerChange}/>
+        <CirclePlayer src="https://p.scdn.co/mp3-preview/f83458d6611ae9589420f71c447ac9d2e3047cb8"/>
       </div>
     )
   }

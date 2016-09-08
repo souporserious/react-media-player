@@ -7,6 +7,14 @@ const { CurrentTime, Progress, SeekBar, Duration, Volume, Fullscreen } = control
 const { formatTime } = utils
 
 class AudioPlayer extends Component {
+  _handlePlayerRef = (component) => {
+    const { vendor } = this.props
+
+    if (['video', 'audio'].indexOf(vendor) > -1) {
+      console.log(component.firstChild)
+    }
+  }
+
   render() {
     const { Player, media } = this.props
     const { isLoading, playPause, currentTime, duration } = media
@@ -14,7 +22,7 @@ class AudioPlayer extends Component {
     return (
       <div>
         {isLoading && <span>Loading...</span>}
-        <div onClick={() => playPause()}>
+        <div ref={this._handlePlayerRef} onClick={() => playPause()}>
           {Player}
         </div>
         <nav className="media-controls">

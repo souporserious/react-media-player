@@ -38,6 +38,10 @@ class HTML5 extends Component {
     }
   }
 
+  getPlayer() {
+    return this._player
+  }
+
   play() {
     this._player.play()
   }

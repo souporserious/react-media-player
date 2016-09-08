@@ -67,7 +67,7 @@ class Media extends Component {
   }
 
   componentWillUpdate(nextProps) {
-    // clean state if the video has changed
+    // clean state if the source has changed
     if (this.props.src !== nextProps.src) {
       this.setState({
         currentTime: 0,
@@ -80,6 +80,10 @@ class Media extends Component {
 
   componentWillUnmount() {
     fullscreenChange('remove', this._handleFullscreenChange)
+  }
+
+  get player() {
+    return this._player.getPlayer && this._player.getPlayer()
   }
 
   get _mediaEvents() {

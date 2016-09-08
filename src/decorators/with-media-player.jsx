@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component, PropTypes, createElement } from 'react'
 import Media from '../Media'
 
 export default function withMediaPlayer(MediaPlayer, vendor) {
@@ -15,12 +15,15 @@ export default function withMediaPlayer(MediaPlayer, vendor) {
     }
 
     render() {
-      return (
-        <Media {...this.props}>
-          { (Player, vendor) =>
-            <MediaPlayer {...this.props} Player={Player} vendor={vendor}/>
-          }
-        </Media>
+      const { mediaRef, playerRef, vendor, src, autoPlay, loop } = this.props
+      const PlayerComponent = (Player, vendor) => (
+        createElement(MediaPlayer, { ...this.props, ref: playerRef, Player, vendor })
+      )
+
+      return createElement(
+        Media,
+        { ref: mediaRef, vendor, src, autoPlay, loop },
+        PlayerComponent
       )
     }
   }
