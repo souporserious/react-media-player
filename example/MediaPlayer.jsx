@@ -40,7 +40,12 @@ class MediaPlayer extends Component {
             className={'media-player' + (isFullscreen ? ' media-player--fullscreen' : '')}
             tabIndex="0"
           >
-            <Player onClick={() => playPause()}/>
+            <div
+              className="media-player-element"
+              onClick={() => playPause()}
+            >
+              <Player/>
+            </div>
             <div className="media-controls media-controls--full">
               <div className="media-row">
                 <CurrentTime className="media-control media-control--current-time"/>
