@@ -8,6 +8,8 @@ play, pause, playPause, stop, seekTo, mute, muteUnmute, setVolume, and fullscree
 
 Added ability to use an audio object to store audio in memory rather than a DOM node
 
+Moved keyboard controls into a function see example `MediaPlayer` component for usage
+
 ### 0.5.1
 Pass `vendor` to `Media` child function
 

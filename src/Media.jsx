@@ -166,6 +166,19 @@ class Media extends Component {
     this.setState({currentTime})
   }
 
+  skipTime = (amount) => {
+    const { currentTime, duration } = this.state
+    let newTime = (currentTime + amount)
+
+    if (newTime < 0) {
+      newTime = 0
+    } else if (newTime > duration) {
+      newTime = duration
+    }
+
+    this.seekTo(newTime)
+  }
+
   mute = (isMuted) => {
     if (isMuted) {
       this._lastVolume = this.state.volume
@@ -197,6 +210,18 @@ class Media extends Component {
     this._player.setVolume(volume)
   }
 
+  addVolume = (amount) => {
+    let newVolume = (this.state.volume + (amount * 0.01))
+
+    if (newVolume < 0) {
+      newVolume = 0
+    } else if (newVolume > 1) {
+      newVolume = 1
+    }
+
+    this.setVolume(newVolume)
+  }
+
   fullscreen = () => {
     if (!this.state.isFullscreen) {
       ReactDOM.findDOMNode(this._player)[requestFullscreen]()
@@ -222,9 +247,11 @@ class Media extends Component {
         playPause: this.playPause,
         stop: this.stop,
         seekTo: this.seekTo,
+        skipTime: this.skipTime,
         mute: this.mute,
         muteUnmute: this.muteUnmute,
         setVolume: this.setVolume,
+        addVolume: this.addVolume,
         fullscreen: this.fullscreen
       })
     }

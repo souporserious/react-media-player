@@ -1,10 +1,11 @@
 import React, { Component, PropTypes } from 'react'
-import { Media, Player, withMediaProps, withKeyboardControls, controls } from '../src/react-media-player'
+import { Media, Player, controls, utils } from '../src/react-media-player'
 import PlayPause from './PlayPause'
 import MuteUnmute from './MuteUnmute'
 import Repeat from './Repeat'
 
 const { CurrentTime, Progress, SeekBar, Duration, Volume } = controls
+const { keyboardControls } = utils
 
 const PrevTrack = (props) => (
   <svg width="10px" height="12px" viewBox="0 0 10 12" {...props}>
@@ -35,14 +36,15 @@ class MediaPlayer extends Component {
     const { src, currentTrack, repeatTrack } = this.props
     return (
       <Media src={src} loop={repeatTrack}>
-        {({ isFullscreen, playPause }) =>
+        { mediaProps =>
           <div
-            className={'media-player' + (isFullscreen ? ' media-player--fullscreen' : '')}
+            className={'media-player' + (mediaProps.isFullscreen ? ' media-player--fullscreen' : '')}
+            onKeyDown={keyboardControls.bind(null, mediaProps)}
             tabIndex="0"
           >
             <div
               className="media-player-element"
-              onClick={() => playPause()}
+              onClick={() => mediaProps.playPause()}
             >
               <Player/>
             </div>
