@@ -119,6 +119,7 @@ class Vimeo extends Component {
       <iframe
         ref={c => this._iframe = c}
         src={`https://player.vimeo.com/video/${this._vimeoId}?api=1`}
+        {...this.props.extraProps}
       />
     )
   }

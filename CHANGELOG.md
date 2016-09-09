@@ -1,4 +1,11 @@
 ## CHANGELOG
+### 0.6.0
+`withMediaPlayer` has been removed in favor of a smart `Player` component that can be passed as a child in the `Media` component
+
+Each callback now gets the full state of the player passed into it as an object
+
+play, pause, playPause, stop, seekTo, mute, muteUnmute, setVolume, and fullscreen are all passed into a child function as well as available as public methods on the `Media` component
+
 ### 0.5.1
 Pass `vendor` to `Media` child function
 

@@ -63,8 +63,8 @@ class HTML5 extends Component {
     this.props.onDuration(duration)
   }
 
-  _handleTimeUpdate = ({ target: { currentTime } }) => {
-    this.props.onTimeUpdate(currentTime)
+  _handleTimeUpdate = ({ target: { currentTime, duration } }) => {
+    this.props.onTimeUpdate(currentTime, duration)
   }
 
   _handleVolumeChange = ({ target: { volume, muted } }) => {
@@ -86,6 +86,7 @@ class HTML5 extends Component {
         onLoadedMetadata={this._handleDuration}
         onTimeUpdate={this._handleTimeUpdate}
         onVolumeChange={this._handleVolumeChange}
+        {...this.props.extraProps}
       />
     )
   }

@@ -20,5 +20,14 @@ export default {
   mute: PropTypes.func,
   muteUnmute: PropTypes.func,
   setVolume: PropTypes.func,
-  fullscreen: PropTypes.func
+  fullscreen: PropTypes.func,
+
+  // Private
+  playerRef: PropTypes.func,
+  src: PropTypes.string,
+  vendor: PropTypes.string,
+  autoPlay: PropTypes.bool,
+  onReady: PropTypes.func,
+  onEnded: PropTypes.func,
+  mediaEvents: PropTypes.object
 }

@@ -5,6 +5,9 @@ import VideoPlayer from './VideoPlayer'
 import AudioPlayer from './AudioPlayer'
 import CirclePlayer from './CirclePlayer'
 
+import { Media, Player, controls } from '../src/react-media-player'
+const { PlayPause } = controls
+
 import './main.scss'
 
 const mod = (num, max) => ((num % max) + max) % max
@@ -101,9 +104,9 @@ class App extends Component {
             />
           </div>
         }
-        <VideoPlayer src="http://www.youtube.com/embed/h3YVKTxTOgU"/>
-        <AudioPlayer src="http://www.noiseaddicts.com/samples_1w72b820/3890.mp3" />
-        <CirclePlayer src="https://p.scdn.co/mp3-preview/f83458d6611ae9589420f71c447ac9d2e3047cb8" />
+        <VideoPlayer src="http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4"/>
+        <AudioPlayer src="/audio/armstrong.mp3"/>
+        <CirclePlayer src="https://p.scdn.co/mp3-preview/f83458d6611ae9589420f71c447ac9d2e3047cb8"/>
       </div>
     )
   }

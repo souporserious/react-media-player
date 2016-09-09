@@ -165,7 +165,12 @@ class Youtube extends Component {
   }
 
   render() {
-    return <div ref={c => this._node = c}/>
+    return (
+      <div
+        ref={c => this._node = c}
+        {...this.props.extraProps}
+      />
+    )
   }
 }
 

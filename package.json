@@ -3,7 +3,10 @@
   "version": "0.5.0",
   "description": "React media player.",
   "main": "lib/react-media-player.js",
-  "files": ["dist", "lib"],
+  "files": [
+    "dist",
+    "lib"
+  ],
   "scripts": {
     "build:lib": "babel src --out-dir lib",
     "build": "npm run build:lib && NODE_ENV=production webpack --config webpack.prod.config.js",
@@ -31,9 +34,9 @@
     "url": "https://github.com/souporserious/react-media-player/issues"
   },
   "homepage": "https://github.com/souporserious/react-media-player",
-  "peerDepdendencies": {
-    "react": "^0.14.0-rc1",
-    "react-dom": "^0.14.0-rc1"
+  "peerDependencies": {
+    "react": "0.14.x || ^15.0.0",
+    "react-dom": "0.14.x || ^15.0.0"
   },
   "devDependencies": {
     "babel-core": "^6.5.2",
@@ -45,10 +48,9 @@
     "http-server": "^0.8.0",
     "node-libs-browser": "^0.5.2",
     "node-sass": "^3.2.0",
-    "react": "^0.14.7",
-    "react-dom": "^0.14.7",
-    "react-motion": "^0.4.2",
-    "react-motion-ui-pack": "^0.6.1",
+    "react": "^15.2.1",
+    "react-dom": "^15.2.1",
+    "react-motion-ui-pack": "^0.9.0",
     "sass-loader": "^1.0.2",
     "style-loader": "^0.12.3",
     "webpack": "^1.9.12",

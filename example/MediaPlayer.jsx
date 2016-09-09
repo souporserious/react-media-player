@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import { withMediaPlayer, withMediaProps, withKeyboardControls, controls } from '../src/react-media-player'
+import { Media, Player, withMediaProps, withKeyboardControls, controls } from '../src/react-media-player'
 import PlayPause from './PlayPause'
 import MuteUnmute from './MuteUnmute'
 import Repeat from './Repeat'
@@ -32,50 +32,48 @@ class MediaPlayer extends Component {
   }
 
   render() {
-    const { Player, vendor, keyboardControls, media, currentTrack, repeatTrack } = this.props
-    const { isFullscreen, playPause } = media
-    let classes = 'media-player'
-
-    if (isFullscreen) {
-      classes += ' media-player--fullscreen'
-    }
-
+    const { src, currentTrack, repeatTrack } = this.props
     return (
-      <div className={classes} onKeyDown={keyboardControls} tabIndex="0">
-        <div className="media-player-element" onClick={() => playPause()}>
-          {Player}
-        </div>
-        <div className="media-controls media-controls--full">
-          <div className="media-row">
-            <CurrentTime className="media-control media-control--current-time"/>
-            {currentTrack}
-            <Duration className="media-control media-control--duration"/>
-          </div>
-          <div className="media-control-group media-control-group--seek">
-            <Progress className="media-control media-control--progress"/>
-            <SeekBar className="media-control media-control--seekbar"/>
-          </div>
-          <div className="media-row">
-            <div className="media-control-group">
-              <MuteUnmute className="media-control media-control--mute-unmute"/>
+      <Media src={src} loop={repeatTrack}>
+        {({ isFullscreen, playPause }) =>
+          <div
+            className={'media-player' + (isFullscreen ? ' media-player--fullscreen' : '')}
+            tabIndex="0"
+          >
+            <Player onClick={() => playPause()}/>
+            <div className="media-controls media-controls--full">
+              <div className="media-row">
+                <CurrentTime className="media-control media-control--current-time"/>
+                {currentTrack}
+                <Duration className="media-control media-control--duration"/>
+              </div>
+              <div className="media-control-group media-control-group--seek">
+                <Progress className="media-control media-control--progress"/>
+                <SeekBar className="media-control media-control--seekbar"/>
+              </div>
+              <div className="media-row">
+                <div className="media-control-group">
+                  <MuteUnmute className="media-control media-control--mute-unmute"/>
+                </div>
+                <div className="media-control-group">
+                  <PrevTrack className="media-control media-control--prev-track" onClick={this._handlePrevTrack}/>
+                  <PlayPause className="media-control media-control--play-pause"/>
+                  <NextTrack className="media-control media-control--next-track" onClick={this._handleNextTrack}/>
+                </div>
+                <div className="media-control-group">
+                  <Repeat
+                    className="media-control media-control--repeat"
+                    isActive={repeatTrack}
+                    onClick={this._handleRepeatTrack}
+                  />
+                </div>
+              </div>
             </div>
-            <div className="media-control-group">
-              <PrevTrack className="media-control media-control--prev-track" onClick={this._handlePrevTrack}/>
-              <PlayPause className="media-control media-control--play-pause"/>
-              <NextTrack className="media-control media-control--next-track" onClick={this._handleNextTrack}/>
-            </div>
-            <div className="media-control-group">
-              <Repeat
-                className="media-control media-control--repeat"
-                isActive={repeatTrack}
-                onClick={this._handleRepeatTrack}
-              />
-            </div>
           </div>
-        </div>
-      </div>
+        }
+      </Media>
     )
   }
 }
 
-export default withMediaPlayer(withKeyboardControls(MediaPlayer))
+export default MediaPlayer

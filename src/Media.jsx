@@ -1,7 +1,6 @@
-import React, { Component, PropTypes, createElement } from 'react'
+import React, { Component, PropTypes, Children } from 'react'
 import ReactDOM from 'react-dom'
 import contextTypes from './context-types'
-import getVendor from './utils/get-vendor'
 import requestFullscreen from './utils/request-fullscreen'
 import exitFullscreen from './utils/exit-fullscreen'
 import fullscreenChange from './utils/fullscreen-change'
@@ -22,7 +21,7 @@ class Media extends Component {
   static propTypes = {
     vendor: PropTypes.oneOf(['youtube', 'vimeo', 'audio', 'video']),
     src: PropTypes.string.isRequired,
-    children: PropTypes.func.isRequired,
+    children: PropTypes.oneOfType([PropTypes.func, PropTypes.node]).isRequired,
     autoPlay: PropTypes.bool,
     loop: PropTypes.bool
   }
@@ -50,15 +49,24 @@ class Media extends Component {
   getChildContext() {
     return {
       ...this.state,
-      play: this._handlePlay,
-      pause: this._handlePause,
-      playPause: this._handlePlayPause,
-      stop: this._handleStop,
-      seekTo: this._handleSeekTo,
-      mute: this._handleMute,
-      muteUnmute: this._handleMuteUnmute,
-      setVolume: this._handleSetVolume,
-      fullscreen: this._handleFullscreen
+      play: this.play,
+      pause: this.pause,
+      playPause: this.playPause,
+      stop: this.stop,
+      seekTo: this.seekTo,
+      mute: this.mute,
+      muteUnmute: this.muteUnmute,
+      setVolume: this.setVolume,
+      fullscreen: this.fullscreen,
+
+      // Private
+      playerRef: this._setPlayer,
+      vendor: this.props.vendor,
+      src: this.props.src,
+      autoPlay: this.props.autoPlay,
+      onReady: this._handleOnReady,
+      onEnded: this._handleOnEnded,
+      mediaEvents: this._mediaEvents
     }
   }
 
@@ -67,7 +75,7 @@ class Media extends Component {
   }
 
   componentWillUpdate(nextProps) {
-    // clean state if the video has changed
+    // clean state if the media has changed
     if (this.props.src !== nextProps.src) {
       this.setState({
         currentTime: 0,
@@ -94,18 +102,22 @@ class Media extends Component {
           this.setState({ [stateKey]: val })
         }
         if (typeof propCallback === 'function') {
-          propCallback(val)
+          propCallback(this.state)
         }
       }
     })
     return events
   }
 
+  _setPlayer = (component) => {
+    this._player = component
+  }
+
   _handleOnReady = () => {
     const { volume, isMuted } = this.state
 
-    this._handleSetVolume(volume)
-    this._handleMute(isMuted)
+    this.setVolume(volume)
+    this.mute(isMuted)
 
     if (this.props.autoPlay) {
       this._player.play()
@@ -118,7 +130,7 @@ class Media extends Component {
     const { loop, onEnded } = this.props
 
     if (loop) {
-      this._handleSeekTo(0)
+      this.seekTo(0)
       this._player.play()
     } else {
       this.setState({ isPlaying: false })
@@ -129,15 +141,15 @@ class Media extends Component {
     }
   }
 
-  _handlePlay = () => {
+  play = () => {
     this._player.play()
   }
 
-  _handlePause = () => {
+  pause = () => {
     this._player.pause()
   }
 
-  _handlePlayPause = () => {
+  playPause = () => {
     if (!this.state.isPlaying) {
       this._player.play()
     } else {
@@ -145,16 +157,16 @@ class Media extends Component {
     }
   }
 
-  _handleStop = () => {
+  stop = () => {
     this._player.stop()
   }
 
-  _handleSeekTo = (currentTime) => {
+  seekTo = (currentTime) => {
     this._player.seekTo(currentTime)
     this.setState({currentTime})
   }
 
-  _handleMute = (isMuted) => {
+  mute = (isMuted) => {
     if (isMuted) {
       this._lastVolume = this.state.volume
       this._player.setVolume(0)
@@ -165,11 +177,11 @@ class Media extends Component {
     this._player.mute(isMuted)
   }
 
-  _handleMuteUnmute = () => {
-    this._handleMute(!this.state.isMuted)
+  muteUnmute = () => {
+    this.mute(!this.state.isMuted)
   }
 
-  _handleSetVolume = (volume) => {
+  setVolume = (volume) => {
     let isMuted = false
 
     if (volume <= 0) {
@@ -177,7 +189,7 @@ class Media extends Component {
     }
 
     if (isMuted !== this.state.isMuted) {
-      this._handleMute(isMuted)
+      this.mute(isMuted)
     } else {
       this._lastVolume = volume
     }
@@ -185,7 +197,7 @@ class Media extends Component {
     this._player.setVolume(volume)
   }
 
-  _handleFullscreen = () => {
+  fullscreen = () => {
     if (!this.state.isFullscreen) {
       ReactDOM.findDOMNode(this._player)[requestFullscreen]()
     } else {
@@ -200,21 +212,24 @@ class Media extends Component {
   }
 
   render() {
-    const { src, children, autoPlay } = this.props
-    const { vendor, component } = getVendor(src, this.props.vendor)
+    const { children } = this.props
 
-    return component && children(
-      createElement(component, {
-        ref: c => this._player = c,
-        vendor,
-        src,
-        autoPlay,
-        onReady: this._handleOnReady,
-        onEnded: this._handleOnEnded,
-        ...this._mediaEvents
-      }),
-      vendor
-    )
+    if (typeof children === 'function') {
+      return children({
+        ...this.state,
+        play: this.play,
+        pause: this.pause,
+        playPause: this.playPause,
+        stop: this.stop,
+        seekTo: this.seekTo,
+        mute: this.mute,
+        muteUnmute: this.muteUnmute,
+        setVolume: this.setVolume,
+        fullscreen: this.fullscreen
+      })
+    }
+
+    return Children.only(children)
   }
 }
 
