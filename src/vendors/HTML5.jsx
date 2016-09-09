@@ -35,8 +35,9 @@ class HTML5 extends Component {
   }
 
   componentWillUnmount() {
+    this.stop()
+
     if (this.props.vendor === 'audio') {
-      this.stop()
       this._bindAudioPlayerEvents(false)
     }
   }
