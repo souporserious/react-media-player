@@ -5,8 +5,13 @@ import getVendor from './utils/get-vendor'
 class Player extends Component {
   static contextTypes = contextTypes
 
+  get instance() {
+    return this._component && this._component.instance
+  }
+
   _handleRef = (component) => {
-    this.context.playerRef(component)
+    this.context.setPlayer(component)
+    this._component = component
   }
 
   render() {

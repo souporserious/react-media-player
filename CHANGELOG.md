@@ -6,6 +6,8 @@ Each callback now gets the full state of the player passed into it as an object
 
 play, pause, playPause, stop, seekTo, mute, muteUnmute, setVolume, and fullscreen are all passed into a child function as well as available as public methods on the `Media` component
 
+Added ability to use an audio object to store audio in memory rather than a DOM node
+
 ### 0.5.1
 Pass `vendor` to `Media` child function
 

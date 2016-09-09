@@ -1,8 +1,49 @@
-import React, { Component } from 'react'
+import React, { Component, PropTypes, createElement } from 'react'
 import vendorPropTypes from './vendor-prop-types'
 
 class HTML5 extends Component {
-  static propTypes = vendorPropTypes
+  static propTypes = {
+    ...vendorPropTypes,
+    useAudioObject: PropTypes.bool
+  }
+
+  componentWillMount() {
+    if (this.props.vendor === 'audio') {
+      this._bindAudioPlayerEvents(true)
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.src !== nextProps.src) {
+      this.stop()
+      this._bindAudioPlayerEvents(true, nextProps)
+
+      // allow the new media to load and then play
+      setTimeout(() => {
+        this.play()
+      })
+    }
+  }
+
+  componentDidUpdate(lastProps) {
+    if (lastProps.vendor === 'audio' && this.props.vendor === 'video' && this.props.autoPlay) {
+      this.play()
+    }
+    if (lastProps.vendor === 'video' && this.props.vendor === 'audio') {
+      this._bindAudioPlayerEvents(true)
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.props.vendor === 'audio') {
+      this.stop()
+      this._bindAudioPlayerEvents(false)
+    }
+  }
+
+  get instance() {
+    return this._player
+  }
 
   play() {
     this._player.play()
@@ -27,6 +68,20 @@ class HTML5 extends Component {
 
   setVolume(volume) {
     this._player.volume = volume
+  }
+
+  get _playerEvents() {
+    return {
+      onCanPlay: this._handleCanPlay,
+      onPlay: this._handlePlay,
+      onPause: this._handlePause,
+      onEnded: this._handleEnded,
+      onError: this._handleError,
+      onProgress: this._handleProgress,
+      onLoadedMetadata: this._handleDuration,
+      onTimeUpdate: this._handleTimeUpdate,
+      onVolumeChange: this._handleVolumeChange
+    }
   }
 
   _handleCanPlay = () => {
@@ -63,8 +118,8 @@ class HTML5 extends Component {
     this.props.onDuration(duration)
   }
 
-  _handleTimeUpdate = ({ target: { currentTime, duration } }) => {
-    this.props.onTimeUpdate(currentTime, duration)
+  _handleTimeUpdate = ({ target: { currentTime } }) => {
+    this.props.onTimeUpdate(currentTime)
   }
 
   _handleVolumeChange = ({ target: { volume, muted } }) => {
@@ -72,23 +127,32 @@ class HTML5 extends Component {
     this.props.onVolumeChange(volume)
   }
 
+  _bindAudioPlayerEvents(bind, props = this.props) {
+    const playerEvents = this._playerEvents
+
+    if (bind) {
+      this._player = new Audio(props.src)
+    }
+
+    Object.keys(playerEvents).forEach(key => {
+      this._player[key.toLowerCase()] = bind ? playerEvents[key] : null
+    })
+  }
+
   render() {
-    return (
-      <this.props.vendor
-        ref={c => this._player = c}
-        src={this.props.src}
-        onCanPlay={this._handleCanPlay}
-        onPlay={this._handlePlay}
-        onPause={this._handlePause}
-        onEnded={this._handleEnded}
-        onError={this._handleError}
-        onProgress={this._handleProgress}
-        onLoadedMetadata={this._handleDuration}
-        onTimeUpdate={this._handleTimeUpdate}
-        onVolumeChange={this._handleVolumeChange}
-        {...this.props.extraProps}
-      />
-    )
+    const { vendor, src } = this.props
+    const { useAudioObject, ...extraProps } = this.props.extraProps
+
+    if (!useAudioObject) {
+      return createElement(vendor, {
+        ref: c => this._player = c,
+        src,
+        ...this._playerEvents,
+        ...this.props.extraProps
+      })
+    } else {
+      return null
+    }
   }
 }
 

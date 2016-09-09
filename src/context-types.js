@@ -23,7 +23,7 @@ export default {
   fullscreen: PropTypes.func,
 
   // Private
-  playerRef: PropTypes.func,
+  setPlayer: PropTypes.func,
   src: PropTypes.string,
   vendor: PropTypes.string,
   autoPlay: PropTypes.bool,

@@ -60,7 +60,7 @@ class Media extends Component {
       fullscreen: this.fullscreen,
 
       // Private
-      playerRef: this._setPlayer,
+      setPlayer: this._setPlayer,
       vendor: this.props.vendor,
       src: this.props.src,
       autoPlay: this.props.autoPlay,

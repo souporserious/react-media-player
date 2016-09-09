@@ -16,8 +16,7 @@ panner.connect(audioContext.destination)
 
 class AudioPlayer extends Component {
   componentDidMount() {
-    const player = findDOMNode(this._player)
-    const source = audioContext.createMediaElementSource(player)
+    const source = audioContext.createMediaElementSource(this._player.instance)
     source.connect(panner)
     panner.connect(audioContext.destination)
   }
@@ -33,7 +32,7 @@ class AudioPlayer extends Component {
     return (
       <Media src={this.props.src}>
         <div>
-          <Player ref={c => this._player = c}/>
+          <Player ref={c => this._player = c} useAudioObject/>
           <div className="media-controls">
             <PlayPause className="media-control media-control--play-pause"/>
             <CurrentTime className="media-control media-control--current-time"/>

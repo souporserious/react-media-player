@@ -49,6 +49,10 @@ class Youtube extends Component {
     }
   }
 
+  get instance() {
+    return this._player
+  }
+
   _createPlayer() {
     this._player = new YT.Player(this._node, {
       videoId: this._videoId,

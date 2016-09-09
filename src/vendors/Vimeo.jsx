@@ -22,6 +22,10 @@ class Vimeo extends Component {
     window.removeEventListener('message', this._onMessage)
   }
 
+  get instance() {
+    return this._iframe
+  }
+
   _onMessage = (e) => {
     let data
 
