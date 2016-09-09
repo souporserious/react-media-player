@@ -32,10 +32,19 @@ class MediaPlayer extends Component {
     this.props.onRepeatTrack()
   }
 
+  _handleEnded = () => {
+    this.props.onNextTrack()
+  }
+
   render() {
     const { src, currentTrack, repeatTrack } = this.props
     return (
-      <Media src={src} loop={repeatTrack}>
+      <Media
+        src={src}
+        loop={repeatTrack}
+        autoPlay
+        onEnded={this._handleEnded}
+      >
         { mediaProps =>
           <div
             className={'media-player' + (mediaProps.isFullscreen ? ' media-player--fullscreen' : '')}
