@@ -114,13 +114,18 @@ class Media extends Component {
   }
 
   _handleOnReady = () => {
+    const { autoPlay, onReady } = this.props
     const { volume, isMuted } = this.state
 
     this.setVolume(volume)
     this.mute(isMuted)
 
-    if (this.props.autoPlay) {
+    if (autoPlay) {
       this._player.play()
+    }
+
+    if (typeof onReady === 'function') {
+      onReady()
     }
 
     this.setState({ isLoading: false })
