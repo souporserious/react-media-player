@@ -33,7 +33,8 @@ class MediaPlayer extends Component {
   }
 
   _handleEnded = () => {
-    this.props.onNextTrack()
+    console.log('ON READY FROM PROPS')
+    //this.props.onNextTrack()
   }
 
   render() {
@@ -42,8 +43,8 @@ class MediaPlayer extends Component {
       <Media
         src={src}
         loop={repeatTrack}
-        autoPlay
-        onEnded={this._handleEnded}
+        // autoPlay
+        onReady={this._handleEnded}
       >
         { mediaProps =>
           <div
