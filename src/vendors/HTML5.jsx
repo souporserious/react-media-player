@@ -130,10 +130,13 @@ class HTML5 extends Component {
 
   _bindAudioPlayerEvents(bind, props = this.props) {
     const playerEvents = this._playerEvents
+    const { useAudioObject, crossOrigin } = props.extraProps
 
     if (bind) {
       this._player = new Audio(props.src)
     }
+
+    this._player['crossOrigin'] = crossOrigin
 
     Object.keys(playerEvents).forEach(key => {
       this._player[key.toLowerCase()] = bind ? playerEvents[key] : null
