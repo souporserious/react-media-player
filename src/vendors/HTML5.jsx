@@ -22,6 +22,8 @@ class HTML5 extends Component {
       setTimeout(() => {
         this.play()
       })
+    } else {
+      this._bindAudioPlayerEvents(false, nextProps)
     }
   }
 
@@ -139,7 +141,7 @@ class HTML5 extends Component {
     this._player['crossOrigin'] = crossOrigin
 
     Object.keys(playerEvents).forEach(key => {
-      this._player[key.toLowerCase()] = bind ? playerEvents[key] : null
+      this._player[key.toLowerCase()] = playerEvents[key]
     })
   }
 
