@@ -8,39 +8,30 @@ class HTML5 extends Component {
   }
 
   componentWillMount() {
-    if (this.props.vendor === 'audio') {
-      this._bindAudioPlayerEvents(true)
+    const { src, extraProps: { useAudioObject } } = this.props
+
+    if (useAudioObject) {
+      this._createAudioObject(src)
+      this._bindAudioObjectEvents(this.props)
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.src !== nextProps.src) {
-      this.stop()
-      this._bindAudioPlayerEvents(true, nextProps)
+    const { src, extraProps: { useAudioObject } } = nextProps
 
-      // allow the new media to load and then play
-      setTimeout(() => {
-        this.play()
-      })
-    } else {
-      this._bindAudioPlayerEvents(false, nextProps)
-    }
-  }
-
-  componentDidUpdate(lastProps) {
-    if (lastProps.vendor === 'audio' && this.props.vendor === 'video' && this.props.autoPlay) {
-      this.play()
-    }
-    if (lastProps.vendor === 'video' && this.props.vendor === 'audio') {
-      this._bindAudioPlayerEvents(true)
+    if (useAudioObject) {
+      // create a new audio object if the source has changed
+      if (this.props.src !== src) {
+        this._createAudioObject(src)
+      }
+      // bind any new props to current audio object
+      this._bindAudioObjectEvents(nextProps)
     }
   }
 
   componentWillUnmount() {
-    this.stop()
-
-    if (this.props.vendor === 'audio') {
-      this._bindAudioPlayerEvents(false)
+    if (this.props.extraProps.useAudioObject) {
+      this._destroyAudioObject()
     }
   }
 
@@ -130,15 +121,26 @@ class HTML5 extends Component {
     this.props.onVolumeChange(volume)
   }
 
-  _bindAudioPlayerEvents(bind, props = this.props) {
-    const playerEvents = this._playerEvents
-    const { useAudioObject, crossOrigin } = props.extraProps
-
-    if (bind) {
-      this._player = new Audio(props.src)
+  // Handle Audio Object
+  _createAudioObject(src) {
+    // destroy any previous instances created
+    if (this._player) {
+      this._destroyAudioObject()
     }
+    this._player = new Audio(src)
+  }
 
-    this._player['crossOrigin'] = crossOrigin
+  _destroyAudioObject() {
+    this.stop()
+    delete this._player
+  }
+
+  _bindAudioObjectEvents({ extraProps }) {
+    const playerEvents = this._playerEvents
+
+    Object.keys(extraProps).forEach(key => {
+      this._player[key] = extraProps[key]
+    })
 
     Object.keys(playerEvents).forEach(key => {
       this._player[key.toLowerCase()] = playerEvents[key]
