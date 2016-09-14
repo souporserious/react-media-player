@@ -37,14 +37,9 @@ class MediaPlayer extends Component {
   }
 
   render() {
-    const { src, currentTrack, repeatTrack } = this.props
+    const { src, currentTrack, repeatTrack, autoPlay } = this.props
     return (
-      <Media
-        src={src}
-        loop={repeatTrack}
-        autoPlay
-        onEnded={this._handleEnded}
-      >
+      <Media>
         { mediaProps =>
           <div
             className={'media-player' + (mediaProps.isFullscreen ? ' media-player--fullscreen' : '')}
@@ -55,7 +50,12 @@ class MediaPlayer extends Component {
               className="media-player-element"
               onClick={() => mediaProps.playPause()}
             >
-              <Player/>
+              <Player
+                src={src}
+                loop={repeatTrack}
+                autoPlay={autoPlay}
+                onEnded={this._handleEnded}
+              />
             </div>
             <div className="media-controls media-controls--full">
               <div className="media-row">

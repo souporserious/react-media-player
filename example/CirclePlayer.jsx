@@ -31,14 +31,14 @@ class CircleMediaPlayer extends Component {
 
   render() {
     return (
-      <Media
-        src={this.props.src}
-        vendor="audio"
-        onTimeUpdate={this._handleTimeUpdate}
-      >
+      <Media>
         {({ isPlaying, playPause }) =>
           <button className="circle-media-player" onClick={() => playPause()}>
-            <Player/>
+            <Player
+              src={this.props.src}
+              vendor="audio"
+              onTimeUpdate={this._handleTimeUpdate}
+            />
             <svg width="32px" height="32px" viewBox="0 0 32 32">
               <circle cx="16" cy="16" r="14.5" className="circle-media-player__background" />
               <circle ref={c => this._svg = c} cx="16" cy="16" r="14.5" className="circle-media-player__foreground" />

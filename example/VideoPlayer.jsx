@@ -8,13 +8,16 @@ const { CurrentTime, Progress, SeekBar, Duration, Volume } = controls
 
 export default function VideoPlayer({ src }) {
   return (
-    <Media src={src}>
+    <Media>
       {({ isFullscreen, playPause }) =>
         <div
           className={'media-player' + (isFullscreen ? ' media-player--fullscreen' : '')}
           tabIndex="0"
         >
-          <Player onClick={() => playPause()}/>
+          <Player
+            src={src}
+            onClick={() => playPause()}
+          />
           <div className="media-controls">
             <PlayPause className="media-control media-control--play-pause" />
             <CurrentTime className="media-control media-control--current-time" />

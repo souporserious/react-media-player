@@ -148,8 +148,8 @@ class HTML5 extends Component {
       return createElement(vendor, {
         ref: c => this._player = c,
         src,
-        ...this._playerEvents,
-        ...this.props.extraProps
+        ...extraProps,
+        ...this._playerEvents
       })
     } else {
       return null

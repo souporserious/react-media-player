@@ -30,9 +30,13 @@ class AudioPlayer extends Component {
 
   render() {
     return (
-      <Media src={this.props.src}>
+      <Media>
         <div>
-          <Player ref={c => this._player = c} useAudioObject/>
+          <Player
+            ref={c => this._player = c}
+            src={this.props.src}
+            useAudioObject
+          />
           <div className="media-controls">
             <PlayPause className="media-control media-control--play-pause"/>
             <CurrentTime className="media-control media-control--current-time"/>

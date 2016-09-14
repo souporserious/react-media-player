@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import { withMediaProps } from '../src/react-media-player'
 import Transition from 'react-motion-ui-pack'
 
 class Scale extends Component {
@@ -16,20 +17,14 @@ class Scale extends Component {
 }
 
 class MuteUnmute extends Component {
-  static contextTypes = {
-    muteUnmute: PropTypes.func,
-    isMuted: PropTypes.bool,
-    volume: PropTypes.number
-  }
-
   _handleMuteUnmute = () => {
-    this.context.muteUnmute()
+    this.props.media.muteUnmute()
   }
 
   render() {
-    const { isMuted, volume } = this.context
+    const { media: { isMuted, volume }, className } = this.props
     return (
-      <svg width="36px" height="36px" viewBox="0 0 36 36" className={this.props.className} onClick={this._handleMuteUnmute}>
+      <svg width="36px" height="36px" viewBox="0 0 36 36" className={className} onClick={this._handleMuteUnmute}>
         <circle fill="#373D3F" cx="18" cy="18" r="18"/>
         <polygon fill="#CDD7DB" points="11,14.844 11,21.442 14.202,21.442 17.656,25 17.656,11 14.074,14.844"/>
         <Scale>
@@ -52,4 +47,4 @@ class MuteUnmute extends Component {
   }
 }
 
-export default MuteUnmute
+export default withMediaProps(MuteUnmute)
