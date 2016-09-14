@@ -40,25 +40,14 @@ class Media extends Component {
 
   getChildContext() {
     return {
-      mediaPlayer: {
-        state: {
-          ...this.state
-        },
-        methods: {
-          play: this.play,
-          pause: this.pause,
-          playPause: this.playPause,
-          stop: this.stop,
-          seekTo: this.seekTo,
-          mute: this.mute,
-          muteUnmute: this.muteUnmute,
-          setVolume: this.setVolume,
-          fullscreen: this.fullscreen
-        },
-        _setPlayer: this._setPlayer,
-        _setPlayerProps: this._setPlayerProps,
-        _setPlayerState: this._setPlayerState,
-        mediaEvents: this._mediaEvents
+      media: this._getPublicMediaActions(),
+      _mediaSetters: {
+        setPlayer: this._setPlayer,
+        setPlayerProps: this._setPlayerProps,
+        setPlayerState: this._setPlayerState
+      },
+      _mediaGetters: {
+        getPlayerEvents: this._getPlayerEvents()
       }
     }
   }
@@ -71,7 +60,24 @@ class Media extends Component {
     fullscreenChange('remove', this._handleFullscreenChange)
   }
 
-  get _mediaEvents() {
+  _getPublicMediaActions() {
+    return {
+      ...this.state,
+      play: this.play,
+      pause: this.pause,
+      playPause: this.playPause,
+      stop: this.stop,
+      seekTo: this.seekTo,
+      skipTime: this.skipTime,
+      mute: this.mute,
+      muteUnmute: this.muteUnmute,
+      setVolume: this.setVolume,
+      addVolume: this.addVolume,
+      fullscreen: this.fullscreen
+    }
+  }
+
+  _getPlayerEvents() {
     const events = {}
 
     MEDIA_EVENTS_KEYS.forEach(key => {
@@ -201,20 +207,7 @@ class Media extends Component {
     const { children } = this.props
 
     if (typeof children === 'function') {
-      return children({
-        ...this.state,
-        play: this.play,
-        pause: this.pause,
-        playPause: this.playPause,
-        stop: this.stop,
-        seekTo: this.seekTo,
-        skipTime: this.skipTime,
-        mute: this.mute,
-        muteUnmute: this.muteUnmute,
-        setVolume: this.setVolume,
-        addVolume: this.addVolume,
-        fullscreen: this.fullscreen
-      })
+      return children(this._getPublicMediaActions())
     }
 
     return Children.only(children)

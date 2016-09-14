@@ -4,8 +4,8 @@ import getVendor from './utils/get-vendor'
 
 class Player extends Component {
   static propTypes = {
-    vendor: PropTypes.oneOf(['youtube', 'vimeo', 'audio', 'video']),
-    src: PropTypes.string.isRequired
+    src: PropTypes.string.isRequired,
+    vendor: PropTypes.oneOf(['youtube', 'vimeo', 'audio', 'video'])
   }
 
   static contextTypes = contextTypes
@@ -17,9 +17,9 @@ class Player extends Component {
   componentWillUpdate(nextProps) {
     this._setPlayerProps(nextProps)
 
-    // clean state if the media has changed
+    // clean state if the media source has changed
     if (this.props.src !== nextProps.src) {
-      this.context.mediaPlayer._setPlayerState({
+      this.context._mediaSetters.setPlayerState({
         currentTime: 0,
         progress: 0,
         duration: 0,
@@ -33,53 +33,50 @@ class Player extends Component {
   }
 
   _setPlayer = (component) => {
-    this.context.mediaPlayer._setPlayer(component)
+    this.context._mediaSetters.setPlayer(component)
     this._component = component
   }
 
   _setPlayerProps(props) {
-    this.context.mediaPlayer._setPlayerProps(props)
+    this.context._mediaSetters.setPlayerProps(props)
   }
 
   _handleOnReady = () => {
-    const { mediaPlayer } = this.context
+    const { media, _mediaSetters } = this.context
     const { autoPlay, onReady } = this.props
-    const { state, methods } = mediaPlayer
 
-    methods.setVolume(state.volume)
-    methods.mute(state.isMuted)
+    media.setVolume(media.volume)
+    media.mute(media.isMuted)
 
     if (autoPlay) {
-      methods.play()
+      media.play()
     }
 
-    mediaPlayer._setPlayerState({ isLoading: false })
+    _mediaSetters.setPlayerState({ isLoading: false })
 
     if (typeof onReady === 'function') {
-      onReady(state)
+      onReady(media)
     }
   }
 
   _handleOnEnded = () => {
-    const { mediaPlayer } = this.context
+    const { media, _mediaSetters } = this.context
     const { loop, onEnded } = this.props
-    const { state, methods } = mediaPlayer
 
     if (loop) {
-      methods.seekTo(0)
-      methods.play()
+      media.seekTo(0)
+      media.play()
     } else {
-      mediaPlayer._setPlayerState({ isPlaying: false })
+      _mediaSetters.setPlayerState({ isPlaying: false })
     }
 
     if (typeof onEnded === 'function') {
-      onEnded(state)
+      onEnded(media)
     }
   }
 
   render() {
     const { src, vendor: _vendor, autoPlay, onReady, onEnded, ...extraProps } = this.props
-    const { mediaEvents } = this.context.mediaPlayer
     const { vendor, component } = getVendor(src, _vendor)
 
     return (
@@ -91,7 +88,7 @@ class Player extends Component {
         onReady: this._handleOnReady,
         onEnded: this._handleOnEnded,
         extraProps,
-        ...mediaEvents,
+        ...this.context._mediaGetters.getPlayerEvents,
       })
     )
   }
