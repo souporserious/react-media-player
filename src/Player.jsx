@@ -4,10 +4,21 @@ import getVendor from './utils/get-vendor'
 
 class Player extends Component {
   static propTypes = {
-    vendor: PropTypes.oneOf(['video', 'audio', 'youtube', 'vimeo'])
+    vendor: PropTypes.oneOf(['video', 'audio', 'youtube', 'vimeo']),
+    defaultCurrentTime: PropTypes.number,
+    defaultVolume: PropTypes.number,
+    defaultMuted: PropTypes.bool
+  }
+
+  static defaultProps = {
+    defaultCurrentTime: -1,
+    defaultVolume: 1,
+    defaultMuted: false
   }
 
   static contextTypes = contextTypes
+
+  _defaultsSet = false
 
   componentWillMount() {
     this._setPlayerProps(this.props)
@@ -40,12 +51,29 @@ class Player extends Component {
     this.context._mediaSetters.setPlayerProps(props)
   }
 
+  _setDefaults() {
+    const { media } = this.context
+    const { defaultCurrentTime, defaultVolume, defaultMuted } = this.props
+
+    if (defaultCurrentTime > -1) {
+      media.seekTo(defaultCurrentTime)
+    }
+    media.setVolume(defaultVolume)
+    media.mute(defaultMuted)
+
+    this._defaultsSet = true
+  }
+
   _handleOnReady = () => {
     const { media, _mediaSetters } = this.context
     const { autoPlay, onReady } = this.props
 
     media.setVolume(media.volume)
     media.mute(media.isMuted)
+
+    if (!this._defaultsSet) {
+      this._setDefaults()
+    }
 
     if (autoPlay) {
       media.play()
@@ -75,7 +103,7 @@ class Player extends Component {
   }
 
   render() {
-    const { src, vendor: _vendor, autoPlay, onReady, onEnded, ...extraProps } = this.props
+    const { src, vendor: _vendor, autoPlay, onReady, onEnded, defaultCurrentTime, defaultVolume, defaultMuted, ...extraProps } = this.props
     const { vendor, component } = getVendor(src, _vendor)
 
     return (
