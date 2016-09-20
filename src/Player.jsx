@@ -4,8 +4,7 @@ import getVendor from './utils/get-vendor'
 
 class Player extends Component {
   static propTypes = {
-    src: PropTypes.string.isRequired,
-    vendor: PropTypes.oneOf(['youtube', 'vimeo', 'audio', 'video'])
+    vendor: PropTypes.oneOf(['video', 'audio', 'youtube', 'vimeo'])
   }
 
   static contextTypes = contextTypes

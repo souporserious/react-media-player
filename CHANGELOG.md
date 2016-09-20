@@ -10,6 +10,8 @@ Added ability to use an audio object to store audio in memory rather than a DOM 
 
 Moved keyboard controls into a function see example `MediaPlayer` component for usage
 
+Player will default to an empty video player instead of erroring when no `src` is provided.
+
 ### 0.5.1
 Pass `vendor` to `Media` child function
 
