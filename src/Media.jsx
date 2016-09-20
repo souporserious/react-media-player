@@ -1,5 +1,5 @@
 import React, { Component, PropTypes, Children } from 'react'
-import ReactDOM from 'react-dom'
+import ReactDOM, { findDOMNode } from 'react-dom'
 import contextTypes from './context-types'
 import requestFullscreen from './utils/request-fullscreen'
 import exitFullscreen from './utils/exit-fullscreen'
@@ -8,12 +8,12 @@ import fullscreenChange from './utils/fullscreen-change'
 const MEDIA_EVENTS = {
   onPlay: 'isPlaying',
   onPause: 'isPlaying',
-  onError: null,
   onDuration: 'duration',
   onProgress: 'progress',
   onTimeUpdate: 'currentTime',
   onMute: 'isMuted',
-  onVolumeChange: 'volume'
+  onVolumeChange: 'volume',
+  onError: null,
 }
 const MEDIA_EVENTS_KEYS = Object.keys(MEDIA_EVENTS)
 
@@ -40,7 +40,7 @@ class Media extends Component {
 
   getChildContext() {
     return {
-      media: this._getPublicMediaActions(),
+      media: this._getPublicMediaProps(),
       _mediaSetters: {
         setPlayer: this._setPlayer,
         setPlayerProps: this._setPlayerProps,
@@ -60,7 +60,7 @@ class Media extends Component {
     fullscreenChange('remove', this._handleFullscreenChange)
   }
 
-  _getPublicMediaActions() {
+  _getPublicMediaProps() {
     return {
       ...this.state,
       play: this.play,
@@ -162,11 +162,7 @@ class Media extends Component {
   }
 
   setVolume = (volume) => {
-    let isMuted = false
-
-    if (volume <= 0) {
-      isMuted = true
-    }
+    const isMuted = (volume <= 0)
 
     if (isMuted !== this.state.isMuted) {
       this.mute(isMuted)
@@ -191,14 +187,14 @@ class Media extends Component {
 
   fullscreen = () => {
     if (!this.state.isFullscreen) {
-      ReactDOM.findDOMNode(this._player)[requestFullscreen]()
+      findDOMNode(this._player)[requestFullscreen]()
     } else {
       document[exitFullscreen]()
     }
   }
 
   _handleFullscreenChange = ({ target }) => {
-    if (target === ReactDOM.findDOMNode(this._player)) {
+    if (target === findDOMNode(this._player)) {
       this.setState({ isFullscreen: !this.state.isFullscreen })
     }
   }
@@ -207,7 +203,7 @@ class Media extends Component {
     const { children } = this.props
 
     if (typeof children === 'function') {
-      return children(this._getPublicMediaActions())
+      return children(this._getPublicMediaProps())
     }
 
     return Children.only(children)
