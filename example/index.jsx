@@ -60,7 +60,8 @@ class App extends Component {
     currentTrack: { src: null, label: 'No media loaded' },
     showMediaPlayer: true,
     repeatTrack: false,
-    autoPlay: false
+    autoPlay: false,
+    src: 'audio/split-track.m4a'
   }
 
   _handleTrackClick = (track) => {
@@ -73,40 +74,12 @@ class App extends Component {
   }
 
   render() {
-    const { showMediaPlayer, currentTrack, repeatTrack, autoPlay } = this.state
+    const { showMediaPlayer, currentTrack, repeatTrack, autoPlay, src } = this.state
     return (
       <div>
-        <button
-          onClick={() => this.setState({ showMediaPlayer: !showMediaPlayer })}
-        >
-          Toggle Media Player
-        </button>
-        { showMediaPlayer &&
-          <div className="media-player-wrapper">
-            <MediaPlayer
-              ref={c => this._mediaPlayer = c}
-              src={currentTrack.src}
-              autoPlay={autoPlay}
-              loop={repeatTrack}
-              currentTrack={currentTrack.label}
-              repeatTrack={repeatTrack}
-              onPrevTrack={() => this._navigatePlaylist(-1)}
-              onNextTrack={() => this._navigatePlaylist(1)}
-              onRepeatTrack={() => { this.setState({ repeatTrack: !repeatTrack }) }}
-              onPlay={() => !autoPlay && this.setState({ autoPlay: true })}
-              onPause={() => this.setState({ autoPlay: false })}
-              onEnded={() => !repeatTrack && this._navigatePlaylist(1)}
-            />
-            <Playlist
-              tracks={playlist}
-              currentTrack={currentTrack}
-              onTrackClick={this._handleTrackClick}
-            />
-          </div>
-        }
-        <VideoPlayer src="http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4"/>
-        <AudioPlayer src="/audio/armstrong.mp3"/>
-        <CirclePlayer src="https://p.scdn.co/mp3-preview/f83458d6611ae9589420f71c447ac9d2e3047cb8"/>
+        <button onClick={() => this.setState({ src: 'audio/split-track.m4a' })}>audio/split-track.m4a</button>
+        <button onClick={() => this.setState({ src: '/audio/armstrong.mp3' })}>audio/armstrong.mp3</button>
+        <AudioPlayer src={src}/>
       </div>
     )
   }
