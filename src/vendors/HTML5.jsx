@@ -20,9 +20,10 @@ class HTML5 extends Component {
     const { src, extraProps: { useAudioObject } } = nextProps
 
     if (useAudioObject) {
-      // update audio object source if necessary
+      // destroy and recreate audio object to clean up any browser state
       if (this.props.src !== src) {
-        this._player.src = src
+        this._destroyAudioObject()
+        this._createAudioObject(src)
       }
       // bind any new props to current audio object
       this._bindAudioObjectEvents(nextProps)
