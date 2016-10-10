@@ -12,6 +12,10 @@ Moved keyboard controls into a function see example `MediaPlayer` component for 
 
 Player will default to an empty video player instead of erroring when no `src` is provided.
 
+Made `isLoading` state better
+
+Fix Safari crashing when using Audio Object
+
 ### 0.5.1
 Pass `vendor` to `Media` child function
 
