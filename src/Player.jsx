@@ -22,6 +22,13 @@ class Player extends Component {
 
   componentWillMount() {
     this._setPlayerProps(this.props)
+
+    // we need to unset the loading state if no source was loaded
+    if (!this.props.src) {
+      this.context._mediaSetters.setPlayerState({
+        isLoading: false
+      })
+    }
   }
 
   componentWillUpdate(nextProps) {
