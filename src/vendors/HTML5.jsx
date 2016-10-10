@@ -102,11 +102,11 @@ class HTML5 extends Component {
   _handleProgress = ({ target: { buffered, duration } }) => {
     let progress = 0
 
-    if (buffered.length > 0) {
-      progress = (buffered.end(0) / duration)
+    if (duration > 0) {
+      progress = (buffered.end(buffered.length - 1) / duration)
     }
 
-    this.props.onProgress(isNaN(progress) ? 0 : progress)
+    this.props.onProgress(progress)
   }
 
   _handleDuration = ({ target: { duration }}) => {
