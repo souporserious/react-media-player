@@ -33,6 +33,7 @@ class Player extends Component {
         currentTime: 0,
         progress: 0,
         duration: 0,
+        isLoading: true,
         isPlaying: false
       })
     }

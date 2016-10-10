@@ -29,6 +29,7 @@ class Youtube extends Component {
         } else {
           this._player.cueVideoById(this._videoId)
         }
+        this.props.onReady()
       }
     }
   }

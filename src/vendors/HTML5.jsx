@@ -67,7 +67,7 @@ class HTML5 extends Component {
 
   get _playerEvents() {
     return {
-      onCanPlay: this._handleCanPlay,
+      onLoadStart: this._handleLoadStart,
       onPlay: this._handlePlay,
       onPause: this._handlePause,
       onEnded: this._handleEnded,
@@ -79,7 +79,7 @@ class HTML5 extends Component {
     }
   }
 
-  _handleCanPlay = () => {
+  _handleLoadStart = () => {
     this.props.onReady()
   }
 
