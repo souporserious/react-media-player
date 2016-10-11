@@ -25,9 +25,7 @@ class Player extends Component {
 
     // we need to unset the loading state if no source was loaded
     if (!this.props.src) {
-      this.context._mediaSetters.setPlayerState({
-        isLoading: false
-      })
+      this._setLoading(false)
     }
   }
 
@@ -72,6 +70,10 @@ class Player extends Component {
     this._defaultsSet = true
   }
 
+  _setLoading = (isLoading) => {
+    this.context._mediaSetters.setPlayerState({ isLoading })
+  }
+
   _handleOnReady = () => {
     const { media, _mediaSetters } = this.context
     const { autoPlay, onReady } = this.props
@@ -87,7 +89,7 @@ class Player extends Component {
       media.play()
     }
 
-    _mediaSetters.setPlayerState({ isLoading: false })
+    this._setLoading(false)
 
     if (typeof onReady === 'function') {
       onReady(media)
@@ -120,6 +122,7 @@ class Player extends Component {
         src,
         vendor,
         autoPlay,
+        isLoading: this._setLoading,
         onReady: this._handleOnReady,
         onEnded: this._handleOnEnded,
         extraProps,

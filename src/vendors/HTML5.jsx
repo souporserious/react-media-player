@@ -67,7 +67,7 @@ class HTML5 extends Component {
 
   get _playerEvents() {
     return {
-      onLoadStart: this._handleLoadStart,
+      onCanPlay: this._handleCanPlay,
       onPlay: this._handlePlay,
       onPause: this._handlePause,
       onEnded: this._handleEnded,
@@ -75,16 +75,31 @@ class HTML5 extends Component {
       onProgress: this._handleProgress,
       onLoadedMetadata: this._handleDuration,
       onTimeUpdate: this._handleTimeUpdate,
-      onVolumeChange: this._handleVolumeChange
+      onVolumeChange: this._handleVolumeChange,
+
+      // loader specific methods
+      onPlaying: this._isNotLoading,
+      onSeeking: this._isLoading,
+      onSeeked: this._isNotLoading,
+      onWaiting: this._isLoading
     }
   }
 
-  _handleLoadStart = () => {
+  _isLoading = () => {
+    this.props.isLoading(true)
+  }
+
+  _isNotLoading = () => {
+    this.props.isLoading(false)
+  }
+
+  _handleCanPlay = () => {
     this.props.onReady()
   }
 
   _handlePlay = () => {
     this.props.onPlay(true)
+    this._isNotLoading()
   }
 
   _handlePause = () => {
@@ -97,6 +112,7 @@ class HTML5 extends Component {
 
   _handleError = (e) => {
     this.props.onError(e)
+    this._isNotLoading()
   }
 
   _handleProgress = ({ target: { buffered, duration } }) => {
