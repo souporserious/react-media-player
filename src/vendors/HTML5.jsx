@@ -69,19 +69,15 @@ class HTML5 extends Component {
     return {
       onCanPlay: this._handleCanPlay,
       onPlay: this._handlePlay,
+      onPlaying: this._isNotLoading,
       onPause: this._handlePause,
       onEnded: this._handleEnded,
+      onWaiting: this._isLoading,
       onError: this._handleError,
       onProgress: this._handleProgress,
       onLoadedMetadata: this._handleDuration,
       onTimeUpdate: this._handleTimeUpdate,
-      onVolumeChange: this._handleVolumeChange,
-
-      // loader specific methods
-      onPlaying: this._isNotLoading,
-      onSeeking: this._isLoading,
-      onSeeked: this._isNotLoading,
-      onWaiting: this._isLoading
+      onVolumeChange: this._handleVolumeChange
     }
   }
 
