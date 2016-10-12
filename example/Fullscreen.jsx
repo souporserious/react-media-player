@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import { withMediaProps } from '../src/react-media-player'
 
 class Fullscreen extends Component {
   static contextTypes = {
@@ -7,7 +8,7 @@ class Fullscreen extends Component {
   }
 
   _handleFullscreen = () => {
-    this.context.fullscreen()
+    this.props.media.fullscreen()
   }
 
   render() {
@@ -35,4 +36,4 @@ class Fullscreen extends Component {
   }
 }
 
-export default Fullscreen
+export default withMediaProps(Fullscreen)
