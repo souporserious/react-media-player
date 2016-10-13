@@ -54,7 +54,9 @@ class HTML5 extends Component {
   }
 
   seekTo(currentTime) {
-    this._player.currentTime = currentTime
+    if (this._player.readyState > 0) {
+      this._player.currentTime = currentTime
+    }
   }
 
   mute(muted) {
