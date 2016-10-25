@@ -6,8 +6,6 @@ Components and decorators to help build video & audio players in React. Supports
 
 `npm install react-media-player --save`
 
-`bower install react-media-player --save`
-
 ```html
 <script src="https://unpkg.com/react-media-player/dist/react-media-player.js"></script>
 (UMD library exposed as `ReactMediaPlayer`)
@@ -17,106 +15,80 @@ Components and decorators to help build video & audio players in React. Supports
 
 ## `Media` component
 
+A special wrapper component that collects information from the `Player` component and passes down the proper props to `withMediaProps` decorator.
+
+## `Player` component
+
+This is another special component that renders your player and communicates with the `Media` wrapper.
+
 #### `src`: PropTypes.string.isRequired
 
-Pass the source into the decorated component. This is the source of the media you want to play. Currently supporting Youtube, Vimeo, and any HTML5 compatible video or audio.
+This is the source of the media you want to play. Currently supporting Youtube, Vimeo, and any HTML5 compatible video or audio.
 
 #### `vendor`: PropTypes.oneOf(['youtube', 'vimeo', 'audio', 'video'])
 
-Pass the vendor into the decorated component. Explicitly choose which component to render for the player. If not set, the library does its best to determine what player to render based on the source.
+Explicitly choose which internal component to render for the player. If nothing is set, the library does its best to determine what player to render based on the source passed in.
 
 #### `autoPlay`: PropTypes.bool
 
+Autoplay media when the component is mounted or `src` changes.
+
 #### `loop`: PropTypes.bool
+
+Loop the current `src` indefinitely.
 
 #### `onPlay`: PropTypes.func
 
+Callback when media starts playing.
+
 #### `onPause`: PropTypes.func
+
+Callback when media has been paused.
 
 #### `onError`:PropTypes.func
 
+Callback when an error occurs.
+
 #### `onDuration`: PropTypes.func
+
+Callback when the duration of the media has been calculated.
 
 #### `onProgress`: PropTypes.func
 
+Callback when media starts downloading.
+
 #### `onTimeUpdate`: PropTypes.func
+
+Callback when media time has changed.
 
 #### `onMute`: PropTypes.func
 
+Callback when the player has been muted.
+
 #### `onVolumeChange`: PropTypes.func
+
+Callback when the player volume has changed.
 
 ```js
 
 import React, { Component } from 'react'
-import { Media, controls } from 'react-media-player'
+import { Media, Player, controls } from 'react-media-player'
 const { PlayPause, MuteUnmute, } = controls
 
 class MediaPlayer extends Component {
   render() {
     return (
-      <Media src="http://www.youtube.com/embed/h3YVKTxTOgU">
-        {Player =>
-          <div className="media">
-            <div className="media-player">
-              {Player}
-            </div>
-            <div className="media-controls">
-              <PlayPause/>
-              <MuteUnmute/>
-            </div>
+      <Media>
+        <div className="media">
+          <div className="media-player">
+            <Player src="http://www.youtube.com/embed/h3YVKTxTOgU"/>
           </div>
-        }
-      </Media>
-    )
-  }
-}
-```
-
-<br/>
-
-## `withMediaPlayer` decorator
-
-Convenience component that uses the `Media` component internally to pass down `Player` as a prop.
-
-```js
-
-import React, { Component } from 'react'
-import { withMediaPlayer, controls } from 'react-media-player'
-const { PlayPause, CurrentTime, Progress, SeekBar, Duration, MuteUnmute, Volume, Fullscreen } = controls
-
-class MediaPlayer extends Component {
-  render() {
-    const { Player } = this.props
-
-    return (
-      <div className="media">
-        <div className="media-player">
-          { Player }
+          <div className="media-controls">
+            <PlayPause/>
+            <MuteUnmute/>
+          </div>
         </div>
-        <nav className="media-controls">
-          <PlayPause/>
-          <CurrentTime/>
-          <Progress/>
-          <SeekBar/>
-          <Duration/>
-          <MuteUnmute/>
-          <Volume/>
-          <Fullscreen/>
-        </nav>
-      </div>
-    )
-  }
-}
-MediaPlayer = withMediaPlayer(MediaPlayer)
-
-class App extends Component {
-  state = {
-    currentSource: 'http://www.youtube.com/embed/h3YVKTxTOgU'
-  }
-
-  render() {
-    return (
-      <MediaPlayer src={this.state.currentSource}/>
+      </Media>
     )
   }
 }
@@ -196,39 +168,77 @@ export default withMediaProps(CustomPlayPause)
 
 <br/>
 
-## `withKeyboardControls` decorator props exposed under `this.props.keyboardControls`
+## `utils.keyboardControls`
 
-Provides a prop with keyboard functionality to control the `Media` component.
+A special function that will provide keyboard support to the media player.
 
 ```js
 
 import React, { Component } from 'react'
-import { withMediaPlayer, withKeyboardControls, controls } from 'react-media-player'
+import { Media, Player, controls, utils } from 'react-media-player'
 const { PlayPause, CurrentTime, Progress, SeekBar, Duration, MuteUnmute, Volume, Fullscreen } = controls
+const { keyboardControls } = utils
 
 class MediaPlayer extends Component {
   render() {
     const { Player, keyboardControls } = this.props
     return (
-      <div className="media" onKeyDown={keyboardControls}>
-        <div className="media-player">
-          { Player }
-        </div>
-        <nav className="media-controls">
-          <PlayPause/>
-          <CurrentTime/>
-          <Progress/>
-          <SeekBar/>
-          <Duration/>
-          <MuteUnmute/>
-          <Volume/>
-          <Fullscreen/>
-        </nav>
-      </div>
+      <Media>
+        { mediaProps =>
+          <div
+            className="media"
+            onKeyDown={keyboardControls.bind(null, mediaProps)}
+          >
+            <Player
+              src="against-them-all.mp3"
+              className="media-player"
+            />
+            <div className="media-controls">
+              <PlayPause/>
+              <CurrentTime/>
+              <Progress/>
+              <SeekBar/>
+              <Duration/>
+              <MuteUnmute/>
+              <Volume/>
+              <Fullscreen/>
+            </div>
+          </div>
+        }
+      </Media>
     )
   }
 }
-MediaPlayer = withMediaPlayer(withKeyboardControls(MediaPlayer))
+```
+
+<br/>
+
+## `utils.formatTime`
+
+A helper function to format time.
+
+```js
+
+import React, { Component } from 'react'
+import { withMediaProps, utils } from 'react-media-player'
+const { formatTime } = utils
+
+class CurrentTime extends Component {
+  shouldComponentUpdate({ media }) {
+    return this.props.media.currentTime !== media.currentTime
+  }
+
+  render() {
+    const { className, style, media } = this.props
+    return (
+      <time className={className} style={style}>
+        {formatTime(media.currentTime)}
+      </time>
+    )
+  }
+}
+
+export default withMediaProps(CurrentTime)
 ```
 
 <br/>
