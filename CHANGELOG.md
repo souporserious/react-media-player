@@ -2,6 +2,8 @@
 ### 0.6.1
 Fix `fullscreen` for Youtube videos
 
+Fix for durations over an hour [#20](https://github.com/souporserious/react-media-player/pull/20)
+
 ### 0.6.0
 `withMediaPlayer` has been removed in favor of a smart `Player` component that can be passed as a child in the `Media` component
 
