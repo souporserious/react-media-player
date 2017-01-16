@@ -4,7 +4,7 @@ import PlayPause from './PlayPause'
 import MuteUnmute from './MuteUnmute'
 import Repeat from './Repeat'
 
-const { CurrentTime, Progress, SeekBar, Duration, Volume } = controls
+const { CurrentTime, Progress, SeekBar, Duration, Volume, Fullscreen } = controls
 const { keyboardControls } = utils
 
 const PrevTrack = (props) => (
@@ -82,6 +82,7 @@ class MediaPlayer extends Component {
                     isActive={repeatTrack}
                     onClick={this._handleRepeatTrack}
                   />
+                  <Fullscreen/>
                 </div>
               </div>
             </div>

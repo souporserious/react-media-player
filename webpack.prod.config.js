@@ -3,9 +3,24 @@ var webpack = require('webpack');
 var banner = require('./webpack.banner');
 var TARGET = process.env.TARGET || null;
 
+var externals = {
+  'react': {
+    root: 'React',
+    commonjs2: 'react',
+    commonjs: 'react',
+    amd: 'react'
+  },
+  'react-dom': {
+    root: 'ReactDOM',
+    commonjs2: 'react-dom',
+    commonjs: 'react-dom',
+    amd: 'react-dom'
+  }
+};
+
 var config = {
   entry: {
-    index: './src/react-media-player.js'
+    index: './src/react-media-player.js',
   },
   output: {
     path: path.join(__dirname, 'dist'),
@@ -17,7 +32,7 @@ var config = {
   },
   module: {
     loaders: [
-      { test: /\.(js|jsx)/, loader: 'babel-loader', query: { presets: ['es2015', 'react', 'stage-0'] } },
+      { test: /\.(js|jsx)/, loader: 'babel-loader' }
     ]
   },
   plugins: [
@@ -26,13 +41,10 @@ var config = {
   resolve: {
     extensions: ['', '.js', '.jsx']
   },
-  externals: {
-    'react': 'React',
-    'react-dom': 'ReactDOM'
-  },
+  externals: externals
 };
 
-if(TARGET === 'minify') {
+if (TARGET === 'minify') {
   config.output.filename = 'react-media-player.min.js';
   config.output.sourceMapFilename = 'react-media-player.min.js';
   config.plugins.push(new webpack.optimize.UglifyJsPlugin({

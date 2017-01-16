@@ -60,7 +60,7 @@ class App extends Component {
     currentTrack: { src: null, label: 'No media loaded' },
     showMediaPlayer: true,
     repeatTrack: false,
-    autoPlay: false
+    autoPlay: true
   }
 
   _handleTrackClick = (track) => {
