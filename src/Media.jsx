@@ -187,14 +187,14 @@ class Media extends Component {
 
   fullscreen = () => {
     if (!this.state.isFullscreen) {
-      findDOMNode(this._player)[requestFullscreen]()
+      this._player.node[requestFullscreen]()
     } else {
       document[exitFullscreen]()
     }
   }
 
   _handleFullscreenChange = ({ target }) => {
-    if (target === findDOMNode(this._player)) {
+    if (target === this._player.node) {
       this.setState({ isFullscreen: !this.state.isFullscreen })
     }
   }

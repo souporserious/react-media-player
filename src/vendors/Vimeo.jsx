@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { findDOMNode } from 'react-dom'
 import getVimeoId from '../utils/get-vimeo-id'
 import vendorPropTypes from './vendor-prop-types'
 
@@ -24,6 +25,10 @@ class Vimeo extends Component {
 
   get instance() {
     return this._iframe
+  }
+
+  get node() {
+    return findDOMNode(this._iframe)
   }
 
   _onMessage = (e) => {

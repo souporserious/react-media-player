@@ -1,4 +1,5 @@
 import React, { Component, PropTypes, createElement } from 'react'
+import { findDOMNode } from 'react-dom'
 import vendorPropTypes from './vendor-prop-types'
 
 class HTML5 extends Component {
@@ -38,6 +39,10 @@ class HTML5 extends Component {
 
   get instance() {
     return this._player
+  }
+
+  get node() {
+    return findDOMNode(this._player)
   }
 
   play() {
