@@ -1,4 +1,7 @@
 ## CHANGELOG
+### 0.6.1
+Fix `fullscreen` for Youtube videos
+
 ### 0.6.0
 `withMediaPlayer` has been removed in favor of a smart `Player` component that can be passed as a child in the `Media` component
 
