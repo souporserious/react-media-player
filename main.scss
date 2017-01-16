@@ -1,0 +1,295 @@
+@import "./range-mixins.scss";
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Lato', sans-serif;
+}
+
+// Circle Media Player
+.circle-media-player {
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  line-height: 0;
+  background-color: transparent;
+
+  fill: none;
+  stroke: #D7DBDC;
+  stroke-width: 3;
+
+  cursor: pointer;
+  outline: 0;
+}
+
+.circle-media-player__foreground {
+  stroke: #6e9541;
+  transition: 350ms stroke-dashoffset;
+
+  // position the start of the circle at the top
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+}
+
+.circle-media-player__background {
+}
+
+.circle-media-player__play,
+.circle-media-player__pause {
+  fill: #6e9541;
+  stroke-width: 0;
+}
+
+.media-player-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 640px;
+  margin-bottom: 24px;
+}
+
+.media-player {
+  width: 100%;
+  max-width: 640px;
+  position: relative;
+
+  // hide native controls
+  video::-webkit-media-controls {
+    display: none !important;
+  }
+}
+
+.media-player-element {
+  max-width: 100%;
+  height: 0;
+  padding-bottom: 56.25%; // 16:9
+  position: relative;
+  overflow: hidden;
+  background-color: #d4d4d4;
+
+  video,
+  iframe,
+  object,
+  embed {
+    display: block;
+    width: 100%;
+    height: 300%;
+    border: 0;
+    position: absolute;
+    top: -100%;
+    left: 0;
+    pointer-events: none;
+  }
+}
+
+.media-controls {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  background-color: #282F31;
+  color: #fff;
+
+  svg, path, polygon {
+    transform-origin: 50% 50%;
+  }
+
+  .media-player--fullscreen & {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+
+    // push controls above fullscreen video
+    z-index: 2147483647;
+  }
+}
+
+.media-controls--full {
+  flex-direction: column;
+
+  .media-control-group--seek {
+    width: 100%;
+    margin: 12px 0;
+  }
+}
+
+.media-row {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.media-control-group {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.media-control-group--seek {
+  flex: 1;
+}
+
+.media-control {
+  margin: 0 12px;
+}
+
+.media-control--progress {
+  -webkit-appearance: none;
+  width: calc(100% - 24px);
+  height: 3px;
+  margin: 0 12px;
+  border: 0;
+  position: absolute;
+  top: 7px;
+  left: 12px;
+
+  // bar
+  background-color: #373d3f;
+  &::-webkit-progress-bar {
+    background-color: #373d3f;
+  }
+
+  // progress
+  color: lighten(#373d3f, 5%); // IE
+  &::-moz-progress-bar {
+    background-color: lighten(#373d3f, 5%);
+  }
+  &::-webkit-progress-value {
+    background-color: lighten(#373d3f, 5%);
+  }
+}
+
+.media-control--seekbar {
+  position: relative;
+  z-index: 5;
+
+  @include -range-track(webkit, moz, ms) {
+    background-color: transparent !important;
+  }
+}
+
+.media-control--volume {
+  max-width: 120px;
+}
+
+.media-control--prev-track {
+  margin-right: 6px;
+}
+
+.media-control--next-track {
+  margin-left: 6px;
+}
+
+input[type="range"] {
+  // reset inputs to a plain state
+  @include -range__reset(webkit, moz, ms);
+
+  $track-height: 3px;
+  $track-lower-color: #86b350;
+  $track-upper-color: #373d3f;
+
+  $thumb-height: 8px;
+  $thumb-width: 8px;
+  $thumb-color: #cdd7db;
+
+  width: 100%;
+  height: 12px;
+  padding: 0 12px;
+  margin: 0;
+  background-color: transparent;
+
+  &:hover,
+  &:active {
+    @include -range-thumb(webkit, moz, ms) {
+      transform: scale(1.25);
+    }
+  }
+
+  @include -range-track(webkit, moz, ms) {
+    width: 100%;
+    height: $track-height;
+    border: 0;
+    cursor: pointer;
+    background-color: $track-upper-color;
+
+    &:active {
+      cursor: grabbing;
+    }
+  }
+
+  // so we can style the lower progress
+  &::-webkit-slider-container {
+    background-size: inherit;
+  }
+
+  @include -range-track(webkit) {
+    background: {
+      image: linear-gradient($track-lower-color, $track-lower-color);
+      size: inherit;
+      repeat: no-repeat;
+    }
+  }
+
+  @include -range-fill-lower(webkit, moz, ms) {
+    background-color: $track-lower-color;
+  }
+
+  @include -range-thumb(webkit, moz, ms) {
+    width: $thumb-width;
+    height: $thumb-height;
+    border: 0;
+    border-radius: 50%;
+    background-color: $thumb-color;
+    cursor: grab;
+    transform: scale(1);
+    transform-origin: 50% 50%;
+    transition: transform 150ms ease-out;
+
+    &:active {
+      cursor: grabbing;
+    }
+  }
+
+  @include -range-thumb(webkit) {
+    position: relative;
+    top: -2.5px;
+  }
+}
+
+.media-playlist-header {
+  padding: 2px;
+  background-color: #373d3f;
+}
+
+.media-playlist-title {
+  font-size: 14px;
+  text-align: center;
+}
+
+.media-playlist {
+  background-color: #282F31;
+  color: #fff;
+}
+
+.media-playlist-tracks {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  border: 1px solid #373d3f;
+}
+
+.media-playlist-track {
+  padding: 12px;
+  cursor: pointer;
+
+  & + & {
+    border-top: 1px solid #373d3f;
+  }
+
+  &.is-active {
+    color: #8bb955
+  }
+}
