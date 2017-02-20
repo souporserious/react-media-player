@@ -11,7 +11,7 @@ class PlayPause extends Component {
   }
 
   render() {
-    const { className, style, media } = this.props
+    const { className, style, media, children } = this.props
     return (
       <button
         type="button"
@@ -19,7 +19,7 @@ class PlayPause extends Component {
         style={style}
         onClick={this._handlePlayPause}
       >
-        { media.isPlaying ? 'Pause' : 'Play' }
+        { children || media.isPlaying ? 'Pause' : 'Play' }
       </button>
     )
   }

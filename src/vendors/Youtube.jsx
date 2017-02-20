@@ -151,6 +151,10 @@ class Youtube extends Component {
     this.props.onVolumeChange(+volume)
   }
 
+  getCurrentTime() {
+    return this._player.getCurrentTime()
+  }
+
   _handleProgress = () => {
     if (!this._isMounted) return
 
@@ -166,7 +170,7 @@ class Youtube extends Component {
   _handleTimeUpdate = () => {
     if (!this._isMounted) return
 
-    this.props.onTimeUpdate(this._player.getCurrentTime() || 0)
+    this.props.onTimeUpdate(this.getCurrentTime() || 0)
 
     if (this._timeUpdateId) {
       this._timeUpdateId = requestAnimationFrame(this._handleTimeUpdate)

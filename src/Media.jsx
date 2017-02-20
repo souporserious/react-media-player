@@ -6,14 +6,14 @@ import exitFullscreen from './utils/exit-fullscreen'
 import fullscreenChange from './utils/fullscreen-change'
 
 const MEDIA_EVENTS = {
-  onPlay: 'isPlaying',
-  onPause: 'isPlaying',
-  onDuration: 'duration',
-  onProgress: 'progress',
-  onTimeUpdate: 'currentTime',
-  onMute: 'isMuted',
+  onPlay:         'isPlaying',
+  onPause:        'isPlaying',
+  onDuration:     'duration',
+  onProgress:     'progress',
+  onTimeUpdate:   'currentTime',
+  onMute:         'isMuted',
   onVolumeChange: 'volume',
-  onError: null,
+  onError:        null,
 }
 const MEDIA_EVENTS_KEYS = Object.keys(MEDIA_EVENTS)
 
@@ -25,13 +25,13 @@ class Media extends Component {
   static childContextTypes = contextTypes
 
   state = {
-    currentTime: 0,
-    progress: 0,
-    duration: 0.1,
-    volume: 1,
-    isLoading: true,
-    isPlaying: false,
-    isMuted: false,
+    currentTime:  0,
+    progress:     0,
+    duration:     0.1,
+    volume:       1,
+    isLoading:    true,
+    isPlaying:    false,
+    isMuted:      false,
     isFullscreen: false
   }
 
@@ -42,7 +42,7 @@ class Media extends Component {
     return {
       media: this._getPublicMediaProps(),
       _mediaSetters: {
-        setPlayer: this._setPlayer,
+        setPlayer:      this._setPlayer,
         setPlayerProps: this._setPlayerProps,
         setPlayerState: this._setPlayerState
       },
@@ -63,22 +63,28 @@ class Media extends Component {
   _getPublicMediaProps() {
     return {
       ...this.state,
-      play: this.play,
-      pause: this.pause,
-      playPause: this.playPause,
-      stop: this.stop,
-      seekTo: this.seekTo,
-      skipTime: this.skipTime,
-      mute: this.mute,
+      play:       this.play,
+      pause:      this.pause,
+      playPause:  this.playPause,
+      stop:       this.stop,
+      seekTo:     this.seekTo,
+      skipTime:   this.skipTime,
+      mute:       this.mute,
       muteUnmute: this.muteUnmute,
-      setVolume: this.setVolume,
-      addVolume: this.addVolume,
+      setVolume:  this.setVolume,
+      addVolume:  this.addVolume,
       fullscreen: this.fullscreen
     }
   }
 
   _getPlayerEvents() {
     const events = {}
+
+    // should be able to just use player.props
+    // player needs to return the actual player component and not the vendor
+    // Player -> MediaCallback -> Update Media -> Media Passes down state to children
+    // Media -> Callbacks (withMediaProps) -> PlayPause -> isPlaying -> Media -> Player componentWillUpdate(isPlaying !== isPlaying)
+    console.log(this._player && this._player.props)
 
     MEDIA_EVENTS_KEYS.forEach(key => {
       const stateKey = MEDIA_EVENTS[key]
@@ -109,6 +115,18 @@ class Media extends Component {
   }
 
   play = () => {
+    // this needs to be a different model
+    // should send state down to Player Component and based on what has changed
+    // since its last props it should play or not play
+
+    // so no one should ever be able to just call the player method
+    // the Player component is dumb and doesn't know how it gets updates
+    // it will receive props and based on what the last ones were it will know
+    // whether to fire the play method or not
+
+    // this should be a lot nicer since these methods never have to live in this
+    // component, they will naturally fit with React better and someone can create
+    // their own wrapper that uses Redux or whatever
     this._player.play()
   }
 

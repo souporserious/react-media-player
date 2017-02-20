@@ -55,6 +55,7 @@ class MediaPlayer extends Component {
                 loop={repeatTrack}
                 autoPlay={autoPlay}
                 onEnded={this._handleEnded}
+                useAudioObject
               />
             </div>
             <div className="media-controls media-controls--full">

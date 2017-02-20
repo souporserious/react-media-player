@@ -123,6 +123,10 @@ class Vimeo extends Component {
     this.props.onVolumeChange(+volume)
   }
 
+  getCurrentTime() {
+    return this._postMessage('getCurrentTime')
+  }
+
   render() {
     return (
       <iframe

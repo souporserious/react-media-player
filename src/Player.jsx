@@ -1,132 +1,174 @@
 import React, { Component, PropTypes, createElement } from 'react'
-import contextTypes from './context-types'
+import ReactDOM, { findDOMNode } from 'react-dom'
+import screenfull from 'screenfull'
 import getVendor from './utils/get-vendor'
+
+const noop = () => null
 
 class Player extends Component {
   static propTypes = {
-    vendor: PropTypes.oneOf(['video', 'audio', 'youtube', 'vimeo']),
-    defaultCurrentTime: PropTypes.number,
-    defaultVolume: PropTypes.number,
-    defaultMuted: PropTypes.bool
+    vendor: PropTypes.oneOf(['video', 'audio', 'youtube', 'vimeo'])
   }
 
   static defaultProps = {
-    defaultCurrentTime: -1,
-    defaultVolume: 1,
-    defaultMuted: false
+    playing:            false,
+    currentTime:        0,
+    duration:           0,
+    muted:              false,
+    volume:             1,
+    playbackRate:       1,
+    autoPlay:           false,
+    loop:               false,
+    fullscreen:         false,
+
+    onReady:            noop,
+    onProgress:         noop,
+    onDuration:         noop,
+    onTimeUpdate:       noop,
+    onEnded:            noop,
+    onPlay:             noop,
+    onPause:            noop,
+    onMute:             noop,
+    onVolumeChange:     noop,
+    onFullscreenChange: noop,
+    onError:            noop,
+
+    // onFrequencyData: noop,
+    // requestAnimationFrame() => {
+    //   this._player.getCurrentTime()
+    //   this._player.getDuration()
+    //   this._player.getProgress()
+    // }
   }
 
-  static contextTypes = contextTypes
+  _lastVolumeBeforeMute = 0
 
-  _defaultsSet = false
+  componentDidMount() {
+    document.addEventListener(
+      screenfull.raw.fullscreenchange,
+      this._handleFullscreenChange
+    )
+  }
 
-  componentWillMount() {
-    this._setPlayerProps(this.props)
+  componentWillReceiveProps(nextProps) {
+    if (this.props.currentTime !== nextProps.currentTime &&
+        this._player.getCurrentTime() !== nextProps.currentTime
+    ) {
+      console.log(this.props.currentTime !== nextProps.currentTime)
+      // this._player.seekTo(nextProps.currentTime)
+    }
 
-    // we need to unset the loading state if no source was loaded
-    if (!this.props.src) {
-      this._setLoading(false)
+    if (this.props.playing !== nextProps.playing) {
+      if (nextProps.playing) {
+        this._player.play()
+      } else {
+        this._player.pause()
+      }
+    }
+
+    if (this.props.muted !== nextProps.muted) {
+      this._player.mute(nextProps.muted)
+    }
+
+    if (this.props.volume !== nextProps.volume) {
+      this._player.setVolume(nextProps.volume)
+    }
+
+    if (this.props.fullscreen !== nextProps.fullscreen) {
+      if (nextProps.fullscreen) {
+        screenfull.request(findDOMNode(this._player))
+      } else {
+        screenfull.exit()
+      }
     }
   }
 
-  componentWillUpdate(nextProps) {
-    this._setPlayerProps(nextProps)
+  // componentDidUpdate(prevProps) {
+  //   if (this.props.currentTime !== prevProps.currentTime &&
+  //       this._player.getCurrentTime() !== this.props.currentTime
+  //   ) {
+  //     this._player.seekTo(this.props.currentTime)
+  //   }
+  //
+  //   if (this.props.playing !== prevProps.playing) {
+  //     if (this.props.playing) {
+  //       this._player.play()
+  //     } else {
+  //       this._player.pause()
+  //     }
+  //   }
+  //
+  //   if (this.props.muted !== prevProps.muted) {
+  //     this._player.mute(this.props.muted)
+  //   }
+  //
+  //   if (this.props.volume !== prevProps.volume) {
+  //     this._player.setVolume(this.props.volume)
+  //   }
+  //
+  //   if (this.props.fullscreen !== prevProps.fullscreen) {
+  //     if (this.props.fullscreen) {
+  //       screenfull.request(findDOMNode(this._player))
+  //     } else {
+  //       screenfull.exit()
+  //     }
+  //   }
+  // }
 
-    // clean state if the media source has changed
-    if (this.props.src !== nextProps.src) {
-      this.context._mediaSetters.setPlayerState({
-        currentTime: 0,
-        progress: 0,
-        duration: 0,
-        isLoading: true,
-        isPlaying: false
-      })
-    }
+  componentWillUnmount() {
+    document.removeEventListener(
+      screenfull.raw.fullscreenchange,
+      this._handleFullscreenChange
+    )
   }
 
-  get instance() {
-    return this._component && this._component.instance
+  _handleFullscreenChange = (e) => {
+    this.props.onFullscreenChange(screenfull.isFullscreen, e)
   }
 
-  _setPlayer = (component) => {
-    this.context._mediaSetters.setPlayer(component)
-    this._component = component
+  _handleOnReady = (e) => {
+    if (this.props.autoPlay) {
+      this._player.play()
+    }
+
+    this.props.onReady(e)
   }
 
-  _setPlayerProps(props) {
-    this.context._mediaSetters.setPlayerProps(props)
-  }
-
-  _setDefaults() {
-    const { media } = this.context
-    const { defaultCurrentTime, defaultVolume, defaultMuted } = this.props
-
-    if (defaultCurrentTime > -1) {
-      media.seekTo(defaultCurrentTime)
-    }
-    media.setVolume(defaultVolume)
-    media.mute(defaultMuted)
-
-    this._defaultsSet = true
-  }
-
-  _setLoading = (isLoading) => {
-    this.context._mediaSetters.setPlayerState({ isLoading })
-  }
-
-  _handleOnReady = () => {
-    const { media, _mediaSetters } = this.context
-    const { autoPlay, onReady } = this.props
-
-    media.setVolume(media.volume)
-    media.mute(media.isMuted)
-
-    if (!this._defaultsSet) {
-      this._setDefaults()
+  _handleEnded = (e) => {
+    if (this.props.loop) {
+      this._player.seekTo(0)
+      this._player.play()
     }
 
-    if (autoPlay) {
-      media.play()
-    }
-
-    this._setLoading(false)
-
-    if (typeof onReady === 'function') {
-      onReady(media)
-    }
-  }
-
-  _handleOnEnded = () => {
-    const { media, _mediaSetters } = this.context
-    const { loop, onEnded } = this.props
-
-    if (loop) {
-      media.seekTo(0)
-      media.play()
-    } else {
-      _mediaSetters.setPlayerState({ isPlaying: false })
-    }
-
-    if (typeof onEnded === 'function') {
-      onEnded(media)
-    }
+    this.props.onEnded(e)
   }
 
   render() {
-    const { src, vendor: _vendor, autoPlay, onReady, onEnded, defaultCurrentTime, defaultVolume, defaultMuted, ...extraProps } = this.props
+    const {
+      src,
+      vendor: _vendor,
+      currentTime,
+      playing,
+      muted,
+      volume,
+      fullscreen,
+      loop,
+      speed,
+      onReady,
+      onEnded,
+      onFullscreenChange,
+      ...restProps
+    } = this.props
     const { vendor, component } = getVendor(src, _vendor)
 
     return (
       createElement(component, {
-        ref: this._setPlayer,
+        ref: c => this._player = c,
         src,
         vendor,
-        autoPlay,
-        isLoading: this._setLoading,
         onReady: this._handleOnReady,
-        onEnded: this._handleOnEnded,
-        extraProps,
-        ...this.context._mediaGetters.getPlayerEvents,
+        onEnded: this._handleEnded,
+        ...restProps
       })
     )
   }
