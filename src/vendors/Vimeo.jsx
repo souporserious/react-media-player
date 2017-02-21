@@ -1,140 +1,120 @@
-import React, { Component } from 'react'
-import { findDOMNode } from 'react-dom'
+import React, { Component, createElement } from 'react'
+import Player from '@vimeo/player'
 import getVimeoId from '../utils/get-vimeo-id'
+import specialAssign from '../utils/special-assign'
 import vendorPropTypes from './vendor-prop-types'
 
 class Vimeo extends Component {
   static propTypes = vendorPropTypes
 
-  _vimeoId = getVimeoId(this.props.src)
-  _origin = '*'
-
   componentDidMount() {
-    window.addEventListener('message', this._onMessage)
+    this._player = new Player(this._node, {
+      id: getVimeoId(this.props.src)
+    })
+
+    this._player.ready().then(() => {
+      this.props.onReady()
+    })
+
+    this._player.getDuration().then(duration => {
+      this.props.onDuration(duration)
+    })
+
+    this._player.getVolume().then(volume => {
+      this.props.onVolumeChange(volume)
+    })
+
+    this._setPlayerEvents()
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.src !== this.props.src) {
-      this._vimeoId = getVimeoId(nextProps.src)
+    if (this.props.src !== nextProps.src) {
+      this._player.loadVideo(getVimeoId(nextProps.src))
     }
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('message', this._onMessage)
-  }
-
-  get instance() {
-    return this._iframe
-  }
-
-  get node() {
-    return findDOMNode(this._iframe)
-  }
-
-  _onMessage = (e) => {
-    let data
-
-    // allow messages from the Vimeo player only
-    if (!(/^https?:\/\/player.vimeo.com/).test(e.origin)) {
-      return false
-    }
-
-    if (this._origin === '*') {
-      this._origin = e.origin
-    }
-
-    try {
-      data = JSON.parse(e.data)
-    } catch (err) {
-      this.props.onError(err)
-    }
-
-    switch (data.event) {
-      case 'ready':
-        this.props.onReady()
-        this._postMessages()
-        break;
-      case 'loadProgress':
-        this.props.onProgress(data.data.percent)
-        break;
-      case 'playProgress':
-        this.props.onTimeUpdate(data.data.seconds)
-        break;
-      case 'play':
-        this.props.onPlay(true)
-        break;
-      case 'pause':
-        this.props.onPause(false)
-        break;
-      case 'finish':
-        this.props.onEnded(false)
-        break;
-    }
-
-    if (data.method === 'getDuration') {
-      this.props.onDuration(data.value)
-    } else if (data.method === 'getVolume') {
-      this.setVolume(data.value)
-    }
-  }
-
-  _postMessage(method, value) {
-    const data = { method }
-
-    if (value) {
-      data.value = value
-    }
-
-    this._iframe.contentWindow.postMessage(JSON.stringify(data), this._origin)
-  }
-
-  _postMessages() {
-    ['loadProgress', 'playProgress', 'play', 'pause', 'finish'].forEach(listener =>
-      this._postMessage('addEventListener', listener)
-    )
-
-    this._postMessage('getDuration')
-    this._postMessage('getVolume')
   }
 
   play() {
-    this._postMessage('play')
+    this._player.play()
   }
 
   pause() {
-    this._postMessage('pause')
+    this._player.pause()
   }
 
   stop() {
-    this._postMessage('unload')
-  }
-
-  seekTo(currentTime) {
-    this._postMessage('seekTo', currentTime)
+    this._player.unload()
   }
 
   mute(muted) {
-    this._postMessage('setVolume', muted ? '0' : '1')
-    this.props.onMute(muted)
+    this.setVolume(muted ? 0 : 1)
   }
 
   setVolume(volume) {
-    this._postMessage('setVolume', volume)
-    this.props.onVolumeChange(+volume)
+    this._player.setVolume(volume)
   }
 
-  getCurrentTime() {
-    return this._postMessage('getCurrentTime')
+  seekTo(currentTime) {
+    this._player.setCurrentTime(currentTime)
+  }
+
+  getNode() {
+    return this._player.element
+  }
+
+  _setPlayerEvents() {
+    const playerEvents = this._getPlayerEvents()
+
+    Object.keys(playerEvents).forEach(key => {
+      this._player.on(key, playerEvents[key])
+    })
+  }
+
+  _getPlayerEvents() {
+    return {
+      play:         this._handlePlay,
+      pause:        this._handlePause,
+      ended:        this._handleEnded,
+      timeupdate:   this._handleTimeUpdate,
+      progress:     this._handleProgress,
+      volumechange: this._handleVolumeChange,
+      error:        this._handleError,
+    }
+  }
+
+  _handlePlay = (e) => {
+    this.props.onPlay(e)
+  }
+
+  _handlePause = (e) => {
+    this.props.onPause(e)
+  }
+
+  _handleEnded = (e) => {
+    this.props.onEnded(e)
+  }
+
+  _handleTimeUpdate = ({ seconds }) => {
+    this.props.onTimeUpdate(seconds)
+  }
+
+  _handleProgress = ({ percent }) => {
+    this.props.onProgress(percent)
+  }
+
+  _handleVolumeChange = ({ volume }) => {
+    this.props.onVolumeChange(volume)
+  }
+
+  _handleError = (data) => {
+    this.props.onError(data)
   }
 
   render() {
-    return (
-      <iframe
-        ref={c => this._iframe = c}
-        src={`https://player.vimeo.com/video/${this._vimeoId}?api=1`}
-        {...this.props.extraProps}
-      />
-    )
+    const props = specialAssign({
+      ref: c => this._node = c,
+    }, this.props, vendorPropTypes)
+
+    return createElement('div', props)
   }
 }
 

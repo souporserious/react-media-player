@@ -115,8 +115,9 @@ import { Media, Player, controls } from '../src/react-media-player'
 class MediaApp extends Component {
   state = {
     playing:        false,
-    currentTime:    0,
+    progress:       0,
     duration:       0,
+    currentTime:    0,
     muted:          false,
     volume:         1,
     fullscreen:     false,
@@ -124,15 +125,20 @@ class MediaApp extends Component {
     playbackRate:   1,
     useAudioObject: false,
   }
+
+  playPause = () => {
+    this.setState({ playing: !this.state.playing })
+  }
+
   render() {
-    const { playing, currentTime, duration, muted, volume, fullscreen, loop, playbackRate, useAudioObject } = this.state
+    const { playing, progress, currentTime, duration, muted, volume, fullscreen, loop, playbackRate, useAudioObject } = this.state
     return (
       <div>
         <Player
-          // src="http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4"
-          // src="http://a1083.phobos.apple.com/us/r1000/014/Music/v4/4e/44/b7/4e44b7dc-aaa2-c63b-fb38-88e1635b5b29/mzaf_1844128138535731917.plus.aac.p.m4a"
+          src="http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4"
+          src="http://a1083.phobos.apple.com/us/r1000/014/Music/v4/4e/44/b7/4e44b7dc-aaa2-c63b-fb38-88e1635b5b29/mzaf_1844128138535731917.plus.aac.p.m4a"
           src="http://www.youtube.com/embed/h3YVKTxTOgU"
-          // src="https://player.vimeo.com/video/156147818"
+          src="https://player.vimeo.com/video/156147818"
           currentTime={currentTime}
           playing={playing}
           muted={muted}
@@ -144,18 +150,24 @@ class MediaApp extends Component {
 
           onPlay={() => this.setState({ playing: true })}
           onPause={() => this.setState({ playing: false })}
-          onTimeUpdate={currentTime => this.setState({ currentTime })}
+          onProgress={progress => this.setState({ progress })}
           onDuration={duration => this.setState({ duration })}
+          onTimeUpdate={currentTime => this.setState({ currentTime })}
+          onVolumeChange={volume => this.setState({ volume })}
           onFullscreenChange={fullscreen => this.setState({ fullscreen })}
 
-          onClick={() => this.setState({ playing: !playing })}
+          onClick={this.playPause}
         />
 
         <div>
           <h3>Controls</h3>
-          <button onClick={() => this.setState({ playing: !playing })}>
+          <button onClick={this.playPause}>
             { playing ? 'Pause' : 'Play' }
           </button>
+          <progress
+            max={100}
+            value={progress * 100}
+          />
           <input
             type="range"
             step="any"
@@ -181,14 +193,6 @@ class MediaApp extends Component {
           <button onClick={() => this.setState({ loop: !loop })}>
             { loop ? 'Don\'t Loop' : 'Loop' }
           </button>
-          <label>
-            useAudioObject:
-            <input
-              type="checkbox"
-              checked={useAudioObject}
-              onChange={() => this.setState({ useAudioObject: !useAudioObject })}
-            />
-          </label>
         </div>
       </div>
     )

@@ -1,14 +1,26 @@
 import React, { Component, PropTypes, createElement } from 'react'
-import ReactDOM, { findDOMNode } from 'react-dom'
 import screenfull from 'screenfull'
+import throttle from 'lodash.throttle'
 import getVendor from './utils/get-vendor'
+import specialAssign from './utils/special-assign'
 
 const noop = () => null
 
+const checkedProps = {
+  vendor:             PropTypes.oneOf(['video', 'audio', 'youtube', 'vimeo']),
+  playing:            PropTypes.bool,
+  currentTime:        PropTypes.number,
+  duration:           PropTypes.number,
+  muted:              PropTypes.bool,
+  volume:             PropTypes.number,
+  playbackRate:       PropTypes.number,
+  autoPlay:           PropTypes.bool,
+  loop:               PropTypes.bool,
+  fullscreen:         PropTypes.bool,
+}
+
 class Player extends Component {
-  static propTypes = {
-    vendor: PropTypes.oneOf(['video', 'audio', 'youtube', 'vimeo'])
-  }
+  static propTypes = checkedProps
 
   static defaultProps = {
     playing:            false,
@@ -20,7 +32,6 @@ class Player extends Component {
     autoPlay:           false,
     loop:               false,
     fullscreen:         false,
-
     onReady:            noop,
     onProgress:         noop,
     onDuration:         noop,
@@ -28,20 +39,18 @@ class Player extends Component {
     onEnded:            noop,
     onPlay:             noop,
     onPause:            noop,
-    onMute:             noop,
     onVolumeChange:     noop,
     onFullscreenChange: noop,
     onError:            noop,
-
-    // onFrequencyData: noop,
-    // requestAnimationFrame() => {
-    //   this._player.getCurrentTime()
-    //   this._player.getDuration()
-    //   this._player.getProgress()
-    // }
   }
 
-  _lastVolumeBeforeMute = 0
+  constructor() {
+    super()
+    this._currentTime = -1
+    this._volume      = -1
+    this.seekTo       = throttle(this.seekTo.bind(this), 60)
+    this.setVolume    = throttle(this.setVolume.bind(this), 60)
+  }
 
   componentDidMount() {
     document.addEventListener(
@@ -52,10 +61,9 @@ class Player extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.currentTime !== nextProps.currentTime &&
-        this._player.getCurrentTime() !== nextProps.currentTime
+        this._currentTime !== nextProps.currentTime
     ) {
-      console.log(this.props.currentTime !== nextProps.currentTime)
-      // this._player.seekTo(nextProps.currentTime)
+      this.seekTo(nextProps.currentTime)
     }
 
     if (this.props.playing !== nextProps.playing) {
@@ -70,50 +78,24 @@ class Player extends Component {
       this._player.mute(nextProps.muted)
     }
 
-    if (this.props.volume !== nextProps.volume) {
-      this._player.setVolume(nextProps.volume)
+    if (this.props.volume !== nextProps.volume &&
+        this._volume !== nextProps.volume
+    ) {
+      this.setVolume(nextProps.volume)
     }
 
     if (this.props.fullscreen !== nextProps.fullscreen) {
       if (nextProps.fullscreen) {
-        screenfull.request(findDOMNode(this._player))
+        screenfull.request(this._player.getNode())
       } else {
         screenfull.exit()
       }
     }
   }
 
-  // componentDidUpdate(prevProps) {
-  //   if (this.props.currentTime !== prevProps.currentTime &&
-  //       this._player.getCurrentTime() !== this.props.currentTime
-  //   ) {
-  //     this._player.seekTo(this.props.currentTime)
-  //   }
-  //
-  //   if (this.props.playing !== prevProps.playing) {
-  //     if (this.props.playing) {
-  //       this._player.play()
-  //     } else {
-  //       this._player.pause()
-  //     }
-  //   }
-  //
-  //   if (this.props.muted !== prevProps.muted) {
-  //     this._player.mute(this.props.muted)
-  //   }
-  //
-  //   if (this.props.volume !== prevProps.volume) {
-  //     this._player.setVolume(this.props.volume)
-  //   }
-  //
-  //   if (this.props.fullscreen !== prevProps.fullscreen) {
-  //     if (this.props.fullscreen) {
-  //       screenfull.request(findDOMNode(this._player))
-  //     } else {
-  //       screenfull.exit()
-  //     }
-  //   }
-  // }
+  shouldComponentUpdate(nextProps) {
+    return this.props.src !== nextProps.src
+  }
 
   componentWillUnmount() {
     document.removeEventListener(
@@ -122,16 +104,33 @@ class Player extends Component {
     )
   }
 
+  seekTo(currentTime) {
+    this._player.seekTo(currentTime)
+  }
+
+  setVolume(volume) {
+    this._player.setVolume(volume)
+  }
+
   _handleFullscreenChange = (e) => {
     this.props.onFullscreenChange(screenfull.isFullscreen, e)
   }
 
-  _handleOnReady = (e) => {
+  _handleReady = (e) => {
     if (this.props.autoPlay) {
       this._player.play()
     }
-
     this.props.onReady(e)
+  }
+
+  _handleTimeUpdate = (currentTime) => {
+    this._currentTime = currentTime
+    this.props.onTimeUpdate(currentTime)
+  }
+
+  _handleVolumeChange = (volume) => {
+    this._volume = volume
+    this.props.onVolumeChange(volume)
   }
 
   _handleEnded = (e) => {
@@ -139,38 +138,25 @@ class Player extends Component {
       this._player.seekTo(0)
       this._player.play()
     }
-
     this.props.onEnded(e)
   }
 
   render() {
-    const {
+    const { src } = this.props
+    const { vendor, component } = getVendor(src, this.props.vendor)
+    const props = specialAssign({
+      ref: c => this._player = c,
       src,
-      vendor: _vendor,
-      currentTime,
-      playing,
-      muted,
-      volume,
-      fullscreen,
-      loop,
-      speed,
-      onReady,
-      onEnded,
-      onFullscreenChange,
-      ...restProps
-    } = this.props
-    const { vendor, component } = getVendor(src, _vendor)
+      vendor,
+    }, this.props, checkedProps)
 
-    return (
-      createElement(component, {
-        ref: c => this._player = c,
-        src,
-        vendor,
-        onReady: this._handleOnReady,
-        onEnded: this._handleEnded,
-        ...restProps
-      })
-    )
+    return createElement(component, {
+      ...props,
+      onReady:        this._handleReady,
+      onTimeUpdate:   this._handleTimeUpdate,
+      onVolumeChange: this._handleVolumeChange,
+      onEnded:        this._handleEnded,
+    })
   }
 }
 

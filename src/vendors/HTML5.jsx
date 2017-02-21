@@ -1,6 +1,7 @@
-import React, { Component, PropTypes, createElement } from 'react'
+import React, { Component, createElement } from 'react'
 import { findDOMNode } from 'react-dom'
 import vendorPropTypes from './vendor-prop-types'
+import specialAssign from '../utils/special-assign'
 
 class HTML5 extends Component {
   static propTypes = vendorPropTypes
@@ -30,8 +31,8 @@ class HTML5 extends Component {
     this._player.volume = volume
   }
 
-  getCurrentTime() {
-    return this._player.currentTime
+  getNode() {
+    return findDOMNode(this._player)
   }
 
   _handleCanPlay = (e) => {
@@ -77,32 +78,22 @@ class HTML5 extends Component {
   }
 
   render() {
-    const {
-      vendor,
-      currentTime,
-      duration,
-      playbackRate,
-      onMute,
-      onDuration,
-      onReady,
-      ...restProps
-    } = this.props
-
-    return createElement(vendor, {
-      ref: c => this._player = c,
-      ...restProps,
+    const props = specialAssign({
+      ref:              c => this._player = c,
+      src:              this.props.src,
+      loop:             this.props.loop,
       onCanPlay:        this._handleCanPlay,
       onPlay:           this._handlePlay,
-      onPlaying:        this._isNotLoading,
       onPause:          this._handlePause,
       onEnded:          this._handleEnded,
-      onWaiting:        this._isLoading,
       onError:          this._handleError,
       onProgress:       this._handleProgress,
       onLoadedMetadata: this._handleDuration,
       onTimeUpdate:     this._handleTimeUpdate,
       onVolumeChange:   this._handleVolumeChange
-    })
+    }, this.props, vendorPropTypes)
+
+    return createElement(this.props.vendor, props)
   }
 }
 

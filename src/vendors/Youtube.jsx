@@ -1,6 +1,7 @@
-import React, { Component } from 'react'
+import React, { Component, createElement } from 'react'
 import YoutubeAPILoader from '../utils/youtube-api-loader'
 import getYoutubeId from '../utils/get-youtube-id'
+import specialAssign from '../utils/special-assign'
 import vendorPropTypes from './vendor-prop-types'
 
 class Youtube extends Component {
@@ -50,11 +51,11 @@ class Youtube extends Component {
     }
   }
 
-  get instance() {
+  getInstance() {
     return this._player
   }
 
-  get node() {
+  getNode() {
     return this._player.getIframe()
   }
 
@@ -143,16 +144,11 @@ class Youtube extends Component {
     } else {
       this._player.unMute()
     }
-    this.props.onMute(muted)
   }
 
   setVolume(volume) {
     this._player.setVolume(+volume * 100)
     this.props.onVolumeChange(+volume)
-  }
-
-  getCurrentTime() {
-    return this._player.getCurrentTime()
   }
 
   _handleProgress = () => {
@@ -170,7 +166,7 @@ class Youtube extends Component {
   _handleTimeUpdate = () => {
     if (!this._isMounted) return
 
-    this.props.onTimeUpdate(this.getCurrentTime() || 0)
+    this.props.onTimeUpdate(this._player.getCurrentTime() || 0)
 
     if (this._timeUpdateId) {
       this._timeUpdateId = requestAnimationFrame(this._handleTimeUpdate)
@@ -178,12 +174,11 @@ class Youtube extends Component {
   }
 
   render() {
-    return (
-      <div
-        ref={c => this._node = c}
-        {...this.props.extraProps}
-      />
-    )
+    const props = specialAssign({
+      ref: c => this._node = c,
+    }, this.props, vendorPropTypes)
+
+    return createElement('div', props)
   }
 }
 
