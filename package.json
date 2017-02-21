@@ -66,6 +66,7 @@
   "dependencies": {
     "@vimeo/player": "^2.0.1",
     "lodash.throttle": "^4.1.1",
-    "screenfull": "^3.0.2"
+    "screenfull": "^3.0.2",
+    "yt-player": "^1.2.0"
   }
 }
