@@ -35,6 +35,10 @@ class HTML5 extends Component {
     this._player.playbackRate = rate
   }
 
+  setLoop(loop) {
+    this._player.loop = loop
+  }
+
   getNode() {
     return findDOMNode(this._player)
   }
@@ -85,7 +89,6 @@ class HTML5 extends Component {
     const props = specialAssign({
       ref:              c => this._player = c,
       src:              this.props.src,
-      loop:             this.props.loop,
       onCanPlay:        this._handleCanPlay,
       onPlay:           this._handlePlay,
       onPause:          this._handlePause,

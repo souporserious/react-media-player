@@ -57,6 +57,10 @@ class Vimeo extends Component {
     this._player.setVolume(volume)
   }
 
+  setLoop(loop) {
+    this._player.setLoop(loop)
+  }
+
   getNode() {
     return this._player.element
   }

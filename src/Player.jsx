@@ -57,14 +57,6 @@ class Player extends Component {
       screenfull.raw.fullscreenchange,
       this._handleFullscreenChange
     )
-
-    if (this.props.currentTime !== 0) {
-      this.seekTo(this.props.currentTime)
-    }
-
-    if (this._player.setPlaybackRate) {
-      this._player.setPlaybackRate(this.props.playbackRate)
-    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -94,6 +86,10 @@ class Player extends Component {
 
     if (this.props.playbackRate !== nextProps.playbackRate) {
       this._player.setPlaybackRate(nextProps.playbackRate)
+    }
+
+    if (this.props.loop !== nextProps.loop) {
+      this._player.setLoop(nextProps.loop)
     }
 
     if (this.props.fullscreen !== nextProps.fullscreen) {
@@ -132,6 +128,15 @@ class Player extends Component {
     if (this.props.autoPlay) {
       this._player.play()
     }
+
+    if (this.props.currentTime !== 0) {
+      this.seekTo(this.props.currentTime)
+    }
+
+    if (this._player.setPlaybackRate) {
+      this._player.setPlaybackRate(this.props.playbackRate)
+    }
+
     this.props.onReady(e)
   }
 
@@ -143,14 +148,6 @@ class Player extends Component {
   _handleVolumeChange = (volume) => {
     this._volume = volume
     this.props.onVolumeChange(volume)
-  }
-
-  _handleEnded = (e) => {
-    if (this.props.loop) {
-      this._player.seekTo(0)
-      this._player.play()
-    }
-    this.props.onEnded(e)
   }
 
   render() {
@@ -167,7 +164,6 @@ class Player extends Component {
       onReady:        this._handleReady,
       onTimeUpdate:   this._handleTimeUpdate,
       onVolumeChange: this._handleVolumeChange,
-      onEnded:        this._handleEnded,
     })
   }
 }

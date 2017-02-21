@@ -3,6 +3,7 @@ import { PropTypes } from 'react'
 export default {
   vendor:             PropTypes.string,
   src:                PropTypes.string,
+  loop:               PropTypes.bool,
   onReady:            PropTypes.func,
   onPlay:             PropTypes.func,
   onPause:            PropTypes.func,

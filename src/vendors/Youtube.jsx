@@ -83,7 +83,7 @@ class Youtube extends Component {
         this.props.onReady()
       },
       onStateChange: ({ data }) => {
-        const { PLAYING, PAUSED, ENDED, BUFFERING, CUED } = window.YT.PlayerState
+        const { PLAYING, PAUSED, ENDED, BUFFERING, CUED } = YT.PlayerState
         const isPlaying = (data === PLAYING)
 
         if (isPlaying) {
@@ -99,11 +99,15 @@ class Youtube extends Component {
         }
 
         if (data === PAUSED) {
-          this.props.onPause(false)
+          this.props.onPause()
         }
 
         if (data === ENDED) {
-          this.props.onEnded(false)
+          this.props.onEnded()
+
+          if (this._loop) {
+            this.play()
+          }
         }
 
         // start fetching progress when playing or buffering
@@ -153,6 +157,10 @@ class Youtube extends Component {
 
   setPlaybackRate(rate) {
     this._player.setPlaybackRate(rate)
+  }
+
+  setLoop(loop) {
+    this._loop = loop
   }
 
   _handleProgress = () => {
