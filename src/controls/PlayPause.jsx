@@ -3,11 +3,12 @@ import withMediaProps from '../decorators/with-media-props'
 
 class PlayPause extends Component {
   shouldComponentUpdate({ media }) {
-    return this.props.media.isPlaying !== media.isPlaying
+    return this.props.media.playing !== media.playing
   }
 
   _handlePlayPause = () => {
-    this.props.media.playPause()
+    const { media } = this.props
+    media.setPlaying(!media.playing)
   }
 
   render() {
@@ -19,7 +20,10 @@ class PlayPause extends Component {
         style={style}
         onClick={this._handlePlayPause}
       >
-        { children || media.isPlaying ? 'Pause' : 'Play' }
+        { typeof children === 'function'
+            ? children(media)
+            : media.playing ? 'Pause' : 'Play'
+        }
       </button>
     )
   }

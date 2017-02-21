@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import withMediaProps from '../decorators/with-media-props'
 
-class Progress extends Component {
+class Buffered extends Component {
   shouldComponentUpdate({ media }) {
     return this.props.media.progress !== media.progress
   }
@@ -12,6 +12,7 @@ class Progress extends Component {
       <progress
         className={className}
         style={style}
+        min={0}
         max={100}
         value={media.progress * 100}
       />
@@ -19,4 +20,4 @@ class Progress extends Component {
   }
 }
 
-export default withMediaProps(Progress)
+export default withMediaProps(Buffered)

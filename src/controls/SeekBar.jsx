@@ -11,25 +11,25 @@ class SeekBar extends Component {
   }
 
   _handleMouseDown = () => {
-    this._isPlayingOnMouseDown = this.props.media.isPlaying
-    this.props.media.pause()
+    this._isPlayingOnMouseDown = this.props.media.playing
+    this.props.media.setPlaying(false)
   }
 
   _handleMouseUp = ({ target: { value } }) => {
     // seek on mouseUp as well because of this bug in <= IE11
     // https://github.com/facebook/react/issues/554
     if (!this._onChangeUsed) {
-      this.props.media.seekTo(+value)
+      this.props.media.setCurrentTime(+value)
     }
 
     // only play if media was playing prior to mouseDown
     if (this._isPlayingOnMouseDown) {
-      this.props.media.play()
+      this.props.media.setPlaying(true)
     }
   }
 
   _handleChange = ({ target: { value } }) => {
-    this.props.media.seekTo(+value)
+    this.props.media.setCurrentTime(+value)
     this._onChangeUsed = true
   }
 

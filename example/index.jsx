@@ -6,7 +6,7 @@ import ReactDOM from 'react-dom'
 // import CirclePlayer from './CirclePlayer'
 //
 import { Media, Player, controls } from '../src/react-media-player'
-// const { PlayPause } = controls
+const { PlayPause, CurrentTime, Played, Buffered, SeekBar, Duration, MuteUnmute, Volume, Fullscreen } = controls
 //
 // import './main.scss'
 //
@@ -133,7 +133,8 @@ class MediaApp extends Component {
   render() {
     const { playing, progress, currentTime, duration, muted, volume, fullscreen, loop, playbackRate, useAudioObject } = this.state
     return (
-      <div>
+      <Media>
+        <PlayPause/>
         <Player
           src="http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4"
           src="http://a1083.phobos.apple.com/us/r1000/014/Music/v4/4e/44/b7/4e44b7dc-aaa2-c63b-fb38-88e1635b5b29/mzaf_1844128138535731917.plus.aac.p.m4a"
@@ -163,18 +164,28 @@ class MediaApp extends Component {
           <button onClick={this.playPause}>
             { playing ? 'Pause' : 'Play' }
           </button>
-          <progress
-            max={100}
-            value={progress * 100}
-          />
-          <input
-            type="range"
-            step="any"
-            min={0}
-            max={duration}
-            value={currentTime}
-            onChange={e => this.setState({ currentTime: +e.target.value })}
-          />
+          <div className="player-progress">
+            <input
+              type="range"
+              step="any"
+              min={0}
+              max={duration}
+              value={currentTime}
+              onChange={e => this.setState({ currentTime: +e.target.value })}
+              className="player-seek"
+            />
+            <progress
+              max={duration}
+              value={currentTime}
+              role="presentation"
+              className="player-played"
+            />
+            <progress
+              max={100}
+              value={progress * 100}
+              className="player-buffer"
+            />
+          </div>
           <button onClick={() => this.setState({ muted: !muted })}>
             { muted ? 'Unmute' : 'Mute' }
           </button>
@@ -193,23 +204,35 @@ class MediaApp extends Component {
             { loop ? 'Don\'t Loop' : 'Loop' }
           </button>
         </div>
-      </div>
+      </Media>
     )
   }
 }
 
-// <MediaPlayer> // your component
-//   <Media>
-//     <Player/>
-//     <div>
-//       <PlayPause/>
-//     </div>
-//   </Media>
-// </MediaPlayer>
-// need a way or methodology to add our own vendor
-// maybe provide a HoC that calls certain methods that hook into Media component?
-// something like
-// this._player.play()
-// <ComposedPlayer ref={c = this._player = c} {...this.props}/>
+class MediaPlayer extends Component {
+  render() {
+    return (
+      <Media>
+        <Player
+          // src="http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4"
+          // src="http://a1083.phobos.apple.com/us/r1000/014/Music/v4/4e/44/b7/4e44b7dc-aaa2-c63b-fb38-88e1635b5b29/mzaf_1844128138535731917.plus.aac.p.m4a"
+          // src="https://player.vimeo.com/video/156147818"
+          src="http://www.youtube.com/embed/h3YVKTxTOgU"
+        />
+        <div>
+          <PlayPause/>
+          <CurrentTime/>
+          <Buffered/>
+          <Played/>
+          <SeekBar/>
+          <Duration/>
+          <MuteUnmute/>
+          <Volume/>
+          <Fullscreen/>
+        </div>
+      </Media>
+    )
+  }
+}
 
-ReactDOM.render(<MediaApp/>, document.getElementById('app'))
+ReactDOM.render(<MediaPlayer/>, document.getElementById('app'))

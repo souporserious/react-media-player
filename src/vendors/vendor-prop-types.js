@@ -10,6 +10,7 @@ export default {
   onProgress:         PropTypes.func,
   onDuration:         PropTypes.func,
   onTimeUpdate:       PropTypes.func,
+  onMute:             PropTypes.func,
   onVolumeChange:     PropTypes.func,
   onFullscreenChange: PropTypes.func
 }

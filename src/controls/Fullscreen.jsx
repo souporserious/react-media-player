@@ -3,15 +3,16 @@ import withMediaProps from '../decorators/with-media-props'
 
 class Fullscreen extends Component {
   shouldComponentUpdate({ media }) {
-    return this.props.media.isFullscreen !== media.isFullscreen
+    return this.props.media.fullscreen !== media.fullscreen
   }
 
   _handleFullscreen = () => {
-    this.props.media.fullscreen()
+    const { media } = this.props
+    media.setFullscreen(!media.fullscreen)
   }
 
   render() {
-    const { className, style, media } = this.props
+    const { className, style, media, children } = this.props
     return (
       <button
         type="button"
@@ -19,7 +20,10 @@ class Fullscreen extends Component {
         style={style}
         onClick={this._handleFullscreen}
       >
-        { media.isFullscreen ? 'Exit Fullscreen' : 'Fullscreen' }
+        { typeof children === 'function'
+            ? children(media)
+            : media.fullscreen ? 'Exit Fullscreen' : 'Fullscreen'
+        }
       </button>
     )
   }

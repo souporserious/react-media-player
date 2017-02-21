@@ -7,6 +7,8 @@ import vendorPropTypes from './vendor-prop-types'
 class Vimeo extends Component {
   static propTypes = vendorPropTypes
 
+  _lastVolume = 1
+
   componentDidMount() {
     this._player = new Player(this._node, {
       id: getVimeoId(this.props.src)
@@ -50,7 +52,15 @@ class Vimeo extends Component {
   }
 
   mute(muted) {
-    this.setVolume(muted ? 0 : 1)
+    this._player.getVolume().then(volume => {
+      this.setVolume(muted ? 0 : this._lastVolume)
+
+      this.props.onMute(muted)
+
+      if (volume !== 0) {
+        this._lastVolume = volume
+      }
+    })
   }
 
   setVolume(volume) {

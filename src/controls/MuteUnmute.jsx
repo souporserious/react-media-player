@@ -3,15 +3,16 @@ import withMediaProps from '../decorators/with-media-props'
 
 class MuteUnmute extends Component {
   shouldComponentUpdate({ media }) {
-    return this.props.media.isMuted !== media.isMuted
+    return this.props.media.muted !== media.muted
   }
 
   _handleMuteUnmute = () => {
-    this.props.media.muteUnmute()
+    const { media } = this.props
+    media.setMuted(!media.muted)
   }
 
   render() {
-    const { className, style, media } = this.props
+    const { className, style, media, children } = this.props
     return (
       <button
         type="button"
@@ -19,7 +20,10 @@ class MuteUnmute extends Component {
         style={style}
         onClick={this._handleMuteUnmute}
       >
-        { media.isMuted ? 'Unmute' : 'Mute' }
+        { typeof children === 'function'
+            ? children(media)
+            : media.muted ? 'Unmute' : 'Mute'
+        }
       </button>
     )
   }

@@ -854,7 +854,7 @@ babel-register@^6.18.0:
     mkdirp "^0.5.1"
     source-map-support "^0.4.2"
 
-babel-runtime@^6.0.0, babel-runtime@^6.11.6, babel-runtime@^6.22.0, babel-runtime@^6.9.0, babel-runtime@^6.9.1:
+babel-runtime@^6.0.0, babel-runtime@^6.11.6, babel-runtime@^6.9.0, babel-runtime@^6.9.1:
   version "6.23.0"
   resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-6.23.0.tgz#0a9489f144de70efb3ce4300accdb329e2fc543b"
   dependencies:
@@ -2363,9 +2363,9 @@ load-json-file@^1.0.0:
     pinkie-promise "^2.0.0"
     strip-bom "^2.0.0"
 
-load-script@^1.0.0:
+load-script2@^1.0.0:
   version "1.0.0"
-  resolved "https://registry.yarnpkg.com/load-script/-/load-script-1.0.0.tgz#0491939e0bee5643ee494a7e3da3d2bac70c6ca4"
+  resolved "https://registry.yarnpkg.com/load-script2/-/load-script2-1.0.0.tgz#ef95c7dae7f4cc7efde2821a9bd2382110a7f24a"
 
 loader-utils@^0.2.11, loader-utils@^0.2.15, loader-utils@^0.2.7, loader-utils@~0.2.2:
   version "0.2.16"
@@ -2421,7 +2421,7 @@ lodash.words@^3.0.0:
   dependencies:
     lodash._root "^3.0.0"
 
-lodash@^4.0.0, lodash@^4.14.0, lodash@^4.14.2, lodash@^4.16.2, lodash@^4.2.0, lodash@^4.3.0, lodash@~4.16.4:
+lodash@^4.0.0, lodash@^4.14.0, lodash@^4.14.2, lodash@^4.16.2, lodash@^4.2.0, lodash@~4.16.4:
   version "4.16.4"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.16.4.tgz#01ce306b9bad1319f2a5528674f88297aeb70127"
 
@@ -3630,10 +3630,6 @@ signal-exit@^3.0.0:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.1.tgz#5a4c884992b63a7acd9badb7894c3ee9cfccad81"
 
-sister@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/sister/-/sister-3.0.0.tgz#88eb57047cb283da1e070b1a7cae8212f3bcb2db"
-
 slash@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/slash/-/slash-1.0.0.tgz#c41f2f6c39fc16d1cd17ad4b5d896114ae470d55"
@@ -3837,10 +3833,6 @@ tar@^2.0.0, tar@~2.2.1:
     block-stream "*"
     fstream "^1.0.2"
     inherits "2"
-
-thunky@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/thunky/-/thunky-1.0.2.tgz#a862e018e3fb1ea2ec3fce5d55605cf57f247371"
 
 timers-browserify@^1.0.1:
   version "1.4.2"
@@ -4180,18 +4172,8 @@ yargs@~3.10.0:
     decamelize "^1.0.0"
     window-size "0.1.0"
 
-youtube-player@^4.2.2:
-  version "4.2.2"
-  resolved "https://registry.yarnpkg.com/youtube-player/-/youtube-player-4.2.2.tgz#131e8d2627feaedd05527468c37ecbb8d89adb6f"
+yt-player@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/yt-player/-/yt-player-1.2.0.tgz#b91a3ca14a84c49abccfbbea667ecdeb05f9d59e"
   dependencies:
-    babel-runtime "^6.22.0"
-    load-script "^1.0.0"
-    lodash "^4.3.0"
-    sister "^3.0.0"
-
-yt-player@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/yt-player/-/yt-player-1.1.1.tgz#edf51bcf9539686d3978f878086d7908f021ef09"
-  dependencies:
-    load-script "^1.0.0"
-    thunky "^1.0.2"
+    load-script2 "^1.0.0"

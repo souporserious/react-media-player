@@ -25,6 +25,7 @@ class HTML5 extends Component {
 
   mute(muted) {
     this._player.muted = muted
+    this.props.onMute(muted)
   }
 
   setVolume(volume) {
