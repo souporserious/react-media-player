@@ -58,6 +58,10 @@ class Player extends Component {
       this._handleFullscreenChange
     )
 
+    if (this.props.currentTime !== 0) {
+      this.seekTo(this.props.currentTime)
+    }
+
     if (this._player.setPlaybackRate) {
       this._player.setPlaybackRate(this.props.playbackRate)
     }
