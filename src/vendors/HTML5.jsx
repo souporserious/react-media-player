@@ -31,6 +31,10 @@ class HTML5 extends Component {
     this._player.volume = volume
   }
 
+  setPlaybackRate(rate) {
+    this._player.playbackRate = rate
+  }
+
   getNode() {
     return findDOMNode(this._player)
   }

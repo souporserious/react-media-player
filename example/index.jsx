@@ -122,7 +122,7 @@ class MediaApp extends Component {
     volume:         1,
     fullscreen:     false,
     loop:           false,
-    playbackRate:   1,
+    playbackRate:   0.5,
     useAudioObject: false,
   }
 
@@ -136,9 +136,9 @@ class MediaApp extends Component {
       <div>
         <Player
           src="http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4"
-          src="http://a1083.phobos.apple.com/us/r1000/014/Music/v4/4e/44/b7/4e44b7dc-aaa2-c63b-fb38-88e1635b5b29/mzaf_1844128138535731917.plus.aac.p.m4a"
-          src="http://www.youtube.com/embed/h3YVKTxTOgU"
-          src="https://player.vimeo.com/video/156147818"
+          // src="http://a1083.phobos.apple.com/us/r1000/014/Music/v4/4e/44/b7/4e44b7dc-aaa2-c63b-fb38-88e1635b5b29/mzaf_1844128138535731917.plus.aac.p.m4a"
+          // src="http://www.youtube.com/embed/h3YVKTxTOgU"
+          // src="https://player.vimeo.com/video/156147818"
           currentTime={currentTime}
           playing={playing}
           muted={muted}

@@ -7,16 +7,16 @@ import specialAssign from './utils/special-assign'
 const noop = () => null
 
 const checkedProps = {
-  vendor:             PropTypes.oneOf(['video', 'audio', 'youtube', 'vimeo']),
-  playing:            PropTypes.bool,
-  currentTime:        PropTypes.number,
-  duration:           PropTypes.number,
-  muted:              PropTypes.bool,
-  volume:             PropTypes.number,
-  playbackRate:       PropTypes.number,
-  autoPlay:           PropTypes.bool,
-  loop:               PropTypes.bool,
-  fullscreen:         PropTypes.bool,
+  vendor:       PropTypes.oneOf(['video', 'audio', 'youtube', 'vimeo']),
+  playing:      PropTypes.bool,
+  currentTime:  PropTypes.number,
+  duration:     PropTypes.number,
+  muted:        PropTypes.bool,
+  volume:       PropTypes.number,
+  playbackRate: PropTypes.number,
+  autoPlay:     PropTypes.bool,
+  loop:         PropTypes.bool,
+  fullscreen:   PropTypes.bool,
 }
 
 class Player extends Component {
@@ -57,6 +57,10 @@ class Player extends Component {
       screenfull.raw.fullscreenchange,
       this._handleFullscreenChange
     )
+
+    if (this._player.setPlaybackRate) {
+      this._player.setPlaybackRate(this.props.playbackRate)
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -82,6 +86,10 @@ class Player extends Component {
         this._volume !== nextProps.volume
     ) {
       this.setVolume(nextProps.volume)
+    }
+
+    if (this.props.playbackRate !== nextProps.playbackRate) {
+      this._player.setPlaybackRate(nextProps.playbackRate)
     }
 
     if (this.props.fullscreen !== nextProps.fullscreen) {

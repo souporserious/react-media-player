@@ -151,6 +151,10 @@ class Youtube extends Component {
     this.props.onVolumeChange(+volume)
   }
 
+  setPlaybackRate(rate) {
+    this._player.setPlaybackRate(rate)
+  }
+
   _handleProgress = () => {
     if (!this._isMounted) return
 

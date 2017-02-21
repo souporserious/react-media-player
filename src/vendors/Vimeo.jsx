@@ -45,16 +45,16 @@ class Vimeo extends Component {
     this._player.unload()
   }
 
+  seekTo(currentTime) {
+    this._player.setCurrentTime(currentTime)
+  }
+
   mute(muted) {
     this.setVolume(muted ? 0 : 1)
   }
 
   setVolume(volume) {
     this._player.setVolume(volume)
-  }
-
-  seekTo(currentTime) {
-    this._player.setCurrentTime(currentTime)
   }
 
   getNode() {
