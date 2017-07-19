@@ -1,4 +1,7 @@
 ## CHANGELOG
+### 0.6.2
+Migrate from React.PropTypes to prop-types package [#35](https://github.com/souporserious/react-media-player/pull/35)
+
 ### 0.6.1
 Fix `fullscreen` for Youtube videos
 
