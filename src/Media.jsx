@@ -1,4 +1,5 @@
-import React, { Component, PropTypes, Children } from 'react'
+import React, { Component, Children } from 'react'
+import PropTypes from 'prop-types';
 import ReactDOM, { findDOMNode } from 'react-dom'
 import contextTypes from './context-types'
 import requestFullscreen from './utils/request-fullscreen'

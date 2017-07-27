@@ -1,4 +1,5 @@
-import React, { Component, PropTypes, createElement } from 'react'
+import React, { Component, createElement } from 'react'
+import PropTypes from 'prop-types'
 import contextTypes from './context-types'
 import getVendor from './utils/get-vendor'
 
