@@ -1,4 +1,7 @@
 ## CHANGELOG
+### 0.6.3
+Update ALL imports of PropTypes [#37](https://github.com/souporserious/react-media-player/pull/37)
+
 ### 0.6.2
 Migrate from React.PropTypes to prop-types package [#35](https://github.com/souporserious/react-media-player/pull/35)
 
