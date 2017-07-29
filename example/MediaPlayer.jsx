@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { Media, Player, controls, utils } from '../src/react-media-player'
 import PlayPause from './PlayPause'
 import MuteUnmute from './MuteUnmute'

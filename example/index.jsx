@@ -1,5 +1,6 @@
-import React, { Component, PropTypes, createElement } from 'react'
+import React, { Component, createElement } from 'react'
 import ReactDOM from 'react-dom'
+import PropTypes from 'prop-types'
 import MediaPlayer from './MediaPlayer'
 import VideoPlayer from './VideoPlayer'
 import AudioPlayer from './AudioPlayer'
