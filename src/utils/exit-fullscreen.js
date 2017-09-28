@@ -3,9 +3,7 @@ export default (() => {
     'exitFullscreen',
     'mozCancelFullScreen',
     'msExitFullscreen',
-    'webkitExitFullscreen'
+    'webkitExitFullscreen',
   ]
-  return names.reduce((prev, curr) =>
-    document[curr] ? curr : prev
-  )
+  return names.reduce((prev, curr) => (document[curr] ? curr : prev))
 })()

@@ -20,7 +20,7 @@ class MuteUnmute extends Component {
         style={style}
         onClick={this._handleMuteUnmute}
       >
-        { media.isMuted ? 'Unmute' : 'Mute' }
+        {media.isMuted ? 'Unmute' : 'Mute'}
       </button>
     )
   }

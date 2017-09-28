@@ -3,9 +3,9 @@ export default (() => {
     'requestFullscreen',
     'mozRequestFullScreen',
     'msRequestFullscreen',
-    'webkitRequestFullscreen'
+    'webkitRequestFullscreen',
   ]
-  return names.reduce((prev, curr) =>
-    document.documentElement[curr] ? curr : prev
+  return names.reduce(
+    (prev, curr) => (document.documentElement[curr] ? curr : prev)
   )
 })()

@@ -8,12 +8,7 @@ export default function withMediaProps(MediaComponent) {
     static contextTypes = contextTypes
 
     render() {
-      return (
-        <MediaComponent
-          {...this.props}
-          media={this.context.media}
-        />
-      )
+      return <MediaComponent {...this.props} media={this.context.media} />
     }
   }
 }

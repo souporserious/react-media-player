@@ -1,6 +1,6 @@
 export default function formatTime(current) {
   let h = Math.floor(current / 3600)
-  let m = Math.floor((current - (h * 3600)) / 60)
+  let m = Math.floor((current - h * 3600) / 60)
   let s = Math.floor(current % 60)
 
   if (s < 10) {

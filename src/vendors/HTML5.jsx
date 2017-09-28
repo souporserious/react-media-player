@@ -6,7 +6,7 @@ import vendorPropTypes from './vendor-prop-types'
 class HTML5 extends Component {
   static propTypes = {
     ...vendorPropTypes,
-    useAudioObject: PropTypes.bool
+    useAudioObject: PropTypes.bool,
   }
 
   componentWillMount() {
@@ -85,7 +85,7 @@ class HTML5 extends Component {
       onProgress: this._handleProgress,
       onLoadedMetadata: this._handleDuration,
       onTimeUpdate: this._handleTimeUpdate,
-      onVolumeChange: this._handleVolumeChange
+      onVolumeChange: this._handleVolumeChange,
     }
   }
 
@@ -114,7 +114,7 @@ class HTML5 extends Component {
     this.props.onEnded(false)
   }
 
-  _handleError = (e) => {
+  _handleError = e => {
     this.props.onError(e)
     this._isNotLoading()
   }
@@ -123,13 +123,13 @@ class HTML5 extends Component {
     let progress = 0
 
     if (duration > 0) {
-      progress = (buffered.end(buffered.length - 1) / duration)
+      progress = buffered.end(buffered.length - 1) / duration
     }
 
     this.props.onProgress(progress)
   }
 
-  _handleDuration = ({ target: { duration }}) => {
+  _handleDuration = ({ target: { duration } }) => {
     this.props.onDuration(duration)
   }
 
@@ -170,10 +170,10 @@ class HTML5 extends Component {
 
     if (!useAudioObject) {
       return createElement(vendor, {
-        ref: c => this._player = c,
+        ref: c => (this._player = c),
         src,
         ...extraProps,
-        ...this._playerEvents
+        ...this._playerEvents,
       })
     } else {
       return null

@@ -8,13 +8,13 @@ class Player extends Component {
     vendor: PropTypes.oneOf(['video', 'audio', 'youtube', 'vimeo']),
     defaultCurrentTime: PropTypes.number,
     defaultVolume: PropTypes.number,
-    defaultMuted: PropTypes.bool
+    defaultMuted: PropTypes.bool,
   }
 
   static defaultProps = {
     defaultCurrentTime: -1,
     defaultVolume: 1,
-    defaultMuted: false
+    defaultMuted: false,
   }
 
   static contextTypes = contextTypes
@@ -40,7 +40,7 @@ class Player extends Component {
         progress: 0,
         duration: 0,
         isLoading: true,
-        isPlaying: false
+        isPlaying: false,
       })
     }
   }
@@ -49,7 +49,7 @@ class Player extends Component {
     return this._component && this._component.instance
   }
 
-  _setPlayer = (component) => {
+  _setPlayer = component => {
     this.context._mediaSetters.setPlayer(component)
     this._component = component
   }
@@ -71,7 +71,7 @@ class Player extends Component {
     this._defaultsSet = true
   }
 
-  _setLoading = (isLoading) => {
+  _setLoading = isLoading => {
     this.context._mediaSetters.setPlayerState({ isLoading })
   }
 
@@ -114,22 +114,30 @@ class Player extends Component {
   }
 
   render() {
-    const { src, vendor: _vendor, autoPlay, onReady, onEnded, defaultCurrentTime, defaultVolume, defaultMuted, ...extraProps } = this.props
+    const {
+      src,
+      vendor: _vendor,
+      autoPlay,
+      onReady,
+      onEnded,
+      defaultCurrentTime,
+      defaultVolume,
+      defaultMuted,
+      ...extraProps
+    } = this.props
     const { vendor, component } = getVendor(src, _vendor)
 
-    return (
-      createElement(component, {
-        ref: this._setPlayer,
-        src,
-        vendor,
-        autoPlay,
-        isLoading: this._setLoading,
-        onReady: this._handleOnReady,
-        onEnded: this._handleOnEnded,
-        extraProps,
-        ...this.context._mediaGetters.getPlayerEvents,
-      })
-    )
+    return createElement(component, {
+      ref: this._setPlayer,
+      src,
+      vendor,
+      autoPlay,
+      isLoading: this._setLoading,
+      onReady: this._handleOnReady,
+      onEnded: this._handleOnEnded,
+      extraProps,
+      ...this.context._mediaGetters.getPlayerEvents,
+    })
   }
 }
 

@@ -7,8 +7,10 @@ class SeekBar extends Component {
   _onChangeUsed = false
 
   shouldComponentUpdate({ media }) {
-    return this.props.media.currentTime !== media.currentTime ||
-           this.props.media.duration !== media.duration
+    return (
+      this.props.media.currentTime !== media.currentTime ||
+      this.props.media.duration !== media.duration
+    )
   }
 
   _handleMouseDown = () => {
@@ -41,15 +43,15 @@ class SeekBar extends Component {
       <input
         type="range"
         step="any"
-        max={(duration).toFixed(4)}
+        max={duration.toFixed(4)}
         value={currentTime}
         onMouseDown={this._handleMouseDown}
         onMouseUp={this._handleMouseUp}
         onChange={this._handleChange}
         className={className}
         style={{
-          backgroundSize: (currentTime * 100 / duration) + '% 100%',
-          ...style
+          backgroundSize: currentTime * 100 / duration + '% 100%',
+          ...style,
         }}
       />
     )

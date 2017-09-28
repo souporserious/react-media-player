@@ -65,8 +65,8 @@ class Youtube extends Component {
       playerVars: {
         controls: 0,
         showinfo: 0,
-        modestbranding: 1
-      }
+        modestbranding: 1,
+      },
     })
   }
 
@@ -82,8 +82,14 @@ class Youtube extends Component {
         this.props.onReady()
       },
       onStateChange: ({ data }) => {
-        const { PLAYING, PAUSED, ENDED, BUFFERING, CUED } = window.YT.PlayerState
-        const isPlaying = (data === PLAYING)
+        const {
+          PLAYING,
+          PAUSED,
+          ENDED,
+          BUFFERING,
+          CUED,
+        } = window.YT.PlayerState
+        const isPlaying = data === PLAYING
 
         if (isPlaying) {
           this.props.onPlay(true)
@@ -115,9 +121,9 @@ class Youtube extends Component {
           this.props.onDuration(0.1)
         }
       },
-      onError: (e) => {
+      onError: e => {
         this.props.onError(e.data)
-      }
+      },
     }
   }
 
@@ -174,12 +180,7 @@ class Youtube extends Component {
   }
 
   render() {
-    return (
-      <div
-        ref={c => this._node = c}
-        {...this.props.extraProps}
-      />
-    )
+    return <div ref={c => (this._node = c)} {...this.props.extraProps} />
   }
 }
 

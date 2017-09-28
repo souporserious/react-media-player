@@ -1,13 +1,33 @@
-const MEDIA_KEYS = [0, 'f', 'j', 'k','l', ',', '.', ' ', 'Home', 'End', 'ArrowLeft', 'ArrowTop', 'ArrowRight', 'ArrowDown']
+const MEDIA_KEYS = [
+  0,
+  'f',
+  'j',
+  'k',
+  'l',
+  ',',
+  '.',
+  ' ',
+  'Home',
+  'End',
+  'ArrowLeft',
+  'ArrowTop',
+  'ArrowRight',
+  'ArrowDown',
+]
 
 export default function keyboardControls(mediaProps, e) {
-  const { duration, playPause, seekTo, skipTime, addVolume, fullscreen } = mediaProps
+  const {
+    duration,
+    playPause,
+    seekTo,
+    skipTime,
+    addVolume,
+    fullscreen,
+  } = mediaProps
   const { key, shiftKey } = e
 
   // prevent default on any media keys
-  MEDIA_KEYS.some(_key =>
-    (_key === key) && e.preventDefault()
-  )
+  MEDIA_KEYS.some(_key => _key === key && e.preventDefault())
 
   // handle respective key controls
   switch (key) {
@@ -15,48 +35,48 @@ export default function keyboardControls(mediaProps, e) {
     case ' ':
     case 'k':
       playPause()
-      break;
+      break
 
     // Seeking Backwards
     case 'ArrowLeft':
       skipTime(shiftKey ? -10 : -5)
-      break;
+      break
     case 'j':
       skipTime(shiftKey ? -10 : -5)
-      break;
+      break
     case ',':
       skipTime(-1)
-      break;
+      break
 
     // Seeking Forwards
     case 'ArrowRight':
       skipTime(shiftKey ? 10 : 5)
-      break;
+      break
     case 'l':
       skipTime(shiftKey ? 10 : 5)
-      break;
+      break
     case '.':
       skipTime(1)
-      break;
+      break
     case 0:
     case 'Home':
       seekTo(0)
-      break;
+      break
     case 'End':
       seekTo(duration)
-      break;
+      break
 
     // Volume
     case 'ArrowUp':
       addVolume(shiftKey ? 10 : 5)
-      break;
+      break
     case 'ArrowDown':
       addVolume(shiftKey ? -10 : -5)
-      break;
+      break
 
     // Fullscreen
     case 'f':
       fullscreen()
-      break;
+      break
   }
 }

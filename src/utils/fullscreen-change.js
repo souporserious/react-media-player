@@ -3,9 +3,7 @@ export default function fullscreenChange(type, callback) {
     'fullscreenchange',
     'mozfullscreenchange',
     'MSFullscreenChange',
-    'webkitfullscreenchange'
+    'webkitfullscreenchange',
   ]
-  vendors.forEach(vendor =>
-    document[`${type}EventListener`](vendor, callback)
-  )
+  vendors.forEach(vendor => document[`${type}EventListener`](vendor, callback))
 }

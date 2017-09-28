@@ -4,7 +4,7 @@ export default {
   _queue: [],
   _isLoaded: false,
 
-  load: function (component) {
+  load: function(component) {
     // if the API is loaded just create the player
     if (this._isLoaded) {
       component._createPlayer()
@@ -18,15 +18,15 @@ export default {
     }
   },
 
-  _loadAPI: function () {
+  _loadAPI: function() {
     loadAPI('//youtube.com/player_api')
 
     window.onYouTubeIframeAPIReady = () => {
       this._isLoaded = true
-      for (let i = this._queue.length; i--;) {
+      for (let i = this._queue.length; i--; ) {
         this._queue[i]._createPlayer()
       }
       this._queue = []
     }
-  }
+  },
 }

@@ -10,7 +10,7 @@ export default function loadAPI(url, cb) {
   script.src = url
 
   // callback after load
-  script.onload = () => (typeof cb === 'function') && cb()
+  script.onload = () => typeof cb === 'function' && cb()
 
   // append script to document head
   document.head.appendChild(script)

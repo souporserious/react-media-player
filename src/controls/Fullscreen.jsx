@@ -20,7 +20,7 @@ class Fullscreen extends Component {
         style={style}
         onClick={this._handleFullscreen}
       >
-        { media.isFullscreen ? 'Exit Fullscreen' : 'Fullscreen' }
+        {media.isFullscreen ? 'Exit Fullscreen' : 'Fullscreen'}
       </button>
     )
   }

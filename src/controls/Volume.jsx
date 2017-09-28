@@ -36,8 +36,8 @@ class Volume extends Component {
         onChange={this._handleChange}
         className={className}
         style={{
-          backgroundSize: (volume * 100 / 1) + '% 100%',
-          ...style
+          backgroundSize: volume * 100 / 1 + '% 100%',
+          ...style,
         }}
       />
     )

@@ -3,7 +3,7 @@ export default function getYoutubeId(url) {
   const match = url.match(regExp)
 
   if (match && match[1].length === 11) {
-    return match[1];
+    return match[1]
   } else {
     throw 'Invalid Youtube ID provided'
   }

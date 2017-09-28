@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 
 export default {
   src: PropTypes.string,
@@ -6,5 +6,5 @@ export default {
   onProgress: PropTypes.func,
   onDuration: PropTypes.func,
   onTimeUpdate: PropTypes.func,
-  onVolumeChange: PropTypes.func
+  onVolumeChange: PropTypes.func,
 }

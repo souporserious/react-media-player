@@ -31,11 +31,11 @@ class Vimeo extends Component {
     return findDOMNode(this._iframe)
   }
 
-  _onMessage = (e) => {
+  _onMessage = e => {
     let data
 
     // allow messages from the Vimeo player only
-    if (!(/^https?:\/\/player.vimeo.com/).test(e.origin)) {
+    if (!/^https?:\/\/player.vimeo.com/.test(e.origin)) {
       return false
     }
 
@@ -53,22 +53,22 @@ class Vimeo extends Component {
       case 'ready':
         this.props.onReady()
         this._postMessages()
-        break;
+        break
       case 'loadProgress':
         this.props.onProgress(data.data.percent)
-        break;
+        break
       case 'playProgress':
         this.props.onTimeUpdate(data.data.seconds)
-        break;
+        break
       case 'play':
         this.props.onPlay(true)
-        break;
+        break
       case 'pause':
         this.props.onPause(false)
-        break;
+        break
       case 'finish':
         this.props.onEnded(false)
-        break;
+        break
     }
 
     if (data.method === 'getDuration') {
@@ -89,9 +89,13 @@ class Vimeo extends Component {
   }
 
   _postMessages() {
-    ['loadProgress', 'playProgress', 'play', 'pause', 'finish'].forEach(listener =>
-      this._postMessage('addEventListener', listener)
-    )
+    ;[
+      'loadProgress',
+      'playProgress',
+      'play',
+      'pause',
+      'finish',
+    ].forEach(listener => this._postMessage('addEventListener', listener))
 
     this._postMessage('getDuration')
     this._postMessage('getVolume')
@@ -126,7 +130,7 @@ class Vimeo extends Component {
   render() {
     return (
       <iframe
-        ref={c => this._iframe = c}
+        ref={c => (this._iframe = c)}
         src={`https://player.vimeo.com/video/${this._vimeoId}?api=1`}
         {...this.props.extraProps}
       />

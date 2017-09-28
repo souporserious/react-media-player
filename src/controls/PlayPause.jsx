@@ -20,7 +20,7 @@ class PlayPause extends Component {
         style={style}
         onClick={this._handlePlayPause}
       >
-        { media.isPlaying ? 'Pause' : 'Play' }
+        {media.isPlaying ? 'Pause' : 'Play'}
       </button>
     )
   }
