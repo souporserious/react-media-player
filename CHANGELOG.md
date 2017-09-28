@@ -1,6 +1,6 @@
 ## CHANGELOG
 ### 0.6.4
-Return `play` in HTML5 method so we can react to the promise
+Return `play` in `Media` method so we can react to any promises that may have been returned
 
 ### 0.6.3
 Update ALL imports of PropTypes [#37](https://github.com/souporserious/react-media-player/pull/37)

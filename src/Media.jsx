@@ -110,7 +110,7 @@ class Media extends Component {
   }
 
   play = () => {
-    this._player.play()
+    return this._player.play()
   }
 
   pause = () => {
