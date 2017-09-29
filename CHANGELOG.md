@@ -1,4 +1,7 @@
 ## CHANGELOG
+### 0.6.5
+Make sure to return `play` from `HTML5` component [#38](https://github.com/souporserious/react-media-player/pull/38)
+
 ### 0.6.4
 Return `play` in `Media` method so we can react to any promises that may have been returned
 
