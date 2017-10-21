@@ -1,4 +1,8 @@
 export default (() => {
+  if (typeof document === 'undefined') {
+    return () => {}
+  }
+
   const names = [
     'requestFullscreen',
     'mozRequestFullScreen',
