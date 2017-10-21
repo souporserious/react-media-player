@@ -1,4 +1,7 @@
 ## CHANGELOG
+### 0.6.6
+Check if `document` is defined (SSR support) [#40](https://github.com/souporserious/react-media-player/pull/40)
+
 ### 0.6.5
 Make sure to return `play` from `HTML5` component [#38](https://github.com/souporserious/react-media-player/pull/38)
 
