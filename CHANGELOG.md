@@ -1,4 +1,11 @@
 ## CHANGELOG
+### 0.6.7
+Do not set ref when using audio object [#43](https://github.com/souporserious/react-media-player/pull/43)
+
+Fix for Firefox throwing an out of bounds error [#42](https://github.com/souporserious/react-media-player/pull/42)
+
+Workaround to cancel outstanding buffering network requests [#41](https://github.com/souporserious/react-media-player/pull/41)
+
 ### 0.6.6
 Check if `document` is defined (SSR support) [#40](https://github.com/souporserious/react-media-player/pull/40)
 
