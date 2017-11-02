@@ -55,7 +55,7 @@ class HTML5 extends Component {
   }
 
   stop() {
-    this._player.pause()
+    this._player.pause(0)
     this._player.currentTime = 0
   }
 
@@ -148,7 +148,14 @@ class HTML5 extends Component {
   }
 
   _destroyAudioObject() {
+    // even when stopped and set to null,
+    // chrome will continue to buffer files
+    // set the source to some benign value
+    // (FF throws on an empty string)
+    // and load it to truly stop buffering
     this.stop()
+    this._player.src = 'about:blank'
+    this._player.load()
     this._player = null
   }
 
