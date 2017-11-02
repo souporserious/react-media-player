@@ -152,6 +152,16 @@ class HTML5 extends Component {
     this._player = null
   }
 
+  _setRef = c => {
+    // if we are using audio object, we've already set
+    // this._player in componentWillReceiveProps so we
+    // do not want to wipe it out with the `null` returned
+    // from render
+    if (this.props.extraProps.useAudioObject !== true) {
+      this._player = c
+    }
+  }
+
   _bindAudioObjectEvents({ extraProps }) {
     const playerEvents = this._playerEvents
 
@@ -170,7 +180,7 @@ class HTML5 extends Component {
 
     if (!useAudioObject) {
       return createElement(vendor, {
-        ref: c => (this._player = c),
+        ref: this._setRef,
         src,
         ...extraProps,
         ...this._playerEvents,
