@@ -122,7 +122,7 @@ class HTML5 extends Component {
   _handleProgress = ({ target: { buffered, duration } }) => {
     let progress = 0
 
-    if (duration > 0) {
+    if (duration > 0 && buffered.length) {
       progress = buffered.end(buffered.length - 1) / duration
     }
 
