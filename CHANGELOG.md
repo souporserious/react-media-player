@@ -1,4 +1,7 @@
 ## CHANGELOG
+### 0.7.0
+Break AudioObject into its own vendor [#44](https://github.com/souporserious/react-media-player/pull/44)
+
 ### 0.6.7
 Do not set ref when using audio object [#43](https://github.com/souporserious/react-media-player/pull/43)
 
