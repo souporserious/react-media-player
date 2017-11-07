@@ -4,39 +4,7 @@ import { findDOMNode } from 'react-dom'
 import vendorPropTypes from './vendor-prop-types'
 
 class HTML5 extends Component {
-  static propTypes = {
-    ...vendorPropTypes,
-    useAudioObject: PropTypes.bool,
-  }
-
-  componentWillMount() {
-    const { src, extraProps: { useAudioObject } } = this.props
-
-    if (useAudioObject) {
-      this._createAudioObject(src)
-      this._bindAudioObjectEvents(this.props)
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const { src, extraProps: { useAudioObject } } = nextProps
-
-    if (useAudioObject) {
-      // destroy and recreate audio object to clean up any browser state
-      if (this.props.src !== src) {
-        this._destroyAudioObject()
-        this._createAudioObject(src)
-      }
-      // bind any new props to current audio object
-      this._bindAudioObjectEvents(nextProps)
-    }
-  }
-
-  componentWillUnmount() {
-    if (this.props.extraProps.useAudioObject) {
-      this._destroyAudioObject()
-    }
-  }
+  static propTypes = vendorPropTypes
 
   get instance() {
     return this._player
@@ -142,59 +110,15 @@ class HTML5 extends Component {
     this.props.onVolumeChange(volume)
   }
 
-  // Handle Audio Object
-  _createAudioObject(src) {
-    this._player = new Audio(src)
-  }
-
-  _destroyAudioObject() {
-    // even when stopped and set to null,
-    // chrome will continue to buffer files
-    // set the source to some benign value
-    // (FF throws on an empty string)
-    // and load it to truly stop buffering
-    this.stop()
-    this._player.src = 'about:blank'
-    this._player.load()
-    this._player = null
-  }
-
-  _setRef = c => {
-    // if we are using audio object, we've already set
-    // this._player in componentWillReceiveProps so we
-    // do not want to wipe it out with the `null` returned
-    // from render
-    if (this.props.extraProps.useAudioObject !== true) {
-      this._player = c
-    }
-  }
-
-  _bindAudioObjectEvents({ extraProps }) {
-    const playerEvents = this._playerEvents
-
-    Object.keys(extraProps).forEach(key => {
-      this._player[key] = extraProps[key]
-    })
-
-    Object.keys(playerEvents).forEach(key => {
-      this._player[key.toLowerCase()] = playerEvents[key]
-    })
-  }
-
   render() {
-    const { vendor, src } = this.props
-    const { useAudioObject, ...extraProps } = this.props.extraProps
+    const { vendor, src, extraProps } = this.props
 
-    if (!useAudioObject) {
-      return createElement(vendor, {
-        ref: this._setRef,
-        src,
-        ...extraProps,
-        ...this._playerEvents,
-      })
-    } else {
-      return null
-    }
+    return createElement(vendor, {
+      ref: c => (this._player = c),
+      src,
+      ...extraProps,
+      ...this._playerEvents,
+    })
   }
 }
 
