@@ -125,7 +125,7 @@ class Player extends Component {
       defaultMuted,
       ...extraProps
     } = this.props
-    const { vendor, component } = getVendor(src, _vendor)
+    const { vendor, component } = getVendor(src, _vendor, !!extraProps.useAudioObject)
 
     return createElement(component, {
       ref: this._setPlayer,
