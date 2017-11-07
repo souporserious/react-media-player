@@ -33,11 +33,6 @@ class AudioObject extends HTML5 {
     this._destroyAudioObject()
   }
 
-  get node() { // TODO look
-    console.warn('findDOMNode for AudioObject')
-    return findDOMNode(this._player)
-  }
-
   _createAudioObject(src) {
     this._player = new Audio(src)
   }
