@@ -54,6 +54,8 @@ class HTML5 extends Component {
       onLoadedMetadata: this._handleDuration,
       onTimeUpdate: this._handleTimeUpdate,
       onVolumeChange: this._handleVolumeChange,
+      onSeeking: this._isLoading,
+      onSeeked: this._isNotLoading,
     }
   }
 
