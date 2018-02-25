@@ -1916,6 +1916,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      _this.props.isLoading(false);
 	    }, _this._handleCanPlay = function () {
 	      _this.props.onReady();
+	      _this._isNotLoading();
 	    }, _this._handlePlay = function () {
 	      _this.props.onPlay(true);
 	      _this._isNotLoading();
@@ -2022,6 +2023,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    get: function get() {
 	      return {
 	        onCanPlay: this._handleCanPlay,
+	        onCanPlayThrough: this._isNotLoading,
 	        onPlay: this._handlePlay,
 	        onPlaying: this._isNotLoading,
 	        onPause: this._handlePause,
