@@ -1,5 +1,9 @@
 ## CHANGELOG
 
+### 0.7.3
+
+Fix stale `Media` prop callback state
+
 ### 0.7.2
 
 Fix volume not being set correctly across vendors
