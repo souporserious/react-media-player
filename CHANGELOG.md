@@ -1,5 +1,9 @@
 ## CHANGELOG
 
+### 0.7.2
+
+Fix volume not being set correctly across vendors
+
 ### 0.7.1
 
 Allow React 16 on peerDependencies
