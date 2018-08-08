@@ -80,17 +80,19 @@ class Media extends Component {
 
   _getPlayerEvents() {
     const events = {}
-
     MEDIA_EVENTS_KEYS.forEach(key => {
       const stateKey = MEDIA_EVENTS[key]
-      const propCallback = this._playerProps[key]
-
-      events[key] = val => {
-        if (stateKey) {
-          this.setState({ [stateKey]: val })
-        }
+      const handlePropCallback = () => {
+        const propCallback = this._playerProps[key]
         if (typeof propCallback === 'function') {
           propCallback(this.state)
+        }
+      }
+      events[key] = val => {
+        if (stateKey) {
+          this.setState({ [stateKey]: val }, handlePropCallback)
+        } else {
+          handlePropCallback()
         }
       }
     })
