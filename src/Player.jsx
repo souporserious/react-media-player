@@ -12,7 +12,7 @@ class Player extends Component {
   }
 
   static defaultProps = {
-    defaultCurrentTime: -1,
+    defaultCurrentTime: 0,
     defaultVolume: 1,
     defaultMuted: false,
   }
@@ -22,7 +22,19 @@ class Player extends Component {
   _defaultsSet = false
 
   componentWillMount() {
-    this._setPlayerProps(this.props)
+    const {
+      defaultCurrentTime,
+      defaultMuted,
+      defaultVolume,
+      ...restProps
+    } = this.props
+
+    this._setPlayerProps({ volume: defaultVolume, ...restProps })
+
+    this._setPlayerState({
+      currentTime: defaultCurrentTime,
+      volume: defaultMuted ? 0 : defaultVolume,
+    })
 
     // we need to unset the loading state if no source was loaded
     if (!this.props.src) {
@@ -35,7 +47,7 @@ class Player extends Component {
 
     // clean state if the media source has changed
     if (this.props.src !== nextProps.src) {
-      this.context._mediaSetters.setPlayerState({
+      this._setPlayerState({
         currentTime: 0,
         progress: 0,
         duration: 0,
@@ -58,15 +70,22 @@ class Player extends Component {
     this.context._mediaSetters.setPlayerProps(props)
   }
 
+  _setPlayerState(state) {
+    this.context._mediaSetters.setPlayerState(state)
+  }
+
   _setDefaults() {
     const { media } = this.context
     const { defaultCurrentTime, defaultVolume, defaultMuted } = this.props
 
-    if (defaultCurrentTime > -1) {
+    if (defaultCurrentTime > 0) {
       media.seekTo(defaultCurrentTime)
     }
-    media.setVolume(defaultVolume)
-    media.mute(defaultMuted)
+    if (defaultMuted) {
+      media.mute(defaultMuted)
+    } else if (defaultVolume !== 1) {
+      media.setVolume(defaultVolume)
+    }
 
     this._defaultsSet = true
   }
@@ -79,11 +98,11 @@ class Player extends Component {
     const { media, _mediaSetters } = this.context
     const { autoPlay, onReady } = this.props
 
-    media.setVolume(media.volume)
-    media.mute(media.isMuted)
-
     if (!this._defaultsSet) {
       this._setDefaults()
+    } else {
+      media.mute(media.isMuted)
+      media.setVolume(media.volume)
     }
 
     if (autoPlay) {
@@ -125,7 +144,11 @@ class Player extends Component {
       defaultMuted,
       ...extraProps
     } = this.props
-    const { vendor, component } = getVendor(src, _vendor, !!extraProps.useAudioObject)
+    const { vendor, component } = getVendor(
+      src,
+      _vendor,
+      !!extraProps.useAudioObject
+    )
 
     return createElement(component, {
       ref: this._setPlayer,

@@ -49,32 +49,30 @@ class Vimeo extends Component {
       this.props.onError(err)
     }
 
-    switch (data.event) {
-      case 'ready':
-        this.props.onReady()
-        this._postMessages()
-        break
-      case 'loadProgress':
-        this.props.onProgress(data.data.percent)
-        break
-      case 'playProgress':
-        this.props.onTimeUpdate(data.data.seconds)
-        break
-      case 'play':
-        this.props.onPlay(true)
-        break
-      case 'pause':
-        this.props.onPause(false)
-        break
-      case 'finish':
-        this.props.onEnded(false)
-        break
-    }
-
-    if (data.method === 'getDuration') {
-      this.props.onDuration(data.value)
-    } else if (data.method === 'getVolume') {
-      this.setVolume(data.value)
+    if (data) {
+      switch (data.event) {
+        case 'ready':
+          this._postOnReadyMessages()
+          break
+        case 'loadProgress':
+          this.props.onProgress(data.data.percent)
+          break
+        case 'playProgress':
+          this.props.onTimeUpdate(data.data.seconds)
+          break
+        case 'play':
+          this.props.onPlay(true)
+          break
+        case 'pause':
+          this.props.onPause(false)
+          break
+        case 'finish':
+          this.props.onEnded(false)
+          break
+      }
+      if (data.method === 'getDuration') {
+        this.props.onDuration(data.value)
+      }
     }
   }
 
@@ -88,17 +86,12 @@ class Vimeo extends Component {
     this._iframe.contentWindow.postMessage(JSON.stringify(data), this._origin)
   }
 
-  _postMessages() {
-    ;[
-      'loadProgress',
-      'playProgress',
-      'play',
-      'pause',
-      'finish',
-    ].forEach(listener => this._postMessage('addEventListener', listener))
-
+  _postOnReadyMessages() {
+    ;['loadProgress', 'playProgress', 'play', 'pause', 'finish'].forEach(
+      listener => this._postMessage('addEventListener', listener)
+    )
     this._postMessage('getDuration')
-    this._postMessage('getVolume')
+    this.props.onReady()
   }
 
   play() {
