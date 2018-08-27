@@ -8,6 +8,7 @@ export default function formatTime(current) {
   }
 
   if (h > 0) {
+    m = (m < 10) ? `0${m}` : m
     return h + ':' + m + ':' + s
   } else {
     return m + ':' + s
