@@ -5,18 +5,25 @@ import PlayPause from './PlayPause'
 import MuteUnmute from './MuteUnmute'
 import Repeat from './Repeat'
 
-const { CurrentTime, Progress, SeekBar, Duration, Volume, Fullscreen } = controls
+const {
+  CurrentTime,
+  Progress,
+  SeekBar,
+  Duration,
+  Volume,
+  Fullscreen,
+} = controls
 const { keyboardControls } = utils
 
-const PrevTrack = (props) => (
+const PrevTrack = props => (
   <svg width="10px" height="12px" viewBox="0 0 10 12" {...props}>
-    <polygon fill="#FAFBFB" points="10,0 2,4.8 2,0 0,0 0,12 2,12 2,7.2 10,12"/>
+    <polygon fill="#FAFBFB" points="10,0 2,4.8 2,0 0,0 0,12 2,12 2,7.2 10,12" />
   </svg>
 )
 
-const NextTrack = (props) => (
+const NextTrack = props => (
   <svg width="10px" height="12px" viewBox="0 0 10 12" {...props}>
-    <polygon fill="#FAFBFB" points="8,0 8,4.8 0,0 0,12 8,7.2 8,12 10,12 10,0"/>
+    <polygon fill="#FAFBFB" points="8,0 8,4.8 0,0 0,12 8,7.2 8,12 10,12 10,0" />
   </svg>
 )
 
@@ -41,9 +48,12 @@ class MediaPlayer extends Component {
     const { src, currentTrack, repeatTrack, autoPlay } = this.props
     return (
       <Media>
-        { mediaProps =>
+        {mediaProps => (
           <div
-            className={'media-player' + (mediaProps.isFullscreen ? ' media-player--fullscreen' : '')}
+            className={
+              'media-player' +
+              (mediaProps.isFullscreen ? ' media-player--fullscreen' : '')
+            }
             onKeyDown={keyboardControls.bind(null, mediaProps)}
             tabIndex="0"
           >
@@ -56,26 +66,37 @@ class MediaPlayer extends Component {
                 loop={repeatTrack}
                 autoPlay={autoPlay}
                 onEnded={this._handleEnded}
+                defaultVolume={0.1}
+                onVolumeChange={({ volume }) => {
+                  console.log(volume)
+                }}
               />
             </div>
             <div className="media-controls media-controls--full">
               <div className="media-row">
-                <CurrentTime className="media-control media-control--current-time"/>
+                <CurrentTime className="media-control media-control--current-time" />
                 {currentTrack}
-                <Duration className="media-control media-control--duration"/>
+                <Duration className="media-control media-control--duration" />
               </div>
               <div className="media-control-group media-control-group--seek">
-                <Progress className="media-control media-control--progress"/>
-                <SeekBar className="media-control media-control--seekbar"/>
+                <Progress className="media-control media-control--progress" />
+                <SeekBar className="media-control media-control--seekbar" />
               </div>
               <div className="media-row">
                 <div className="media-control-group">
-                  <MuteUnmute className="media-control media-control--mute-unmute"/>
+                  <MuteUnmute className="media-control media-control--mute-unmute" />
+                  <Volume className="media-control media-control--volume" />
                 </div>
                 <div className="media-control-group">
-                  <PrevTrack className="media-control media-control--prev-track" onClick={this._handlePrevTrack}/>
-                  <PlayPause className="media-control media-control--play-pause"/>
-                  <NextTrack className="media-control media-control--next-track" onClick={this._handleNextTrack}/>
+                  <PrevTrack
+                    className="media-control media-control--prev-track"
+                    onClick={this._handlePrevTrack}
+                  />
+                  <PlayPause className="media-control media-control--play-pause" />
+                  <NextTrack
+                    className="media-control media-control--next-track"
+                    onClick={this._handleNextTrack}
+                  />
                 </div>
                 <div className="media-control-group">
                   <Repeat
@@ -83,12 +104,12 @@ class MediaPlayer extends Component {
                     isActive={repeatTrack}
                     onClick={this._handleRepeatTrack}
                   />
-                  <Fullscreen/>
+                  <Fullscreen />
                 </div>
               </div>
             </div>
           </div>
-        }
+        )}
       </Media>
     )
   }

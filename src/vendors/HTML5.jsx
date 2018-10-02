@@ -88,6 +88,7 @@ class HTML5 extends Component {
   }
 
   _handleProgress = ({ target: { buffered, duration } }) => {
+    console.log(buffered)
     let progress = 0
 
     if (duration > 0 && buffered.length) {
