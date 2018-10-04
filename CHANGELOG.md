@@ -1,5 +1,16 @@
 ## CHANGELOG
 
+### 0.7.4
+
+Remove `AudioObject` vendor
+[#51](https://github.com/souporserious/react-media-player/pull/51)
+
+Add `connectSource` prop to Player
+[#50](https://github.com/souporserious/react-media-player/pull/50)
+
+Fix `formateTime` missing a `0` before minutes if it contains an hour
+[#49](https://github.com/souporserious/react-media-player/pull/49)
+
 ### 0.7.3
 
 Fix stale `Media` prop callback state
