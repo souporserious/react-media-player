@@ -36,15 +36,12 @@ class Youtube extends Component {
 
   componentWillUnmount() {
     this._isMounted = false
-
     if (this._progressId) {
       cancelAnimationFrame(this._progressId)
     }
-
     if (this._timeUpdateId) {
       cancelAnimationFrame(this._timeUpdateId)
     }
-
     if (this._player) {
       this._player.destroy()
     }

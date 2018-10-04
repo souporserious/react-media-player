@@ -139,13 +139,11 @@ class Media extends Component {
   skipTime = amount => {
     const { currentTime, duration } = this.state
     let newTime = currentTime + amount
-
     if (newTime < 0) {
       newTime = 0
     } else if (newTime > duration) {
       newTime = duration
     }
-
     this.seekTo(newTime)
   }
 
@@ -166,25 +164,21 @@ class Media extends Component {
 
   setVolume = volume => {
     const isMuted = volume <= 0
-
     if (isMuted !== this.state.isMuted) {
       this.mute(isMuted)
     } else {
       this._lastVolume = volume
     }
-
     this._player.setVolume(volume)
   }
 
   addVolume = amount => {
     let newVolume = this.state.volume + amount * 0.01
-
     if (newVolume < 0) {
       newVolume = 0
     } else if (newVolume > 1) {
       newVolume = 1
     }
-
     this.setVolume(newVolume)
   }
 
@@ -204,11 +198,9 @@ class Media extends Component {
 
   render() {
     const { children } = this.props
-
     if (typeof children === 'function') {
       return children(this._getPublicMediaProps())
     }
-
     return Children.only(children)
   }
 }

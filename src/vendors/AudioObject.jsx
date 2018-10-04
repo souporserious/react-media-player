@@ -12,14 +12,12 @@ class AudioObject extends HTML5 {
 
   componentWillMount() {
     const { src } = this.props
-
     this._createAudioObject(src)
     this._bindAudioObjectEvents(this.props)
   }
 
   componentWillReceiveProps(nextProps) {
     const { src } = nextProps
-
     // destroy and recreate audio object to clean up any browser state
     if (this.props.src !== src) {
       this._destroyAudioObject()
@@ -51,11 +49,9 @@ class AudioObject extends HTML5 {
 
   _bindAudioObjectEvents({ extraProps }) {
     const playerEvents = this._playerEvents
-
     Object.keys(extraProps).forEach(key => {
       this._player[key] = extraProps[key]
     })
-
     Object.keys(playerEvents).forEach(key => {
       this._player[key.toLowerCase()] = playerEvents[key]
     })

@@ -77,7 +77,6 @@ class Player extends Component {
   _setDefaults() {
     const { media } = this.context
     const { defaultCurrentTime, defaultVolume, defaultMuted } = this.props
-
     if (defaultCurrentTime > 0) {
       media.seekTo(defaultCurrentTime)
     }
@@ -86,7 +85,6 @@ class Player extends Component {
     } else if (defaultVolume !== 1) {
       media.setVolume(defaultVolume)
     }
-
     this._defaultsSet = true
   }
 
@@ -119,14 +117,12 @@ class Player extends Component {
   _handleOnEnded = () => {
     const { media, _mediaSetters } = this.context
     const { loop, onEnded } = this.props
-
     if (loop) {
       media.seekTo(0)
       media.play()
     } else {
       _mediaSetters.setPlayerState({ isPlaying: false })
     }
-
     if (typeof onEnded === 'function') {
       onEnded(media)
     }
@@ -144,21 +140,16 @@ class Player extends Component {
       defaultMuted,
       ...extraProps
     } = this.props
-    const { vendor, component } = getVendor(
-      src,
-      _vendor,
-      !!extraProps.useAudioObject
-    )
-
+    const { vendor, component } = getVendor(src, _vendor)
     return createElement(component, {
-      ref: this._setPlayer,
       src,
       vendor,
       autoPlay,
+      extraProps,
+      ref: this._setPlayer,
       isLoading: this._setLoading,
       onReady: this._handleOnReady,
       onEnded: this._handleOnEnded,
-      extraProps,
       ...this.context._mediaGetters.getPlayerEvents,
     })
   }
