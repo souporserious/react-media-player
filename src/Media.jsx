@@ -121,9 +121,9 @@ class Media extends Component {
 
   playPause = () => {
     if (!this.state.isPlaying) {
-      this._player.play()
+      return this.play()
     } else {
-      this._player.pause()
+      this.pause()
     }
   }
 
