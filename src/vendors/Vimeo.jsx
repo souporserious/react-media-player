@@ -113,6 +113,7 @@ class Vimeo extends Component {
   mute(muted) {
     this._postMessage('setVolume', muted ? '0' : '1')
     this.props.onMute(muted)
+    this.props.onVolumeChange(muted ? 0 : 1)
   }
 
   setVolume(volume) {

@@ -150,6 +150,7 @@ class Youtube extends Component {
       this._player.unMute()
     }
     this.props.onMute(muted)
+    this.props.onVolumeChange(muted ? 0 : 1)
   }
 
   setVolume(volume) {
