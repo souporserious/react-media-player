@@ -17,41 +17,49 @@ class HTML5 extends Component {
   }
 
   componentDidMount() {
-    if (this.props.vendor === 'audio' && this.props.extraProps.connectSource) {
-      this.connectAudioContext()
+    const { connectSource, useAudioObject } = this.props.extraProps
+    if (this.props.vendor === 'audio') {
+      if (useAudioObject) {
+        this._createAudioObject()
+        this._bindAudioObjectEvents()
+      }
+      if (connectSource) {
+        this._connectAudioContext()
+      }
     }
   }
 
   componentDidUpdate(lastProps) {
-    if (this.props.vendor === 'audio' && this.props.extraProps.connectSource) {
-      if (this.props.vendor !== lastProps.vendor) {
-        this.connectAudioContext()
-      } else if (this.props.src !== lastProps.src) {
-        this.disconnectAudioContext()
-        this.connectAudioContext()
+    const { connectSource, useAudioObject } = this.props.extraProps
+    const vendorChanged = this.props.vendor !== lastProps.vendor
+    const sourceChanged = this.props.src !== lastProps.src
+    if (useAudioObject) {
+      if (vendorChanged) {
+        this._createAudioObject()
+      } else if (sourceChanged) {
+        this._destroyAudioObject()
+        this._createAudioObject()
+      }
+      this._bindAudioObjectEvents()
+    }
+    if (this.props.vendor === 'audio' && connectSource) {
+      if (vendorChanged) {
+        this._connectAudioContext()
+      } else if (sourceChanged) {
+        this._disconnectAudioContext()
+        this._connectAudioContext()
       }
     }
   }
 
   componentWillUnmount() {
-    if (this._source) {
-      this.disconnectAudioContext()
+    const { connectSource, useAudioObject } = this.props.extraProps
+    if (connectSource) {
+      this._disconnectAudioContext()
     }
-  }
-
-  connectAudioContext() {
-    if (this.props.extraProps.useAudioObject || !this._source) {
-      this._source = audioContext.createMediaElementSource(this.node)
+    if (useAudioObject) {
+      this._destroyAudioObject()
     }
-    this._gain = audioContext.createGain()
-    this.props.extraProps
-      .connectSource(this._source, audioContext)
-      .connect(this._gain)
-    this._gain.connect(audioContext.destination)
-  }
-
-  disconnectAudioContext() {
-    this._source.disconnect(0)
   }
 
   play() {
@@ -66,7 +74,7 @@ class HTML5 extends Component {
   }
 
   stop() {
-    this._player.pause(0)
+    this._player.pause()
     this._player.currentTime = 0
   }
 
@@ -108,6 +116,47 @@ class HTML5 extends Component {
     }
   }
 
+  _createAudioObject() {
+    this._player = new Audio(this.props.src)
+  }
+
+  _destroyAudioObject() {
+    this.stop()
+    this._player.src = 'about:blank'
+    this._playerStopped = true
+  }
+
+  _bindAudioObjectEvents() {
+    const {
+      connectSource,
+      useAudioObject,
+      ...playerProps
+    } = this.props.extraProps
+    const playerEvents = this._playerEvents
+    Object.keys(playerProps).forEach(key => {
+      this._player[key] = playerProps[key]
+    })
+    Object.keys(playerEvents).forEach(key => {
+      this._player[key.toLowerCase()] = playerEvents[key]
+    })
+  }
+
+  _connectAudioContext() {
+    const { connectSource, useAudioObject } = this.props.extraProps
+    if (useAudioObject || !this._source) {
+      this._source = audioContext.createMediaElementSource(
+        useAudioObject ? this.instance : this.node
+      )
+    }
+    this._gain = audioContext.createGain()
+    connectSource(this._source, audioContext).connect(this._gain)
+    this._gain.connect(audioContext.destination)
+  }
+
+  _disconnectAudioContext() {
+    this._source.disconnect(0)
+  }
+
   _isLoading = () => {
     this.props.isLoading(true)
   }
@@ -134,8 +183,12 @@ class HTML5 extends Component {
   }
 
   _handleError = e => {
-    this.props.onError(e)
-    this._isNotLoading()
+    if (this._playerStopped) {
+      this._playerStopped = false
+    } else {
+      this.props.onError(e)
+      this._isNotLoading()
+    }
   }
 
   _handleProgress = ({ target: { buffered, duration } }) => {
@@ -162,13 +215,14 @@ class HTML5 extends Component {
       src,
       extraProps: { connectSource, useAudioObject, ...playerProps },
     } = this.props
-
-    return createElement(vendor, {
-      ref: c => (this._player = c),
-      src,
-      ...playerProps,
-      ...this._playerEvents,
-    })
+    return useAudioObject
+      ? null
+      : createElement(vendor, {
+          ref: c => (this._player = c),
+          src,
+          ...playerProps,
+          ...this._playerEvents,
+        })
   }
 }
 
