@@ -43,6 +43,12 @@ Autoplay media when the component is mounted or `src` changes.
 
 Loop the current `src` indefinitely.
 
+#### `useAudioObject`: PropTypes.bool
+
+When playing HTML5 `audio`, it will construct audio using the
+[`Audio`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLAudioElement#Constructor)
+class instead of rendering an element to the page.
+
 #### `connectSource`: PropTypes.func(source, audioContext)
 
 A chance to connect a series of

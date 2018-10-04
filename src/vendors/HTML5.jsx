@@ -6,7 +6,10 @@ import vendorPropTypes from './vendor-prop-types'
 const audioContext = new (window.AudioContext || window.webkitAudioContext)()
 
 class HTML5 extends Component {
-  static propTypes = vendorPropTypes
+  static propTypes = {
+    ...vendorPropTypes,
+    useAudioObject: PropTypes.bool,
+  }
 
   get instance() {
     return this._player
