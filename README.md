@@ -43,6 +43,13 @@ Autoplay media when the component is mounted or `src` changes.
 
 Loop the current `src` indefinitely.
 
+#### `connectSource`: PropTypes.func(source, audioContext)
+
+A chance to connect a series of
+[`AudioNode`[s]](https://developer.mozilla.org/en-US/docs/Web/API/AudioNode)
+when using the `audio` vendor. Must return a new audio node that will be
+connected to `audioContext.destination` internally.
+
 #### `onPlay`: PropTypes.func
 
 Callback when media starts playing.
