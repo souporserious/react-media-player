@@ -36,6 +36,7 @@ class Media extends Component {
     isFullscreen: false,
   }
 
+  _isMounted = false
   _playerProps = {}
   _lastVolume = 0
 
@@ -54,10 +55,12 @@ class Media extends Component {
   }
 
   componentDidMount() {
+    this._isMounted = true
     fullscreenChange('add', this._handleFullscreenChange)
   }
 
   componentWillUnmount() {
+    this._isMounted = false
     fullscreenChange('remove', this._handleFullscreenChange)
   }
 
@@ -90,7 +93,9 @@ class Media extends Component {
       }
       events[key] = val => {
         if (stateKey) {
-          this.setState({ [stateKey]: val }, handlePropCallback)
+          if (this._isMounted) {
+            this.setState({ [stateKey]: val }, handlePropCallback)
+          }
         } else {
           handlePropCallback()
         }
