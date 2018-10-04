@@ -3,6 +3,8 @@ import PropTypes from 'prop-types'
 import { findDOMNode } from 'react-dom'
 import vendorPropTypes from './vendor-prop-types'
 
+const audioContext = new (window.AudioContext || window.webkitAudioContext)()
+
 class HTML5 extends Component {
   static propTypes = vendorPropTypes
 
@@ -14,7 +16,48 @@ class HTML5 extends Component {
     return findDOMNode(this._player)
   }
 
+  componentDidMount() {
+    if (this.props.vendor === 'audio' && this.props.extraProps.connectSource) {
+      this.connectAudioContext()
+    }
+  }
+
+  componentDidUpdate(lastProps) {
+    if (this.props.vendor === 'audio' && this.props.extraProps.connectSource) {
+      if (this.props.vendor !== lastProps.vendor) {
+        this.connectAudioContext()
+      } else if (this.props.src !== lastProps.src) {
+        this.disconnectAudioContext()
+        this.connectAudioContext()
+      }
+    }
+  }
+
+  componentWillUnmount() {
+    if (this._source) {
+      this.disconnectAudioContext()
+    }
+  }
+
+  connectAudioContext() {
+    if (this.props.extraProps.useAudioObject || !this._source) {
+      this._source = audioContext.createMediaElementSource(this.node)
+    }
+    this._gain = audioContext.createGain()
+    this.props.extraProps
+      .connectSource(this._source, audioContext)
+      .connect(this._gain)
+    this._gain.connect(audioContext.destination)
+  }
+
+  disconnectAudioContext() {
+    this._source.disconnect(0)
+  }
+
   play() {
+    if (audioContext.state === 'suspended') {
+      audioContext.resume()
+    }
     return this._player.play()
   }
 
@@ -34,11 +77,20 @@ class HTML5 extends Component {
   }
 
   mute(muted) {
+    const nextVolume = muted ? 0 : 1
     this._player.muted = muted
+    this.setVolume(nextVolume)
+    this.props.onMute(muted)
+    this.props.onVolumeChange(nextVolume)
   }
 
   setVolume(volume) {
-    this._player.volume = volume
+    if (this._gain) {
+      this._gain.gain.value = volume
+    } else {
+      this._player.volume = volume
+    }
+    this.props.onVolumeChange(volume)
   }
 
   get _playerEvents() {
@@ -53,7 +105,6 @@ class HTML5 extends Component {
       onProgress: this._handleProgress,
       onLoadedMetadata: this._handleDuration,
       onTimeUpdate: this._handleTimeUpdate,
-      onVolumeChange: this._handleVolumeChange,
     }
   }
 
@@ -105,18 +156,17 @@ class HTML5 extends Component {
     this.props.onTimeUpdate(currentTime)
   }
 
-  _handleVolumeChange = ({ target: { volume, muted } }) => {
-    this.props.onMute(muted)
-    this.props.onVolumeChange(volume)
-  }
-
   render() {
-    const { vendor, src, extraProps } = this.props
+    const {
+      vendor,
+      src,
+      extraProps: { connectSource, useAudioObject, ...playerProps },
+    } = this.props
 
     return createElement(vendor, {
       ref: c => (this._player = c),
       src,
-      ...extraProps,
+      ...playerProps,
       ...this._playerEvents,
     })
   }
