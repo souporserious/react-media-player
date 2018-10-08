@@ -1,5 +1,9 @@
 ## CHANGELOG
 
+### 0.7.5
+
+Only use `AudioContext` in supported browsers
+
 ### 0.7.4
 
 Remove `AudioObject` vendor
