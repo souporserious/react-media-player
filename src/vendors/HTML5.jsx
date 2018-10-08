@@ -3,7 +3,12 @@ import PropTypes from 'prop-types'
 import { findDOMNode } from 'react-dom'
 import vendorPropTypes from './vendor-prop-types'
 
-const audioContext = new (window.AudioContext || window.webkitAudioContext)()
+const AudioContext = window.AudioContext || window.webkitAudioContext
+let audioContext
+
+if (AudioContext) {
+  audioContext = new AudioContext()
+}
 
 class HTML5 extends Component {
   static propTypes = {
@@ -26,7 +31,7 @@ class HTML5 extends Component {
         this._createAudioObject()
         this._bindAudioObjectEvents()
       }
-      if (connectSource) {
+      if (audioContext && connectSource) {
         this._connectAudioContext()
       }
     }
@@ -45,7 +50,7 @@ class HTML5 extends Component {
       }
       this._bindAudioObjectEvents()
     }
-    if (this.props.vendor === 'audio' && connectSource) {
+    if (this.props.vendor === 'audio' && audioContext && connectSource) {
       if (vendorChanged) {
         this._connectAudioContext()
       } else if (sourceChanged) {
@@ -57,7 +62,7 @@ class HTML5 extends Component {
 
   componentWillUnmount() {
     const { connectSource, useAudioObject } = this.props.extraProps
-    if (connectSource) {
+    if (audioContext && connectSource) {
       this._disconnectAudioContext()
     }
     if (useAudioObject) {
@@ -66,7 +71,7 @@ class HTML5 extends Component {
   }
 
   play() {
-    if (audioContext.state === 'suspended') {
+    if (audioContext && audioContext.state === 'suspended') {
       audioContext.resume()
     }
     return this._player.play()
