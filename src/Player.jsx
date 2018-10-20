@@ -145,11 +145,11 @@ class Player extends Component {
       src,
       vendor,
       autoPlay,
-      extraProps,
       ref: this._setPlayer,
       isLoading: this._setLoading,
       onReady: this._handleOnReady,
       onEnded: this._handleOnEnded,
+      ...extraProps,
       ...this.context._mediaGetters.getPlayerEvents,
     })
   }
