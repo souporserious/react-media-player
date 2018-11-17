@@ -3,12 +3,8 @@ import PropTypes from 'prop-types'
 import { findDOMNode } from 'react-dom'
 import vendorPropTypes from './vendor-prop-types'
 
-const AudioContext = window.AudioContext || window.webkitAudioContext
-let audioContext
 
-if (AudioContext) {
-  audioContext = new AudioContext()
-}
+
 
 class HTML5 extends Component {
   static propTypes = {
@@ -26,12 +22,16 @@ class HTML5 extends Component {
 
   componentDidMount() {
     const { connectSource, useAudioObject } = this.props.extraProps
+    const AudioContext = window.AudioContext || window.webkitAudioContext
+    if (AudioContext) {
+      this.audioContext = new AudioContext()
+    }
     if (this.props.vendor === 'audio') {
       if (useAudioObject) {
         this._createAudioObject()
         this._bindAudioObjectEvents()
       }
-      if (audioContext && connectSource) {
+      if (this.audioContext && connectSource) {
         this._connectAudioContext()
       }
     }
@@ -50,7 +50,7 @@ class HTML5 extends Component {
       }
       this._bindAudioObjectEvents()
     }
-    if (this.props.vendor === 'audio' && audioContext && connectSource) {
+    if (this.props.vendor === 'audio' && this.audioContext && connectSource) {
       if (vendorChanged) {
         this._connectAudioContext()
       } else if (sourceChanged) {
@@ -62,7 +62,7 @@ class HTML5 extends Component {
 
   componentWillUnmount() {
     const { connectSource, useAudioObject } = this.props.extraProps
-    if (audioContext && connectSource) {
+    if (this.audioContext && connectSource) {
       this._disconnectAudioContext()
     }
     if (useAudioObject) {
@@ -71,8 +71,8 @@ class HTML5 extends Component {
   }
 
   play() {
-    if (audioContext && audioContext.state === 'suspended') {
-      audioContext.resume()
+    if (this.audioContext && this.audioContext.state === 'suspended') {
+      this.audioContext.resume()
     }
     return this._player.play()
   }
@@ -152,13 +152,13 @@ class HTML5 extends Component {
   _connectAudioContext() {
     const { connectSource, useAudioObject } = this.props.extraProps
     if (useAudioObject || !this._source) {
-      this._source = audioContext.createMediaElementSource(
+      this._source = this.audioContext.createMediaElementSource(
         useAudioObject ? this.instance : this.node
       )
     }
-    this._gain = audioContext.createGain()
-    connectSource(this._source, audioContext).connect(this._gain)
-    this._gain.connect(audioContext.destination)
+    this._gain = this.audioContext.createGain()
+    connectSource(this._source, this.audioContext).connect(this._gain)
+    this._gain.connect(this.audioContext.destination)
   }
 
   _disconnectAudioContext() {
