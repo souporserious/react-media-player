@@ -1,5 +1,10 @@
 ## CHANGELOG
 
+### 0.7.6
+
+Create `AudioContext` in HTML5 vendor on `componentDidMount`
+[#53](https://github.com/souporserious/react-media-player/pull/53)
+
 ### 0.7.5
 
 Only use `AudioContext` in supported browsers
