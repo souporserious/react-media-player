@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { findDOMNode } from 'react-dom'
 import vendorPropTypes from './vendor-prop-types'
 
-const AudioContext = window.AudioContext || window.webkitAudioContext
+const AudioContext = typeof window === 'undefined' ? false : (window.AudioContext || window.webkitAudioContext)
 let audioContext
 
 if (AudioContext) {
