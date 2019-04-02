@@ -1,5 +1,10 @@
 ## CHANGELOG
 
+### 0.7.7
+
+Add support for `isLoading` prop for Youtube vendor
+[#59](https://github.com/souporserious/react-media-player/pull/59)
+
 ### 0.7.6
 
 Create `AudioContext` in HTML5 vendor on `componentDidMount`
