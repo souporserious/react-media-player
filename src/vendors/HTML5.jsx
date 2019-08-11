@@ -112,6 +112,7 @@ class HTML5 extends Component {
   get _playerEvents() {
     return {
       onCanPlay: this._handleCanPlay,
+      onCanPlayThrough: this._isNotLoading,
       onPlay: this._handlePlay,
       onPlaying: this._isNotLoading,
       onPause: this._handlePause,
@@ -121,6 +122,8 @@ class HTML5 extends Component {
       onProgress: this._handleProgress,
       onLoadedMetadata: this._handleDuration,
       onTimeUpdate: this._handleTimeUpdate,
+      onSeeking: this._isLoading,
+      onSeeked: this._isNotLoading,
     }
   }
 
@@ -175,6 +178,7 @@ class HTML5 extends Component {
 
   _handleCanPlay = () => {
     this.props.onReady()
+    this._isNotLoading()
   }
 
   _handlePlay = () => {
