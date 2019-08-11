@@ -9,9 +9,9 @@ var config = {
     filename: "bundle.js"
   },
   module: {
-    loaders: [
-      { test: /\.(js|jsx)/, exclude: /node_modules/, loader: "babel-loader" },
-      { test: /\.(css|scss)/, loader: "style!css!postcss!sass?sourceMap" }
+    rules: [
+      { test: /\.(js|jsx)/, exclude: /node_modules/, use: "babel-loader" },
+      { test: /\.(css|scss)/, use: "style!css!postcss!sass?sourceMap" }
     ]
   },
   resolve: {

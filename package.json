@@ -42,7 +42,7 @@
   "devDependencies": {
     "babel-cli": "^6.16.0",
     "babel-core": "^6.17.0",
-    "babel-loader": "^8.0.6",
+    "babel-loader": "7",
     "babel-plugin-add-module-exports": "^1.0.2",
     "babel-preset-es2015": "^6.16.0",
     "babel-preset-react": "^6.16.0",
@@ -60,9 +60,12 @@
     "sass-loader": "^7.2.0",
     "style-loader": "^1.0.0",
     "webpack": "^4.39.1",
+    "webpack-cli": "^3.3.6",
     "webpack-dev-server": "^3.8.0"
   },
   "dependencies": {
-    "prop-types": "^15.5.10"
+    "prop-types": "^15.5.10",
+    "stringstream": "0.0.6",
+    "uglifyjs-webpack-plugin": "^2.2.0"
   }
 }
