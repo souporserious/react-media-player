@@ -21,7 +21,7 @@ class Player extends Component {
 
   _defaultsSet = false;
 
-  componentWillMount() {
+  componentDidMount() {
     const {
             defaultCurrentTime,
             defaultMuted,
