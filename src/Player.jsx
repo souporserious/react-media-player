@@ -146,7 +146,7 @@ class Player extends Component {
       src,
       vendor,
       autoPlay,
-      configYouTubeParam
+      configYouTubeParam,
       extraProps,
       ref: this._setPlayer,
       isLoading: this._setLoading,
