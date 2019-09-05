@@ -138,6 +138,7 @@ class Player extends Component {
       defaultCurrentTime,
       defaultVolume,
       defaultMuted,
+      configYouTubeParam,
       ...extraProps
     } = this.props
     const { vendor, component } = getVendor(src, _vendor)
@@ -145,6 +146,7 @@ class Player extends Component {
       src,
       vendor,
       autoPlay,
+      configYouTubeParam
       extraProps,
       ref: this._setPlayer,
       isLoading: this._setLoading,

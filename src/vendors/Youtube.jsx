@@ -63,6 +63,7 @@ class Youtube extends Component {
         controls: 0,
         showinfo: 0,
         modestbranding: 1,
+        ...this.props.configYouTubeParam,
       },
     })
   }
