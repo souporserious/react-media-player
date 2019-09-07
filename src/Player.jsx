@@ -129,6 +129,7 @@ class Player extends Component {
   }
 
   render() {
+    console.log("player",this.props.config)
     const {
       src,
       vendor: _vendor,
@@ -138,15 +139,14 @@ class Player extends Component {
       defaultCurrentTime,
       defaultVolume,
       defaultMuted,
-      configYouTubeParam,
       ...extraProps
     } = this.props
-    const { vendor, component } = getVendor(src, _vendor)
+    const { vendor, component, config } = getVendor(src, _vendor, this.props.config)
     return createElement(component, {
       src,
       vendor,
       autoPlay,
-      configYouTubeParam,
+      config,
       extraProps,
       ref: this._setPlayer,
       isLoading: this._setLoading,
