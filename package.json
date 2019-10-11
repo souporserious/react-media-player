@@ -1,6 +1,6 @@
 {
   "name": "react-media-player",
-  "version": "0.7.7",
+  "version": "0.7.8",
   "description": "React media player.",
   "main": "lib/react-media-player.js",
   "files": [
