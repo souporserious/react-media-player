@@ -3,6 +3,12 @@ import PropTypes from 'prop-types'
 import contextTypes from './context-types'
 import getVendor from './utils/get-vendor'
 
+const defaultConfig = {
+  youtube: {},
+  vimeo: {},
+  html5: {},
+}
+
 class Player extends Component {
   static propTypes = {
     vendor: PropTypes.oneOf(['video', 'audio', 'youtube', 'vimeo']),
@@ -132,6 +138,7 @@ class Player extends Component {
     const {
       src,
       vendor: _vendor,
+      config,
       autoPlay,
       onReady,
       onEnded,
@@ -145,6 +152,7 @@ class Player extends Component {
       src,
       vendor,
       autoPlay,
+      config: { ...defaultConfig, ...config },
       extraProps,
       ref: this._setPlayer,
       isLoading: this._setLoading,

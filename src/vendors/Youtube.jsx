@@ -63,6 +63,7 @@ class Youtube extends Component {
         controls: 0,
         showinfo: 0,
         modestbranding: 1,
+        ...this.props.config.youtube,
       },
     })
   }
@@ -79,6 +80,7 @@ class Youtube extends Component {
         this.props.onReady()
       },
       onStateChange: ({ data }) => {
+        const { start, end } = this.props.config.youtube
         const {
           PLAYING,
           PAUSED,
@@ -93,6 +95,12 @@ class Youtube extends Component {
           this.props.isLoading(false)
           this.props.onDuration(this._player.getDuration())
           this._timeUpdateId = requestAnimationFrame(this._handleTimeUpdate)
+          if (start || end) {
+            const currentTime = this._player.getCurrentTime()
+            if (currentTime < start || currentTime > end) {
+              this._player.seekTo(start === undefined ? end : start)
+            }
+          }
         } else {
           cancelAnimationFrame(this._timeUpdateId)
           this._timeUpdateId = null
