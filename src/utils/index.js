@@ -1,2 +1,3 @@
-export keyboardControls from "./keyboard-controls";
-export formatTime from "./format-time";
+export formatTime from './format-time'
+export getVendor from './get-vendor'
+export keyboardControls from './keyboard-controls'
