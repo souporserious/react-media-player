@@ -1,11 +1,16 @@
 ## CHANGELOG
 
+### 0.7.9
+
+Fix build
+
 ### 0.7.8
 
 ### Features
 
-- add config prop ([#75](https://github.com/souporserious/react-media-player/pull/75))
-- export `getVendor` utility ([da19f297](https://github.com/souporserious/react-media-player/commit/da19f297))
+Add config prop [#75](https://github.com/souporserious/react-media-player/pull/75)
+
+Export `getVendor` utility [da19f297](https://github.com/souporserious/react-media-player/commit/da19f297)
 
 ### 0.7.7
 
