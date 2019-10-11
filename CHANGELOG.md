@@ -1,5 +1,12 @@
 ## CHANGELOG
 
+### 0.7.8
+
+### Features
+
+- add config prop ([#75](https://github.com/souporserious/react-media-player/pull/75))
+- export `getVendor` utility ([da19f297](https://github.com/souporserious/react-media-player/commit/da19f297))
+
 ### 0.7.7
 
 Add support for `isLoading` prop for Youtube vendor
