@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import withMediaProps from '../decorators/with-media-props'
 
-class Fullscreen extends Component {
+export class Fullscreen extends Component {
   shouldComponentUpdate({ media }) {
     return this.props.media.isFullscreen !== media.isFullscreen
   }

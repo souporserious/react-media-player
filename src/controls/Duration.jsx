@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import withMediaProps from '../decorators/with-media-props'
 import formatTime from '../utils/format-time'
 
-class Duration extends Component {
+export class Duration extends Component {
   shouldComponentUpdate({ media }) {
     return this.props.media.duration !== media.duration
   }

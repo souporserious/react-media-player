@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import withMediaProps from '../decorators/with-media-props'
 
-class MuteUnmute extends Component {
+export class MuteUnmute extends Component {
   shouldComponentUpdate({ media }) {
     return this.props.media.isMuted !== media.isMuted
   }

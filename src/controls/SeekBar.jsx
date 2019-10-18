@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import withMediaProps from '../decorators/with-media-props'
 
-class SeekBar extends Component {
+export class SeekBar extends Component {
   _isPlayingOnMouseDown = false
   _onChangeUsed = false
 

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import withMediaProps from '../decorators/with-media-props'
 
-class Volume extends Component {
+export class Volume extends Component {
   _onChangeUsed = false
 
   shouldComponentUpdate({ media }) {
