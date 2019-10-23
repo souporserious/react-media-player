@@ -59,10 +59,12 @@ class Youtube extends Component {
     this._player = new YT.Player(this._node, {
       videoId: this._videoId,
       events: this._events(),
+      host: `${window.location.protocol}//www.youtube.com`,
       playerVars: {
         controls: 0,
         showinfo: 0,
         modestbranding: 1,
+        origin: window.location.origin,
         ...this.props.config.youtube,
       },
     })
