@@ -1,6 +1,6 @@
 import React, { Children, Component } from 'react';
 import PropTypes from 'prop-types';
-import contextTypes from './context-types';
+import { MediaContext } from './context-types';
 import requestFullscreen from './utils/request-fullscreen';
 import exitFullscreen from './utils/exit-fullscreen';
 import fullscreenChange from './utils/fullscreen-change';
@@ -22,8 +22,6 @@ class Media extends Component {
     children: PropTypes.oneOfType([PropTypes.func, PropTypes.node]).isRequired,
   };
 
-  static childContextTypes = contextTypes;
-
   state = {
     currentTime: 0,
     progress: 0,
@@ -39,8 +37,8 @@ class Media extends Component {
   _playerProps = {};
   _lastVolume  = 0;
 
-  getChildContext() {
-    return {
+  getContext() {
+    return  {
       media: this._getPublicMediaProps(),
       _mediaSetters: {
         setPlayer: this._setPlayer,
@@ -167,6 +165,9 @@ class Media extends Component {
   };
 
   setVolume = volume => {
+    volume = parseFloat(volume);
+    if (isNaN(volume))
+      return;
     const isMuted = volume <= 0;
     if (isMuted !== this.state.isMuted) {
       this.mute(isMuted);
@@ -202,10 +203,21 @@ class Media extends Component {
 
   render() {
     const { children } = this.props;
+
+    const mediaContext = this.getContext();
+
     if (typeof children === 'function') {
-      return children(this._getPublicMediaProps());
+      return (
+          <MediaContext.Provider value={mediaContext}>
+            {children(this._getPublicMediaProps())}
+          </MediaContext.Provider>
+      );
     }
-    return Children.only(children);
+    return (
+        <MediaContext.Provider value={mediaContext}>
+          {Children.only(children)}
+        </MediaContext.Provider>
+    );
   }
 }
 

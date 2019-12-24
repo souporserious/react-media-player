@@ -1,6 +1,6 @@
 {
   "name": "react-media-player",
-  "version": "0.7.7",
+  "version": "0.7.8",
   "description": "React media player.",
   "main": "lib/react-media-player.js",
   "files": [
@@ -9,12 +9,12 @@
   ],
   "scripts": {
     "build:lib": "babel src --out-dir lib",
-    "build": "npm run build:lib && NODE_ENV=production webpack --config webpack.prod.config.js",
+    "build": "npm run build:lib && set NODE_ENV=production && webpack --config webpack.prod.config.js",
     "dev": "webpack-dev-server --inline --hot --progress --colors --host 0.0.0.0 --devtool eval",
-    "postbuild": "NODE_ENV=production TARGET=minify webpack --config webpack.prod.config.js",
+    "postbuild": "set NODE_ENV=production && set TARGET=minify && webpack --config webpack.prod.config.js",
     "prebuild": "rm -rf dist && mkdir dist",
     "prepublish": "npm run build",
-    "deploy": "NODE_ENV=production TARGET=minify webpack && git-directory-deploy --directory example --branch gh-pages"
+    "deploy": "set NODE_ENV=production && set TARGET=minify && webpack && git-directory-deploy --directory example --branch gh-pages"
   },
   "repository": {
     "type": "git",

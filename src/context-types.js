@@ -1,7 +1,2 @@
-import PropTypes from "prop-types";
-
-export default {
-  media: PropTypes.object,
-  _mediaSetters: PropTypes.object,
-  _mediaGetters: PropTypes.object
-};
+import React from 'react';
+export const MediaContext = React.createContext({});

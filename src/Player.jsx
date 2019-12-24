@@ -1,9 +1,11 @@
 import React, { Component, createElement } from 'react';
 import PropTypes from 'prop-types';
-import contextTypes from './context-types';
+import { MediaContext } from './context-types';
 import getVendor from './utils/get-vendor';
 
 class Player extends Component {
+  static contextType = MediaContext;
+
   static propTypes = {
     vendor: PropTypes.oneOf(['video', 'audio', 'youtube', 'vimeo']),
     defaultCurrentTime: PropTypes.number,
@@ -16,8 +18,6 @@ class Player extends Component {
     defaultVolume: 1,
     defaultMuted: false,
   };
-
-  static contextTypes = contextTypes;
 
   _defaultsSet = false;
 
