@@ -9,12 +9,12 @@
   ],
   "scripts": {
     "build:lib": "babel src --out-dir lib",
-    "build": "npm run build:lib && set NODE_ENV=production && webpack --config webpack.prod.config.js",
+    "build": "npm run build:lib && cross-env NODE_ENV=production webpack --config webpack.prod.config.js",
     "dev": "webpack-dev-server --inline --hot --progress --colors --host 0.0.0.0 --devtool eval",
-    "postbuild": "set NODE_ENV=production && set TARGET=minify && webpack --config webpack.prod.config.js",
+    "postbuild": "cross-env NODE_ENV=production TARGET=minify webpack --config webpack.prod.config.js",
     "prebuild": "rm -rf dist && mkdir dist",
     "prepublish": "npm run build",
-    "deploy": "set NODE_ENV=production && set TARGET=minify && webpack && git-directory-deploy --directory example --branch gh-pages"
+    "deploy": "cross-env NODE_ENV=production TARGET=minify webpack && git-directory-deploy --directory example --branch gh-pages"
   },
   "repository": {
     "type": "git",
@@ -64,6 +64,7 @@
     "webpack-dev-server": "^3.8.0"
   },
   "dependencies": {
+    "cross-env": "^6.0.3",
     "prop-types": "^15.5.10",
     "stringstream": "0.0.6",
     "uglifyjs-webpack-plugin": "^2.2.0"
