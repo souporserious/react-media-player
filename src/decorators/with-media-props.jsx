@@ -1,14 +1,14 @@
-import React, { Component } from 'react'
-import contextTypes from '../context-types'
+import React, { Component } from 'react';
+import {MediaContext} from "../context-types";
 
 export default function withMediaProps(MediaComponent) {
   return class extends Component {
-    static displayName = 'withMediaProps'
+    static contextType = MediaContext;
 
-    static contextTypes = contextTypes
+    static displayName = 'withMediaProps';
 
     render() {
-      return <MediaComponent {...this.props} media={this.context.media} />
+      return <MediaComponent {...this.props} media={this.context.media} />;
     }
-  }
+  };
 }

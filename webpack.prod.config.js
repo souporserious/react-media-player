@@ -1,10 +1,10 @@
-var path = require('path');
+var path    = require('path');
 var webpack = require('webpack');
-var banner = require('./webpack.banner');
-var TARGET = process.env.TARGET || null;
+var banner  = require('./webpack.banner');
+var TARGET  = process.env.TARGET || null;
 
 var externals = {
-  'react': {
+  react: {
     root: 'React',
     commonjs2: 'react',
     commonjs: 'react',
@@ -19,8 +19,9 @@ var externals = {
 };
 
 var config = {
+  mode: 'production',
   entry: {
-    index: './src/react-media-player.js',
+    index: './src/react-media-player.js'
   },
   output: {
     path: path.join(__dirname, 'dist'),
@@ -31,30 +32,31 @@ var config = {
     libraryTarget: 'umd'
   },
   module: {
-    loaders: [
-      { test: /\.(js|jsx)/, loader: 'babel-loader' }
-    ]
+    rules: [{ test: /\.(js|jsx)/, use: 'babel-loader' }]
   },
-  plugins: [
-    new webpack.BannerPlugin(banner)
-  ],
+  plugins: [new webpack.BannerPlugin(banner)],
   resolve: {
-    extensions: ['', '.js', '.jsx']
+    extensions: ['.js', '.jsx']
   },
   externals: externals
 };
 
 if (TARGET === 'minify') {
-  config.output.filename = 'react-media-player.min.js';
+  const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+
+  config.output.filename          = 'react-media-player.min.js';
   config.output.sourceMapFilename = 'react-media-player.min.js';
-  config.plugins.push(new webpack.optimize.UglifyJsPlugin({
-    compress: {
-      warnings: false
-    },
-    mangle: {
-      except: ['React', 'ReactMediaPlayer']
-    }
-  }));
+  config.optimization             = {
+    minimizer: [
+      new UglifyJsPlugin({
+        uglifyOptions: {
+          compress: false,
+          mangle: true,
+          ecma: 6,
+        },
+      })
+    ]
+  };
 }
 
 module.exports = config;

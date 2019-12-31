@@ -36,15 +36,12 @@ class Youtube extends Component {
 
   componentWillUnmount() {
     this._isMounted = false
-
     if (this._progressId) {
       cancelAnimationFrame(this._progressId)
     }
-
     if (this._timeUpdateId) {
       cancelAnimationFrame(this._timeUpdateId)
     }
-
     if (this._player) {
       this._player.destroy()
     }
@@ -93,6 +90,7 @@ class Youtube extends Component {
 
         if (isPlaying) {
           this.props.onPlay(true)
+          this.props.isLoading(false)
           this.props.onDuration(this._player.getDuration())
           this._timeUpdateId = requestAnimationFrame(this._handleTimeUpdate)
         } else {
@@ -103,11 +101,16 @@ class Youtube extends Component {
           this._progressId = null
         }
 
+        if (data === -1 || data === BUFFERING) {
+          this.props.isLoading(true)
+        }
+
         if (data === PAUSED) {
           this.props.onPause(false)
         }
 
         if (data === ENDED) {
+          this.props.isLoading(false)
           this.props.onEnded(false)
         }
 
@@ -118,6 +121,7 @@ class Youtube extends Component {
 
         // reset duration if a new video was loaded
         if (data === CUED) {
+          this.props.isLoading(false)
           this.props.onDuration(0.1)
         }
       },
@@ -150,6 +154,7 @@ class Youtube extends Component {
       this._player.unMute()
     }
     this.props.onMute(muted)
+    this.props.onVolumeChange(muted ? 0 : 1)
   }
 
   setVolume(volume) {
