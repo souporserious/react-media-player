@@ -27,7 +27,7 @@ class Player extends Component {
 
   _defaultsSet = false
 
-  componentWillMount() {
+  componentDidMount() {
     const {
       defaultCurrentTime,
       defaultMuted,
@@ -48,7 +48,7 @@ class Player extends Component {
     }
   }
 
-  componentWillUpdate(nextProps) {
+  componentDidUpdate(nextProps) {
     this._setPlayerProps(nextProps)
 
     // clean state if the media source has changed
