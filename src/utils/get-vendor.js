@@ -4,7 +4,9 @@ import Youtube from "../vendors/Youtube";
 
 export default function getVendor(src, vendor) {
   src = src || "";
-  if (vendor === "youtube" || /youtube.com|youtu.be/.test(src)) {
+  if (vendor === "audio") {
+    return { vendor: "audio", component: _HTML2.default }
+  } else if (vendor === "youtube" || /youtube.com|youtu.be/.test(src)) {
     return { vendor: "youtube", component: Youtube };
   } else if (vendor === "vimeo" || /vimeo.com/.test(src)) {
     return { vendor: "vimeo", component: Vimeo };
