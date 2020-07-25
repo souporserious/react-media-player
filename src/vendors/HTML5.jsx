@@ -215,6 +215,7 @@ class HTML5 extends Component {
 
   _handleDuration = ({ target: { duration } }) => {
     this.props.onDuration(duration);
+    this._isNotLoading(); // Safari fix - canPlay is not fire unless in white list.
   };
 
   _handleTimeUpdate = ({ target: { currentTime } }) => {
