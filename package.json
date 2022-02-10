@@ -52,7 +52,7 @@
     "git-directory-deploy": "^1.5.1",
     "http-server": "^0.9.0",
     "node-libs-browser": "^1.0.0",
-    "node-sass": "^4.13.1",
+    "node-sass": "^7.0.0",
     "postcss-loader": "^0.13.0",
     "react": "15.3.2",
     "react-dom": "15.3.2",
