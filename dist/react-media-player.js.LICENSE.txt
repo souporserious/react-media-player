@@ -1,0 +1,5 @@
+/*!
+ * React Media Player 0.7.8
+ * https://github.com/souporserious/react-media-player
+ * Copyright (c) 2023 React Media Player Authors
+ */
